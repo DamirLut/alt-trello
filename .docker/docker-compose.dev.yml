@@ -1,0 +1,15 @@
+version: "3"
+
+name: alt-trello
+
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: "${COMPOSE_PROJECT_NAME}_database"
+    restart: unless-stopped
+    env_file:
+      - ../.database.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - $PWD/.docker/postgresql:/var/lib/postgresql/data
