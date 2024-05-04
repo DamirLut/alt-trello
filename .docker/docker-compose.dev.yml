@@ -8,7 +8,7 @@ services:
     container_name: "${COMPOSE_PROJECT_NAME}_database"
     restart: unless-stopped
     env_file:
-      - ../.database.env
+      - ../.env.database
     ports:
       - "5432:5432"
     volumes:

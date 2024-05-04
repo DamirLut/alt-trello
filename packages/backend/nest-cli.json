@@ -6,7 +6,7 @@
   "entryFile": "main",
   "language": "ts",
   "generateOptions": {
-    "spec": false
+    "spec": true
   },
   "compilerOptions": {
     "manualRestart": true,

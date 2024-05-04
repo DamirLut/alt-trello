@@ -31,12 +31,16 @@ export default tsEslint.config(
     rules: {
       '@typescript-eslint/no-unsafe-return': 'off',
       '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/require-await': 'off',
       'simple-import-sort/imports': [
         'warn',
         {
           groups: [
             ['^preact', '^@?\\w'],
-            ['^(components|assets|pages|store)(/.*|$)'],
+            ['^(components|assets|pages|store)(/.*|$)', '^#?\\w'],
             ['^(@alt-trello)(/.*|$)'],
             ['^\\u0000'],
             ['^\\.\\.(?!/?$)', '^\\.\\./?$'],

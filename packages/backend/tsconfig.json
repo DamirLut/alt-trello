@@ -2,14 +2,19 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "moduleResolution": "Node",
-    "module": "CommonJS",
+    "module": "ES2022",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./",
     "baseUrl": "./",
-    "incremental": true,
-    "verbatimModuleSyntax": false
+
+    "paths": {
+      "#common/*": ["./src/common/*"],
+      "#config/*": ["./src/config/*"],
+      "#core/*": ["./src/core/*"],
+      "#root/*": ["./src/*"]
+    }
   }
 }

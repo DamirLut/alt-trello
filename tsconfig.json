@@ -7,19 +7,18 @@
     "jsx": "react-jsx",
     "allowJs": true,
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
-    "noEmit": true,
     "strict": true,
     "skipLibCheck": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noPropertyAccessFromIndexSignature": true,
     "strictNullChecks": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "removeComments": true
+    "removeComments": true,
+    "strictPropertyInitialization": false,
+    "forceConsistentCasingInFileNames": false
   },
-  "exclude": ["./**/eslint.config.js"]
+  "exclude": ["**/eslint.config.js", "**/dist", "./*.js"]
 }
