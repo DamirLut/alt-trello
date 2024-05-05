@@ -10,11 +10,15 @@
     "lint": "bunx eslint --fix"
   },
   "dependencies": {
-    "preact": "^10.19.6"
+    "preact": "^10.19.6",
+    "react-router-dom": "^6.23.0",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.8.2",
+    "sass": "^1.76.0",
     "typescript": "^5.2.2",
-    "vite": "^5.2.0"
+    "vite": "^5.2.0",
+    "vite-tsconfig-paths": "^4.3.2"
   }
 }
