@@ -1,0 +1,35 @@
+.typography {
+  font-family: 'Inter', sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: 'slnt' 0;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 120%;
+}
+
+.heading {
+  font-weight: 700;
+
+  &-1 {
+    font-size: 30px;
+    line-height: 120%;
+  }
+  &-2 {
+    font-size: 24px;
+    line-height: 129%;
+  }
+  &-3 {
+    font-size: 20px;
+    line-height: 130%;
+  }
+}
+
+.text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+}

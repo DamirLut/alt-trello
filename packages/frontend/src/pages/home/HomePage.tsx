@@ -1,5 +1,11 @@
-import type { FC } from 'preact/compat';
+import type { FC } from 'react';
+
+import { Spinner } from 'ui/spinner';
 
 export const HomePage: FC = () => {
-  return <>Hello world</>;
+  return (
+    <div>
+      <Spinner />
+    </div>
+  );
 };

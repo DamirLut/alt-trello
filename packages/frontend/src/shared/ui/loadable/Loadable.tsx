@@ -1,4 +1,5 @@
-import { type FC, Suspense } from 'preact/compat';
+import { type FC, Suspense } from 'react';
+
 import { Spinner } from 'ui/spinner';
 
 export const Loadable = (Component: FC) => {

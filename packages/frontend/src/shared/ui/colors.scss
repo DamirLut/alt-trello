@@ -1,3 +1,36 @@
+@use 'sass:map';
+
+$colors: (
+  'blue': #0b6e99,
+  'brown': #694c3f,
+  'gray': #8f8e8a,
+  'green': #0f7b6c,
+  'orange': #d9730d,
+  'pink': #b3297b,
+  'yellow': #ddaa03,
+  'purple': #6940a5,
+  'red': #e14747,
+);
+
+$lighten: 10;
+$darken: 10;
+
 :root {
-  --color-primary: #fff;
+  @each $name, $color in $colors {
+    --color-#{$name}: #{$color};
+    --color-#{$name}-darken: #{darken($color, $darken)};
+    --color-#{$name}-lighten: #{lighten($color, $lighten)};
+  }
+}
+
+.light {
+  --color-text: #37352f;
+  --color-background: #ffffff;
+  --color-overlay: #fafafa;
+}
+
+.dark {
+  --color-text: #ebebeb;
+  --color-background: #2f3437;
+  --color-overlay: #3f4446;
 }

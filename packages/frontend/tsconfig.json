@@ -10,16 +10,14 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "preact",
     "paths": {
-      "react": ["./node_modules/preact/compat/"],
-      "react-dom": ["./node_modules/preact/compat/"],
       "app": ["./src/app/index.tsx"],
       "assets/*": ["./src/shared/assets/*"],
       "pages/*": ["./src/pages/*"],
       "store/*": ["./src/store/*"],
       "ui/*": ["./src/shared/ui/*"],
-      "widgets/*": ["./src/widgets/*"]
+      "widgets/*": ["./src/widgets/*"],
+      "entities/*": ["./src/entities/*"]
     }
   },
   "include": ["src"],

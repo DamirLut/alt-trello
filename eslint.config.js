@@ -39,9 +39,12 @@ export default tsEslint.config(
         'warn',
         {
           groups: [
-            ['^preact', '^@?\\w'],
-            ['^(components|assets|pages|store)(/.*|$)', '^#?\\w'],
+            ['^react', '^@?\\w'],
             ['^(@alt-trello)(/.*|$)'],
+            [
+              '^(components|assets|pages|store|ui|entities|widgets)(/.*|$)',
+              '^#?\\w',
+            ],
             ['^\\u0000'],
             ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
             ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],

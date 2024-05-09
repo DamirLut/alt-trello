@@ -1,5 +1,4 @@
-import { Component } from 'preact';
-import type { FC, ReactNode } from 'preact/compat';
+import { Component, type FC, type ReactNode } from 'react';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
