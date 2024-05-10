@@ -1,0 +1,13 @@
+.separator {
+  all: unset;
+  display: inline-block;
+
+  &_vertical {
+    border-left: 1px solid currentColor;
+    height: 100%;
+  }
+  &_horizontal {
+    border-bottom: 1px solid currentColor;
+    width: 100%;
+  }
+}

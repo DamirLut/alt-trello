@@ -1,0 +1,5 @@
+@mixin dark-theme {
+  html[class='dark'] & {
+    @content;
+  }
+}

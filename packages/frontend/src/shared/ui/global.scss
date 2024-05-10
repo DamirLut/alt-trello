@@ -4,6 +4,10 @@
 
 :root {
   --border-radius: 5px;
+
+  --font-family: 'Inter', sans-serif;
+
+  scroll-behavior: smooth;
 }
 
 *,
@@ -18,9 +22,9 @@ body {
   background-color: var(--color-background);
   color: var(--color-text);
 
-  min-height: 100vh;
-  scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
 
   overflow-x: hidden;
+
+  font-family: 'Inter', sans-serif;
 }

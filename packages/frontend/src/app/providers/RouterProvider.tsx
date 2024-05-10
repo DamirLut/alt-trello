@@ -5,6 +5,8 @@ import { MainLayout } from 'pages/layout';
 import { Loadable } from 'ui/loadable';
 
 const HomePage = Loadable(lazy(() => import('pages/home')));
+const AuthPage = Loadable(lazy(() => import('pages/auth')));
+
 const UIKitPage = Loadable(lazy(() => import('pages/ui-kit-preview')));
 
 export const Router: FC = () => {
@@ -17,6 +19,10 @@ export const Router: FC = () => {
           element: <HomePage />,
         },
       ],
+    },
+    {
+      element: <AuthPage />,
+      path: '/auth',
     },
     {
       element: <UIKitPage />,

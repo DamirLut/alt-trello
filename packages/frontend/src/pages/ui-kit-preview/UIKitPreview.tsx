@@ -1,6 +1,8 @@
 import type { FC } from 'react';
 
 import { useTheme } from 'entities/theme';
+import { Button } from 'ui/button';
+import { Separator } from 'ui/separator';
 import { Spinner } from 'ui/spinner';
 import { Heading, Text, Title, Typography } from 'ui/typography';
 
@@ -32,6 +34,24 @@ export const UIKitPreviewPage: FC = () => {
 
       <Section id='spinner'>
         <Spinner />
+      </Section>
+
+      <Section
+        id='separator'
+        style={{
+          height: 100,
+          display: 'flex',
+          gap: 5,
+        }}
+      >
+        <Separator />
+        <Separator vertical />
+      </Section>
+
+      <Section id='buttons' style={{ display: 'flex', gap: 10 }}>
+        <Button>primary</Button>
+        <Button variant='tertiary'>tertiary</Button>
+        <Button variant='link'>link</Button>
       </Section>
     </main>
   );

@@ -10,9 +10,11 @@ $colors: (
   'yellow': #ddaa03,
   'purple': #6940a5,
   'red': #e14747,
+  'black': #000,
+  'white': #fff,
 );
 
-$lighten: 10;
+$lighten: 15;
 $darken: 10;
 
 :root {
@@ -25,12 +27,14 @@ $darken: 10;
 
 .light {
   --color-text: #37352f;
+  --color-text-overlay: #ebebeb;
   --color-background: #ffffff;
   --color-overlay: #fafafa;
 }
 
 .dark {
   --color-text: #ebebeb;
+  --color-text-overlay: #37352f;
   --color-background: #2f3437;
   --color-overlay: #3f4446;
 }

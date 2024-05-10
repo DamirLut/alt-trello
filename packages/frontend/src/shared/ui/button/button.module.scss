@@ -1,0 +1,52 @@
+@import '../utils';
+
+.button {
+  min-height: 36px;
+  padding: 0.25rem 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  word-break: break-word;
+  white-space: pre-line;
+  border-radius: var(--border-radius);
+
+  -webkit-font-smoothing: antialiased;
+  border: 0;
+  height: auto;
+  background: transparent;
+  text-decoration: none;
+
+  font-family: var(--font-family);
+  transition: 250ms ease-in-out;
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &_primary {
+    background: var(--color-black);
+    color: var(--color-white);
+
+    &:hover {
+      background-color: var(--color-black-lighten);
+    }
+  }
+
+  &_tertiary {
+    color: var(--color-text);
+    &:hover {
+      background-color: var(--color-white-darken);
+
+      @include dark-theme {
+        color: var(--color-text-overlay);
+      }
+    }
+  }
+
+  &_link {
+    color: var(--color-blue-lighten);
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
