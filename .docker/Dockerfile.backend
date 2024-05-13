@@ -1,0 +1,36 @@
+# Stage build
+FROM oven/bun:alpine as builder
+
+WORKDIR /app
+
+COPY ./tsconfig.json .
+
+COPY ./packages/backend/ ./packages/backend/
+
+WORKDIR /app/packages/backend
+
+RUN bun install
+
+RUN bun run build
+
+# Stage production
+
+FROM oven/bun:alpine as production
+
+RUN apk add --no-cache tini
+
+WORKDIR /app
+
+COPY ./packages/backend/package.json .
+COPY ./packages/backend/tsconfig.json .
+
+RUN bun install --production
+
+COPY --from=builder /app/packages/backend/dist ./
+
+COPY ./packages/backend/.env.production .
+
+ENV NODE_ENV="production"
+
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["bun","./src/main.js"]

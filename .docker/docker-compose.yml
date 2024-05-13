@@ -1,0 +1,40 @@
+version: "3"
+
+name: alt-trello
+
+services:
+  frontend:
+    container_name: "${COMPOSE_PROJECT_NAME}_frontend"
+    build:
+      context: ../
+      dockerfile: ./.docker/Dockerfile.frontend
+      target: production
+    ports:
+      - "3000:80"
+    networks:
+      - app_network
+  backend:
+    container_name: "${COMPOSE_PROJECT_NAME}_backend"
+    build:
+      context: ../
+      dockerfile: ./.docker/Dockerfile.backend
+      target: production
+    ports:
+      - "5000"
+    networks:
+      - app_network
+  database:
+    image: postgres:16-alpine
+    container_name: "${COMPOSE_PROJECT_NAME}_database"
+    restart: unless-stopped
+    env_file:
+      - ../.env.database
+    ports:
+      - "5432"
+    volumes:
+      - $PWD/.docker/postgresql:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+networks:
+  app_network:

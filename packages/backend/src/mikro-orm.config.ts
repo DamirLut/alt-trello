@@ -10,7 +10,7 @@ export default defineConfig({
   user: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   dbName: process.env.DATABASE_DB,
-  entities: ['./dist/**/entities/*.entity.js'],
+  entities: ['./**/entities/*.entity.js'],
   entitiesTs: ['./src/**/entities/*.entity.ts'],
   extensions: [Migrator],
   driver: PostgreSqlDriver,

@@ -6,5 +6,8 @@
     "dist",
     "**/*spec.ts",
     "./eslint.config.js"
-  ]
+  ],
+  "compilerOptions": {
+    "skipLibCheck": true
+  }
 }
