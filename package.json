@@ -20,6 +20,7 @@
     "@commitlint/config-conventional": "^19.2.2",
     "@types/bun": "latest",
     "eslint": "^9.1.1",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-eslint-plugin": "^6.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
