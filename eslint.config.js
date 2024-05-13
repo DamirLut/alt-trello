@@ -15,7 +15,7 @@ export default tsEslint.config(
     },
   },
   {
-    ignores: ['**/node_modules/**', '**/dist/**'],
+    ignores: ['**/node_modules/**', '**/dist/**', '**/vite.config.*'],
   },
   jsEslint.configs.recommended,
   ...tsEslint.configs.recommendedTypeChecked,
