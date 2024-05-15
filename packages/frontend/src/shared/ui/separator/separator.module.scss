@@ -1,13 +1,15 @@
 .separator {
   all: unset;
   display: inline-block;
+  --separator-width: 2px;
+  border-radius: 20px;
 
   &_vertical {
-    border-left: 1px solid currentColor;
+    border-left: var(--separator-width) solid currentColor;
     height: 100%;
   }
   &_horizontal {
-    border-bottom: 1px solid currentColor;
+    border-bottom: var(--separator-width) solid currentColor;
     width: 100%;
   }
 }
