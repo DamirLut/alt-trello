@@ -1,21 +1,29 @@
 import type { FC } from 'react';
 
+import { IconApp, IconVK } from 'assets/icons';
 import { Button } from 'ui/button';
+import { Card } from 'ui/card';
 import { Separator } from 'ui/separator';
-import { Heading, Title } from 'ui/typography';
+import { Heading } from 'ui/typography';
+
+import Style from './auth.module.scss';
 
 export const AuthPage: FC = () => {
   return (
-    <section>
-      <Title>Alt Trello</Title>
-      <Heading>Авторизация</Heading>
-      <Separator />
-      <div>
-        <Button>ВКонтакте</Button>
-        <Button>Yandex</Button>
-        <Button>Mail.ru</Button>
-        <Button>Google.com</Button>
-      </div>
-    </section>
+    <main className={Style.page}>
+      <Card Component={'section'} className={Style.container}>
+        <div>
+          <IconApp width={128} height={128} />
+        </div>
+        <Separator vertical />
+        <div>
+          <Heading>Авторизация</Heading>
+          <Button Component={'a'} variant='outline' href='/'>
+            <IconVK width={24} height={24} />
+            ВКонтакте
+          </Button>
+        </div>
+      </Card>
+    </main>
   );
 };

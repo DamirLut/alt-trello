@@ -6,7 +6,7 @@ import { RootComponent, type RootComponentProps } from 'ui/root-component';
 import Style from './button.module.scss';
 
 export interface ButtonProps extends RootComponentProps<HTMLButtonElement> {
-  variant?: 'primary' | 'tertiary' | 'link';
+  variant?: 'primary' | 'tertiary' | 'link' | 'outline';
 }
 
 export const Button: FC<ButtonProps> = ({
