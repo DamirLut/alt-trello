@@ -20,6 +20,7 @@ jobs:
   deploy:
     needs: [lint]
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: SSH and deploy app
         uses: appleboy/ssh-action@master
