@@ -17,7 +17,9 @@
       "store/*": ["./src/store/*"],
       "ui/*": ["./src/shared/ui/*"],
       "widgets/*": ["./src/widgets/*"],
-      "entities/*": ["./src/entities/*"]
+      "entities/*": ["./src/entities/*"],
+      "api": ["./src/shared/api/index.ts"],
+      "api/*": ["./src/shared/api/*"]
     }
   },
   "include": ["src"],

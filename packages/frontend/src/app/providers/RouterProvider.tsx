@@ -6,6 +6,7 @@ import { Loadable } from 'ui/loadable';
 
 const HomePage = Loadable(lazy(() => import('pages/home')));
 const AuthPage = Loadable(lazy(() => import('pages/auth')));
+const BoardPage = Loadable(lazy(() => import('pages/board')));
 
 const UIKitPage = Loadable(lazy(() => import('pages/ui-kit-preview')));
 
@@ -17,6 +18,10 @@ export const Router: FC = () => {
         {
           path: '/',
           element: <HomePage />,
+        },
+        {
+          path: '/board',
+          element: <BoardPage />,
         },
       ],
     },

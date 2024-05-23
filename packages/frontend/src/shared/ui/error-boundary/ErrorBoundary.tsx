@@ -2,7 +2,7 @@ import { Component, type FC, type ReactNode } from 'react';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
-  fallback: FC<{ error: unknown }>;
+  fallback: FC<{ error: string | Error }>;
 }
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps> {
@@ -26,7 +26,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps> {
   override render(): ReactNode {
     if (this.state.hasError && this.props.fallback) {
       const Fallback = this.props.fallback;
-      return <Fallback error={this.state.error} />;
+      return <Fallback error={this.state.error as string | Error} />;
     }
 
     return this.props.children;

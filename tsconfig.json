@@ -18,7 +18,8 @@
     "declaration": true,
     "removeComments": true,
     "strictPropertyInitialization": false,
-    "forceConsistentCasingInFileNames": false
+    "forceConsistentCasingInFileNames": false,
+    "resolveJsonModule": true
   },
   "exclude": ["**/eslint.config.js", "**/dist", "./*.js"]
 }
