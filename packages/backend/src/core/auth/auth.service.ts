@@ -4,7 +4,7 @@ import { EntityManager } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import type { User } from '#core/users/entities/user.entity';
+import type { UserEntity } from '#core/users/entities/user.entity';
 import { UserService } from '#core/users/user.service';
 
 import { AuthEntity } from './entities/auth.entity';
@@ -51,7 +51,7 @@ export class AuthService {
     return this.generateJwtToken(auth.user, profile);
   }
 
-  private generateJwtToken(user: User, auth: AuthProfile) {
+  private generateJwtToken(user: UserEntity, auth: AuthProfile) {
     const payload: JwtPayload = {
       id: user.id,
       provider_id: auth.id,

@@ -16,7 +16,7 @@ export const AppBar: FC = () => {
   const { data: user } = useQuery(userQueries.getSelf());
 
   const onClickLogout = () =>
-    client.GET('/api/auth/logout', {}).then(() => window.location.reload());
+    client.POST('/api/auth/logout', {}).then(() => window.location.reload());
 
   return (
     <header className={Style['app-bar']}>

@@ -1,6 +1,7 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 
 import type { EnvironmentVariables } from '#config/env.config';
@@ -9,6 +10,7 @@ import { AuthService } from './auth.service';
 import type { AuthProfile } from './auth.type';
 
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
@@ -27,7 +29,7 @@ export class AuthController {
     return this.logIn(req, res);
   }
 
-  @Get('/logout')
+  @Post('/logout')
   logout(@Res({ passthrough: true }) res: Response) {
     res.cookie('auth', null, { httpOnly: true });
   }

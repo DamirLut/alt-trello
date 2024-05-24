@@ -3,11 +3,11 @@ import { ConfigService } from '@nestjs/config';
 
 import { AuthProviders, type EnvironmentVariables } from '#config/env.config';
 
-import type { OAuthMethodDTO, OAuthMethodsDTO } from './dto/utils.dto';
+import type { AuthMethodDTO, AuthMethodsDTO } from './dto/utils.dto';
 
 const oauthMethods: Record<
   AuthProviders,
-  (config: ConfigService<EnvironmentVariables>) => OAuthMethodDTO
+  (config: ConfigService<EnvironmentVariables>) => AuthMethodDTO
 > = {
   [AuthProviders.VK]: (config) => ({
     type: AuthProviders.VK,
@@ -24,7 +24,7 @@ const oauthMethods: Record<
 export class UtilsService {
   constructor(private config: ConfigService<EnvironmentVariables>) {}
 
-  getOAuthList(): OAuthMethodsDTO {
+  getOAuthList(): AuthMethodsDTO {
     const methods = this.config.get<AuthProviders[]>('AUTH_METHODS') ?? [];
 
     const items = methods.map((method) => oauthMethods[method]?.(this.config));

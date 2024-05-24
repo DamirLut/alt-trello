@@ -1,1 +1,1 @@
-export { UIKitPreviewPage as default } from './UIKitPreview';
+export { UIKitPreviewPage as default } from './uikit.page';

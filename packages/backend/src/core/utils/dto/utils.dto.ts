@@ -2,12 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { AuthProviders } from '#config/env.config';
 
-export class OAuthMethodsDTO {
-  @ApiProperty({ isArray: true, type: () => OAuthMethodDTO })
-  items: OAuthMethodDTO[];
+export class AuthMethodsDTO {
+  @ApiProperty({ isArray: true, type: () => AuthMethodDTO })
+  items: AuthMethodDTO[];
 }
 
-export class OAuthMethodDTO {
+export class AuthMethodDTO {
   @ApiProperty({ enum: AuthProviders })
   type: AuthProviders;
 

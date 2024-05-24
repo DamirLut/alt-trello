@@ -1,11 +1,8 @@
-:global {
-  main {
-    margin: auto;
-  }
-}
 .page {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding: 16px;
+
+  section {
+    display: flex;
+    gap: 20px;
+  }
 }

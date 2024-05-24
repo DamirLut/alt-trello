@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { BaseEntity } from '#common/entities/base.entity';
 
 @Entity({ tableName: 'users' })
-export class User extends BaseEntity {
+export class UserEntity extends BaseEntity {
   @ApiProperty()
   @Property({ type: 'datetime', defaultRaw: 'now()' })
   lastActiveAt: Date;

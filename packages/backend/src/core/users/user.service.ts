@@ -4,13 +4,13 @@ import { Injectable } from '@nestjs/common';
 
 import type { AuthProfile } from '#core/auth/auth.type';
 
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: EntityRepository<User>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: EntityRepository<UserEntity>,
     private readonly entityManager: EntityManager,
   ) {}
 

@@ -1,20 +1,21 @@
 import { Controller, Get, NotFoundException, UseGuards } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { JwtUser } from '#core/auth/auth.decorator';
 import { JwtAuthGuard } from '#core/auth/auth.guard';
 import type { JwtPayload } from '#core/auth/auth.type';
 
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')
+@ApiTags('user')
 @UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  @ApiResponse({ status: 200, type: User })
+  @ApiResponse({ status: 200, type: UserEntity })
   async getSelf(@JwtUser() payload: JwtPayload) {
     const user = await this.userService.findById(payload.id);
 

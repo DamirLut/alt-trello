@@ -36,6 +36,8 @@ export class VKStrategy extends PassportStrategy(Strategy, 'vk') {
       throw new ForbiddenException(errors[0].description);
     }
 
+    await this.exchangeSilentToken(payload.token, payload.uuid);
+
     return {
       id: String(success[0].user_id),
       username: success[0].first_name + ' ' + success[0].last_name,
@@ -45,7 +47,6 @@ export class VKStrategy extends PassportStrategy(Strategy, 'vk') {
     };
   }
 
-  ///@ts-expect-error maybe use in future
   private async exchangeSilentToken(token: string, uuid: string) {
     const url = new URL('/method/auth.exchangeSilentAuthToken', this.baseUrl);
 

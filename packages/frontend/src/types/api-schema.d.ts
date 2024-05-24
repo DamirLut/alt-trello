@@ -11,7 +11,7 @@ export interface paths {
     get: operations['AuthController_authGoogle'];
   };
   '/api/auth/logout': {
-    get: operations['AuthController_logout'];
+    post: operations['AuthController_logout'];
   };
   '/api/user': {
     get: operations['UserController_getSelf'];
@@ -19,13 +19,19 @@ export interface paths {
   '/api/utils': {
     get: operations['UtilsController_getOAuthList'];
   };
+  '/api/board/new': {
+    post: operations['BoardController_createBoard'];
+  };
+  '/api/board/list': {
+    get: operations['BoardController_getUserList'];
+  };
 }
 
 export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
-    User: {
+    UserEntity: {
       id: number;
       /** Format: date-time */
       createdAt: string;
@@ -36,13 +42,30 @@ export interface components {
       username: string;
       avatar: string;
     };
-    OAuthMethodDTO: {
+    AuthMethodDTO: {
       /** @enum {string} */
       type: 'vk' | 'google';
       redirect_url: string;
     };
-    OAuthMethodsDTO: {
-      items: components['schemas']['OAuthMethodDTO'][];
+    AuthMethodsDTO: {
+      items: components['schemas']['AuthMethodDTO'][];
+    };
+    CreateBoardDTO: {
+      title: string;
+    };
+    BoardEntity: {
+      /** @example fxrJQl4u */
+      id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      /** @example My Board */
+      title: string;
+      /** @example 1 */
+      owner: number;
+      /** @example my-board */
+      slug: string;
     };
   };
   responses: never;
@@ -73,7 +96,7 @@ export interface operations {
   };
   AuthController_logout: {
     responses: {
-      200: {
+      201: {
         content: never;
       };
     };
@@ -82,7 +105,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          'application/json': components['schemas']['User'];
+          'application/json': components['schemas']['UserEntity'];
         };
       };
     };
@@ -91,7 +114,30 @@ export interface operations {
     responses: {
       200: {
         content: {
-          'application/json': components['schemas']['OAuthMethodsDTO'];
+          'application/json': components['schemas']['AuthMethodsDTO'];
+        };
+      };
+    };
+  };
+  BoardController_createBoard: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateBoardDTO'];
+      };
+    };
+    responses: {
+      201: {
+        content: {
+          'application/json': components['schemas']['BoardEntity'];
+        };
+      };
+    };
+  };
+  BoardController_getUserList: {
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['BoardEntity'][];
         };
       };
     };
