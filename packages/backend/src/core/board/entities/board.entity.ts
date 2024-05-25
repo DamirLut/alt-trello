@@ -1,7 +1,18 @@
-import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import {
+  Entity,
+  LoadStrategy,
+  ManyToOne,
+  OneToOne,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { UserEntity } from '#core/users/entities/user.entity';
+
+import { BoardSettingEntity } from './board-setting.entity';
+
+type BoardSetting = BoardSettingEntity;
 
 @Entity({ tableName: 'boards' })
 export class BoardEntity {
@@ -34,4 +45,12 @@ export class BoardEntity {
       .replace(/\s+/g, '-')
       .replace(/--+/g, '-');
   }
+
+  @ApiProperty()
+  @OneToOne(() => BoardSettingEntity, {
+    nullable: true,
+    owner: true,
+    strategy: LoadStrategy.SELECT_IN,
+  })
+  settings?: BoardSetting;
 }

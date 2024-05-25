@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { ApiSchema } from 'api';
 
 import { Card } from 'ui/card';
-import { Text } from 'ui/typography';
+import { Heading } from 'ui/typography';
 
 import Style from './board-card.module.scss';
 
@@ -17,9 +17,14 @@ export const BoardCard: FC<BoardCardProps> = ({ board }) => {
   return (
     <Card
       className={Style['board-card']}
+      style={{
+        backgroundImage: `var(--gradient-${board.settings.data.theme.color})`,
+      }}
       onClick={() => navigate(`/b/${board.id}/${board.slug}`)}
     >
-      <Text>{board.title}</Text>
+      <div className={Style['board-card-content']}>
+        <Heading level='3'>{board.title}</Heading>
+      </div>
     </Card>
   );
 };

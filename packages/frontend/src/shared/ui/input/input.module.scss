@@ -1,0 +1,16 @@
+.input {
+  width: 100%;
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0 10px;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--color-overlay);
+  box-shadow: 0 0 0 1px var(--color-overlay);
+  height: 35px;
+  outline: none;
+  border: none;
+}

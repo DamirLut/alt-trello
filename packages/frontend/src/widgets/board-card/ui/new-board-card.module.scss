@@ -1,0 +1,53 @@
+.new-board-card {
+  padding: 16px;
+
+  background: transparent;
+
+  border: 2px dashed
+    color-mix(in srgb, var(--color-gray) 100%, rgba(0, 0, 0, 0) 100%);
+
+  transition: 300ms;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    border-color: var(--color-gray);
+  }
+
+  &:active {
+    transform: scale(1.05);
+  }
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  > h4 {
+    font-size: 24px;
+    margin: 0;
+  }
+
+  > form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.choose-colors {
+  width: fit-content;
+  display: flex;
+  gap: 10px;
+}
+
+.choose-colors-wrap {
+  overflow: auto;
+  padding: 10px;
+}
+
+.color-card {
+  width: 128px;
+  height: 128px;
+}

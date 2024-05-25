@@ -8,6 +8,46 @@
       "columns": {
         "id": {
           "name": "id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "mappedType": "uuid"
+        },
+        "data": {
+          "name": "data",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        }
+      },
+      "name": "board-settings",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "board-settings_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
           "type": "serial",
           "unsigned": true,
           "autoincrement": true,
@@ -131,11 +171,30 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "settings_id": {
+          "name": "settings_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "uuid"
         }
       },
       "name": "boards",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "settings_id"
+          ],
+          "composite": false,
+          "keyName": "boards_settings_id_unique",
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
         {
           "keyName": "boards_pkey",
           "columnNames": [
@@ -159,6 +218,19 @@
             "id"
           ],
           "referencedTableName": "public.users",
+          "updateRule": "cascade"
+        },
+        "boards_settings_id_foreign": {
+          "constraintName": "boards_settings_id_foreign",
+          "columnNames": [
+            "settings_id"
+          ],
+          "localTableName": "public.boards",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.board-settings",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       },

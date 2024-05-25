@@ -48,10 +48,29 @@ export const UIKitPreviewPage: FC = () => {
         <Separator vertical />
       </Section>
 
-      <Section id='buttons' style={{ display: 'flex', gap: 10 }}>
-        <Button>primary</Button>
-        <Button variant='tertiary'>tertiary</Button>
-        <Button variant='link'>link</Button>
+      <Section
+        id='buttons'
+        style={{ display: 'flex', gap: 10, flexDirection: 'column' }}
+      >
+        <div>
+          <Button>primary</Button>
+          <Button variant='tertiary'>tertiary</Button>
+          <Button variant='link'>link</Button>
+          <Button variant='outline'>outline</Button>
+        </div>
+        <Separator />
+        <div>
+          <Button color='green'>primary</Button>
+          <Button color='green' variant='tertiary'>
+            tertiary
+          </Button>
+          <Button color='green' variant='link'>
+            link
+          </Button>
+          <Button color='green' variant='outline'>
+            outline
+          </Button>
+        </div>
       </Section>
     </main>
   );

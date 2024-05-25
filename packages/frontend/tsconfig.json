@@ -19,7 +19,8 @@
       "widgets/*": ["./src/widgets/*"],
       "entities/*": ["./src/entities/*"],
       "api": ["./src/shared/api/index.ts"],
-      "api/*": ["./src/shared/api/*"]
+      "api/*": ["./src/shared/api/*"],
+      "lib/*": ["./src/shared/lib/*"]
     }
   },
   "include": ["src"],

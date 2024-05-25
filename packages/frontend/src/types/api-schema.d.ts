@@ -52,6 +52,16 @@ export interface components {
     };
     CreateBoardDTO: {
       title: string;
+      color: string;
+    };
+    BoardThemeSetting: {
+      color: string;
+    };
+    BoardSetting: {
+      theme: components['schemas']['BoardThemeSetting'];
+    };
+    BoardSettingEntity: {
+      data: components['schemas']['BoardSetting'];
     };
     BoardEntity: {
       /** @example fxrJQl4u */
@@ -66,6 +76,7 @@ export interface components {
       owner: number;
       /** @example my-board */
       slug: string;
+      settings: components['schemas']['BoardSettingEntity'];
     };
   };
   responses: never;

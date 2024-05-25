@@ -25,11 +25,15 @@
   }
 
   &_primary {
-    background: var(--color-black);
+    background: var(--color, var(--color-black));
     color: var(--color-white);
 
     &:hover {
-      background-color: var(--color-black-lighten);
+      background-color: color-mix(
+        in srgb,
+        var(--color, var(--color-black)),
+        #fff 15%
+      );
     }
   }
 

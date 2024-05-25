@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { boardQueries } from 'entities/board/api/board.queries';
 import { FullPageSpinner } from 'ui/full-page-spinner';
 import { Title } from 'ui/typography';
-import { BoardCard } from 'widgets/board-card';
+import { BoardCard, NewBoardCard } from 'widgets/board-card';
 
 import Style from './home.module.scss';
 
@@ -20,6 +20,7 @@ export const HomePage: FC = () => {
       <Title>Новые</Title>
       <section>
         {boards?.map((board) => <BoardCard key={board.id} board={board} />)}
+        <NewBoardCard />
       </section>
     </div>
   );
