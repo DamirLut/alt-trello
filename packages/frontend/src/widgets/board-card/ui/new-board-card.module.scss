@@ -10,6 +10,14 @@
   cursor: pointer;
   user-select: none;
 
+  > div {
+    width: 362px;
+    min-height: 128px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   &:hover {
     border-color: var(--color-gray);
   }

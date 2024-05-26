@@ -19,11 +19,23 @@ export interface paths {
   '/api/utils': {
     get: operations['UtilsController_getOAuthList'];
   };
-  '/api/board/new': {
+  '/api/boards/new': {
     post: operations['BoardController_createBoard'];
   };
-  '/api/board/list': {
+  '/api/boards/list': {
     get: operations['BoardController_getUserList'];
+  };
+  '/api/boards': {
+    get: operations['BoardController_getBoardById'];
+  };
+  '/api/columns/new': {
+    post: operations['ColumnController_newColumn'];
+  };
+  '/api/cards/new': {
+    post: operations['CardController_create'];
+  };
+  '/api/cards': {
+    get: operations['CardController_getCards'];
   };
 }
 
@@ -33,10 +45,6 @@ export interface components {
   schemas: {
     UserEntity: {
       id: number;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      updatedAt: string;
       /** Format: date-time */
       lastActiveAt: string;
       username: string;
@@ -54,14 +62,20 @@ export interface components {
       title: string;
       color: string;
     };
-    BoardThemeSetting: {
-      color: string;
+    CardEntity: {
+      id: number;
+      title: string;
+      /** @example awesome-task */
+      slug: string;
+      position: number;
     };
-    BoardSetting: {
-      theme: components['schemas']['BoardThemeSetting'];
-    };
-    BoardSettingEntity: {
-      data: components['schemas']['BoardSetting'];
+    ColumnEntity: {
+      id: number;
+      /** @example TODO */
+      title: string;
+      board: string;
+      position: number;
+      cards: components['schemas']['CardEntity'][];
     };
     BoardEntity: {
       /** @example fxrJQl4u */
@@ -76,7 +90,17 @@ export interface components {
       owner: number;
       /** @example my-board */
       slug: string;
-      settings: components['schemas']['BoardSettingEntity'];
+      settings: Record<string, never>;
+      columns: components['schemas']['ColumnEntity'][];
+    };
+    CreateColumnDTO: {
+      board_id: string;
+      title: string;
+    };
+    CreateCardDTO: {
+      board_id: string;
+      column_id: number;
+      title: string;
     };
   };
   responses: never;
@@ -149,6 +173,62 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['BoardEntity'][];
+        };
+      };
+    };
+  };
+  BoardController_getBoardById: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['BoardEntity'];
+        };
+      };
+    };
+  };
+  ColumnController_newColumn: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateColumnDTO'];
+      };
+    };
+    responses: {
+      201: {
+        content: {
+          'application/json': components['schemas']['ColumnEntity'];
+        };
+      };
+    };
+  };
+  CardController_create: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateCardDTO'];
+      };
+    };
+    responses: {
+      201: {
+        content: {
+          'application/json': components['schemas']['CardEntity'];
+        };
+      };
+    };
+  };
+  CardController_getCards: {
+    parameters: {
+      query: {
+        board_id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['ColumnEntity'][];
         };
       };
     };

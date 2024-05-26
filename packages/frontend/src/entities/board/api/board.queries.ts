@@ -6,7 +6,7 @@ export const boardQueries = {
     queryOptions({
       queryKey: ['boards', 'list'],
       queryFn: ({ signal }) =>
-        client.GET('/api/board/list', { signal }).then(({ data }) => data),
+        client.GET('/api/boards/list', { signal }).then(({ data }) => data),
     }),
   newBoard: (): MutationOptions<
     ApiSchema['BoardEntity'],
@@ -15,7 +15,38 @@ export const boardQueries = {
   > => ({
     mutationFn: (dto) =>
       client
-        .POST('/api/board/new', { body: dto })
+        .POST('/api/boards/new', { body: dto })
         .then(({ data }) => data as ApiSchema['BoardEntity']),
+  }),
+  getById: (id?: string) =>
+    queryOptions({
+      queryKey: ['boards', id],
+      enabled: !!id,
+      queryFn: ({ signal }) =>
+        client
+          .GET('/api/boards', { params: { query: { id: id! } }, signal })
+          .then(({ data }) => data),
+    }),
+  getCards: (board_id?: string) =>
+    queryOptions({
+      queryKey: ['boards', board_id, 'cards'],
+      enabled: !!board_id,
+      queryFn: ({ signal }) =>
+        client
+          .GET('/api/cards', {
+            params: { query: { board_id: board_id! } },
+            signal,
+          })
+          .then(({ data }) => data),
+    }),
+  createCard: (): MutationOptions<
+    ApiSchema['CardEntity'],
+    Error,
+    ApiSchema['CreateCardDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client
+        .POST('/api/cards/new', { body: dto })
+        .then(({ data }) => data as ApiSchema['CardEntity']),
   }),
 };

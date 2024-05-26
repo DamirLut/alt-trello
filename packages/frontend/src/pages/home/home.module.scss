@@ -4,5 +4,8 @@
   section {
     display: flex;
     gap: 20px;
+
+    overflow: auto;
+    padding: 16px 0;
   }
 }

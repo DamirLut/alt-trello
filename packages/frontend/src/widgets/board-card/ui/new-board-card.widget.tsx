@@ -41,7 +41,9 @@ export const NewBoardCard: FC = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Card className={Style['new-board-card']}>
-          <Text>Создать</Text>
+          <div>
+            <Text>Создать</Text>
+          </div>
         </Card>
       </DialogTrigger>
       <DialogContent className={Style.dialog}>

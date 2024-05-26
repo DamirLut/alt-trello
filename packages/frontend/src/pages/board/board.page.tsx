@@ -1,22 +1,29 @@
 import type { FC } from 'react';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
-import { CardColumn } from 'widgets/card-column';
+import { boardQueries } from 'entities/board';
+import { FullPageSpinner } from 'ui/full-page-spinner';
+import { Title } from 'ui/typography';
 
-import Style from './board.module.scss';
-
-const columns = Array.from({ length: 5 });
+import { Columns } from './ui/columns';
 
 export const BoardPage: FC = () => {
-  const params = useParams();
+  const params = useParams<{ id: string; slug: string }>();
 
-  console.log(params);
+  const { data: board, isPending } = useQuery({
+    ...boardQueries.getById(params.id),
+    refetchOnWindowFocus: true,
+  });
+
+  if (isPending) {
+    return <FullPageSpinner />;
+  }
 
   return (
-    <section className={Style.board}>
-      {columns.map(() => (
-        <CardColumn />
-      ))}
-    </section>
+    <div>
+      <Title>{board?.title ?? params.slug}</Title>
+      {board && <Columns board={board} />}
+    </div>
   );
 };

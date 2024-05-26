@@ -7,11 +7,13 @@ export abstract class BaseEntity {
   @PrimaryKey()
   id: number;
 
-  @ApiProperty({ type: Date })
-  @Property({ fieldName: 'created_at' })
+  @Property({ fieldName: 'created_at', hidden: true })
   createdAt = new Date();
 
-  @ApiProperty({ type: Date })
-  @Property({ fieldName: 'updated_at', onUpdate: () => new Date() })
+  @Property({
+    fieldName: 'updated_at',
+    onUpdate: () => new Date(),
+    hidden: true,
+  })
   updatedAt = new Date();
 }

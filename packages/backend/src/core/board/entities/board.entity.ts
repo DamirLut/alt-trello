@@ -1,7 +1,9 @@
 import {
+  Collection,
   Entity,
   LoadStrategy,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryKey,
   Property,
@@ -11,6 +13,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from '#core/users/entities/user.entity';
 
 import { BoardSettingEntity } from './board-setting.entity';
+import { ColumnEntity } from './column.entity';
+
+type Column = ColumnEntity;
 
 type BoardSetting = BoardSettingEntity;
 
@@ -53,4 +58,8 @@ export class BoardEntity {
     strategy: LoadStrategy.SELECT_IN,
   })
   settings?: BoardSetting;
+
+  @ApiProperty({ type: () => [ColumnEntity] })
+  @OneToMany(() => ColumnEntity, (e) => e.board)
+  columns = new Collection<Column>(this);
 }

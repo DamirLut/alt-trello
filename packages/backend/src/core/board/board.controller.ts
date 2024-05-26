@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { JwtUser } from '#core/auth/auth.decorator';
@@ -9,8 +9,8 @@ import { CreateBoardDTO } from './dto/create-board.dto';
 import { BoardEntity } from './entities/board.entity';
 import { BoardService } from './board.service';
 
-@Controller('board')
-@ApiTags('board')
+@Controller('boards')
+@ApiTags('boards')
 @UseGuards(JwtAuthGuard)
 export class BoardController {
   constructor(private boardService: BoardService) {}
@@ -25,5 +25,11 @@ export class BoardController {
   @ApiResponse({ status: 200, type: [BoardEntity] })
   getUserList(@JwtUser() user: JwtPayload) {
     return this.boardService.getUserBoards(user.id);
+  }
+
+  @Get()
+  @ApiResponse({ status: 200, type: BoardEntity })
+  getBoardById(@JwtUser() _user: JwtPayload, @Query('id') id: string) {
+    return this.boardService.findById(id);
   }
 }

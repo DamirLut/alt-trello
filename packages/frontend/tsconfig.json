@@ -20,7 +20,8 @@
       "entities/*": ["./src/entities/*"],
       "api": ["./src/shared/api/index.ts"],
       "api/*": ["./src/shared/api/*"],
-      "lib/*": ["./src/shared/lib/*"]
+      "lib/*": ["./src/shared/lib/*"],
+      "hooks/*": ["./src/shared/hooks/*"]
     }
   },
   "include": ["src"],

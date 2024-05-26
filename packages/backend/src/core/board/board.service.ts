@@ -53,7 +53,18 @@ export class BoardService {
   async getUserBoards(user_id: number) {
     return this.boardRepository.find(
       { owner: user_id },
-      { populate: ['settings.data'] },
+      { populate: ['settings.data'], orderBy: { createdAt: 1 } },
+    );
+  }
+
+  async findById(id: string) {
+    return this.boardRepository.findOne(
+      {
+        id,
+      },
+      {
+        populate: ['settings.data'],
+      },
     );
   }
 }

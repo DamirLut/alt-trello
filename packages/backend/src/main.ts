@@ -28,7 +28,8 @@ async function bootstrap() {
   const documentBuilder = new DocumentBuilder()
     .setTitle('Alt-Trello API docs')
     .setVersion(PackageJson.version)
-    .addBearerAuth()
+    .addBearerAuth({ in: 'header', type: 'http', name: 'Authorization' })
+    .addSecurityRequirements('bearer')
     .build();
 
   const document = SwaggerModule.createDocument(app, documentBuilder);

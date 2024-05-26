@@ -1,0 +1,21 @@
+.dash-area {
+  padding: 16px;
+
+  border-radius: var(--border-radius);
+  background: transparent;
+
+  border: 2px dashed
+    color-mix(in srgb, var(--color-gray) 100%, rgba(0, 0, 0, 0) 100%);
+
+  transition: 300ms;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    border-color: var(--color-gray);
+  }
+
+  &:active {
+    transform: scale(0.975);
+  }
+}
