@@ -51,7 +51,7 @@ export class BoardEntity {
       .replace(/--+/g, '-');
   }
 
-  @ApiProperty()
+  @ApiProperty({ type: BoardSettingEntity })
   @OneToOne(() => BoardSettingEntity, {
     nullable: true,
     owner: true,

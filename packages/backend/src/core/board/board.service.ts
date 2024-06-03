@@ -63,7 +63,7 @@ export class BoardService {
         id,
       },
       {
-        populate: ['settings.data'],
+        populate: ['settings.data', 'columns'],
       },
     );
   }

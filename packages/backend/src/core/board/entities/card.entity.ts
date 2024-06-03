@@ -23,7 +23,8 @@ export class CardEntity extends BaseEntity {
       .replace(/--+/g, '-');
   }
 
-  @ManyToOne(() => ColumnEntity, { hidden: true, deleteRule: 'cascade' })
+  @ApiProperty({ type: Number })
+  @ManyToOne(() => ColumnEntity, { deleteRule: 'cascade' })
   column: Column;
 
   @ApiProperty()

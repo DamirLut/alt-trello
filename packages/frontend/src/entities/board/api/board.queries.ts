@@ -49,4 +49,14 @@ export const boardQueries = {
         .POST('/api/cards/new', { body: dto })
         .then(({ data }) => data as ApiSchema['CardEntity']),
   }),
+  moveCard: (): MutationOptions<
+    ApiSchema['CardEntity'],
+    Error,
+    ApiSchema['MoveCardDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client
+        .PATCH('/api/cards/move', { body: dto })
+        .then(({ data }) => data as ApiSchema['CardEntity']),
+  }),
 };

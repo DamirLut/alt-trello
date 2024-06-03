@@ -18,7 +18,7 @@ export const BoardCard: FC<BoardCardProps> = ({ board }) => {
     <Card
       className={Style['board-card']}
       style={{
-        backgroundImage: `var(--gradient-${board.settings.data.theme.color})`,
+        backgroundImage: `var(--gradient-${board.settings?.data?.theme?.color})`,
       }}
       onClick={() => navigate(`/b/${board.id}/${board.slug}`)}
     >

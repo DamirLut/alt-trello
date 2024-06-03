@@ -37,6 +37,9 @@ export interface paths {
   '/api/cards': {
     get: operations['CardController_getCards'];
   };
+  '/api/cards/move': {
+    patch: operations['CardController_moveCard'];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -62,11 +65,21 @@ export interface components {
       title: string;
       color: string;
     };
+    BoardThemeSetting: {
+      color: string;
+    };
+    BoardSetting: {
+      theme: components['schemas']['BoardThemeSetting'];
+    };
+    BoardSettingEntity: {
+      data: components['schemas']['BoardSetting'];
+    };
     CardEntity: {
       id: number;
       title: string;
       /** @example awesome-task */
       slug: string;
+      column: number;
       position: number;
     };
     ColumnEntity: {
@@ -90,7 +103,7 @@ export interface components {
       owner: number;
       /** @example my-board */
       slug: string;
-      settings: Record<string, never>;
+      settings: components['schemas']['BoardSettingEntity'];
       columns: components['schemas']['ColumnEntity'][];
     };
     CreateColumnDTO: {
@@ -101,6 +114,12 @@ export interface components {
       board_id: string;
       column_id: number;
       title: string;
+    };
+    MoveCardDTO: {
+      board_id: string;
+      target_column: number;
+      card_id: number;
+      position: number;
     };
   };
   responses: never;
@@ -228,7 +247,21 @@ export interface operations {
     responses: {
       200: {
         content: {
-          'application/json': components['schemas']['ColumnEntity'][];
+          'application/json': components['schemas']['CardEntity'][];
+        };
+      };
+    };
+  };
+  CardController_moveCard: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MoveCardDTO'];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['CardEntity'];
         };
       };
     };

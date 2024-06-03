@@ -9,25 +9,19 @@
   flex-direction: column;
   gap: 10px;
   height: 85dvh;
+  width: 362px;
   overflow-y: auto;
   &::-webkit-scrollbar {
     display: none;
   }
-}
-
-.card {
-  padding: 10px;
-  width: 362px;
-  cursor: pointer;
-
-  pre {
-    margin: 0;
-    word-break: break-word;
-    text-wrap: balance;
-  }
+  position: relative;
 }
 
 .header-card {
+  padding: 10px;
+  cursor: pointer;
+  user-select: none;
+
   resize: horizontal;
   display: flex;
   align-items: center;

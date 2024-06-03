@@ -3,3 +3,7 @@
     @content;
   }
 }
+
+@function opacity($color, $opacity) {
+  @return color-mix(in srgb, $color $opacity, rgba(255, 255, 255, 0) 100%);
+}

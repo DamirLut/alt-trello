@@ -1,0 +1,28 @@
+@import '@ui/utils.scss';
+
+.card {
+  padding: 10px;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+
+  pre {
+    margin: 0;
+    word-break: break-word;
+    text-wrap: balance;
+  }
+
+  &-over {
+    border: var(--color-text) 1px solid;
+  }
+  &-preview {
+    min-height: 44px;
+    opacity: 0.5;
+    pre {
+      opacity: 0;
+    }
+  }
+}
+.mouse-over {
+  border: opacity(var(--color-text), 50%) 1px solid;
+}

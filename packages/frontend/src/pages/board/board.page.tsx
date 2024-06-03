@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { boardQueries } from 'entities/board';
 import { FullPageSpinner } from 'ui/full-page-spinner';
 import { Title } from 'ui/typography';
-
-import { Columns } from './ui/columns';
+import { Board } from 'widgets/board';
 
 export const BoardPage: FC = () => {
   const params = useParams<{ id: string; slug: string }>();
@@ -23,7 +22,7 @@ export const BoardPage: FC = () => {
   return (
     <div>
       <Title>{board?.title ?? params.slug}</Title>
-      {board && <Columns board={board} />}
+      {board && <Board data={board} />}
     </div>
   );
 };
