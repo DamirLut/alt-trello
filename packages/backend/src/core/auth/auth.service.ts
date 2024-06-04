@@ -21,8 +21,6 @@ export class AuthService {
   ) {}
 
   async logIn(profile: AuthProfile) {
-    console.log(profile);
-
     let auth = await this.authRepository.findOne(
       {
         provider_id: profile.id,

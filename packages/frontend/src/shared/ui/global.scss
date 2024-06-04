@@ -40,3 +40,24 @@ body {
 .form__form-item__error {
   color: var(--color-red);
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 1px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--color-overlay);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--color-text);
+  border-radius: var(--border-radius);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text);
+}

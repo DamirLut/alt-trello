@@ -7,6 +7,8 @@ import { FullPageSpinner } from 'ui/full-page-spinner';
 import { Title } from 'ui/typography';
 import { Board } from 'widgets/board';
 
+import Style from './board.module.scss';
+
 export const BoardPage: FC = () => {
   const params = useParams<{ id: string; slug: string }>();
 
@@ -20,7 +22,7 @@ export const BoardPage: FC = () => {
   }
 
   return (
-    <div>
+    <div className={Style.page}>
       <Title>{board?.title ?? params.slug}</Title>
       {board && <Board data={board} />}
     </div>

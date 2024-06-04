@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from 'react';
+import { type FC, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import {
   closestCenter,
@@ -20,6 +20,8 @@ import { FullPageSpinner } from 'ui/full-page-spinner';
 
 import { Card } from './ui/card.widget';
 import { Column } from './ui/column.widget';
+import { ColumnCreate } from './ui/column-create.widget';
+import { useBoard } from './board.store';
 
 import Style from './board.module.scss';
 
@@ -33,24 +35,19 @@ export const enum DragItem {
 }
 
 export const Board: FC<BoardProps> = ({ data }) => {
-  const [tasks, setTasks] = useState<ApiSchema['CardEntity'][]>([]);
-  const [columns, setColumns] = useState(data.columns || []);
-
+  const board = useBoard();
   const query = useQuery(boardQueries.getCards(data.id));
 
   useEffect(() => {
     if (!query.data) return;
 
-    setTasks([...query.data]);
+    board.setTasks([...query.data]);
   }, [query.data]);
 
-  const [activeColumn, setActiveColumn] = useState<
-    ApiSchema['ColumnEntity'] | null
-  >(null);
-
-  const [activeTask, setActiveTask] = useState<ApiSchema['CardEntity'] | null>(
-    null,
-  );
+  useEffect(() => {
+    useBoard.setState({ board: data });
+    board.setColumns([...data.columns]);
+  }, [data]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -66,19 +63,19 @@ export const Board: FC<BoardProps> = ({ data }) => {
 
   function onDragStart(event: DragStartEvent) {
     if (event.active.data.current?.type === DragItem.Column) {
-      setActiveColumn(event.active.data.current.data);
+      board.setActiveColumn(event.active.data.current.data);
       return;
     }
 
     if (event.active.data.current?.type === DragItem.Card) {
-      setActiveTask(event.active.data.current.data);
+      board.setActiveTask(event.active.data.current.data);
       return;
     }
   }
 
   function onDragEnd(event: DragEndEvent) {
-    setActiveColumn(null);
-    setActiveTask(null);
+    board.setActiveColumn(null);
+    board.setActiveTask(null);
 
     const { active, over } = event;
     if (!over) return;
@@ -91,11 +88,14 @@ export const Board: FC<BoardProps> = ({ data }) => {
     const isActiveAColumn = active.data.current?.type === DragItem.Column;
     if (!isActiveAColumn) return;
 
-    setColumns((columns) => {
-      const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
-      const overColumnIndex = columns.findIndex((col) => col.id === overId);
-      return arrayMove(columns, activeColumnIndex, overColumnIndex);
-    });
+    const activeColumnIndex = board.columns.findIndex(
+      (col) => col.id === activeId,
+    );
+    const overColumnIndex = board.columns.findIndex((col) => col.id === overId);
+
+    board.setColumns(
+      arrayMove(board.columns, activeColumnIndex, overColumnIndex),
+    );
   }
 
   function onDragOver(event: DragOverEvent) {
@@ -114,29 +114,24 @@ export const Board: FC<BoardProps> = ({ data }) => {
 
     // Im dropping a Task over another Task
     if (isActiveATask && isOverATask) {
-      setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId);
-        const overIndex = tasks.findIndex((t) => t.id === overId);
+      const activeIndex = board.tasks.findIndex((t) => t.id === activeId);
+      const overIndex = board.tasks.findIndex((t) => t.id === overId);
 
-        if (tasks[activeIndex].column != tasks[overIndex].column) {
-          tasks[activeIndex].column = tasks[overIndex].column;
-          return arrayMove(tasks, activeIndex, overIndex - 1);
-        }
+      if (board.tasks[activeIndex].column != board.tasks[overIndex].column) {
+        board.tasks[activeIndex].column = board.tasks[overIndex].column;
+        return arrayMove(board.tasks, activeIndex, overIndex - 1);
+      }
 
-        return arrayMove(tasks, activeIndex, overIndex);
-      });
+      return arrayMove(board.tasks, activeIndex, overIndex);
     }
 
     const isOverAColumn = over.data.current?.type === DragItem.Column;
 
     // Im dropping a Task over a column
     if (isActiveATask && isOverAColumn) {
-      setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId);
-
-        tasks[activeIndex].column = overId as number;
-        return arrayMove(tasks, activeIndex, activeIndex);
-      });
+      const activeIndex = board.tasks.findIndex((t) => t.id === activeId);
+      board.tasks[activeIndex].column = overId as number;
+      return arrayMove(board.tasks, activeIndex, activeIndex);
     }
   }
 
@@ -149,25 +144,28 @@ export const Board: FC<BoardProps> = ({ data }) => {
       collisionDetection={closestCenter}
     >
       <div className={Style.columns}>
-        <SortableContext items={columns.map((column) => column.id)}>
-          {columns.map((column) => (
+        <SortableContext items={board.columns.map((column) => column.id)}>
+          {board.columns.map((column) => (
             <Column
               key={column.id}
               data={column}
-              cards={tasks.filter((task) => task.column === column.id)}
+              cards={board.tasks.filter((task) => task.column === column.id)}
             />
           ))}
+          <ColumnCreate />
         </SortableContext>
       </div>
       {createPortal(
         <DragOverlay>
-          {activeColumn && (
+          {board.activeColumn && (
             <Column
-              data={activeColumn}
-              cards={tasks.filter((task) => task.column === activeColumn.id)}
+              data={board.activeColumn}
+              cards={board.tasks.filter(
+                (task) => task.column === board.activeColumn!.id,
+              )}
             />
           )}
-          {activeTask && <Card data={activeTask} />}
+          {board.activeTask && <Card data={board.activeTask} />}
         </DragOverlay>,
         document.body,
       )}

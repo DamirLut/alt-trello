@@ -10,6 +10,7 @@ import {
   BoardSettingEntity,
   BoardThemeSetting,
 } from './entities/board-setting.entity';
+import { ColumnService } from './column.service';
 
 const nanoid = customAlphabet(
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
@@ -24,6 +25,7 @@ export class BoardService {
     @InjectRepository(BoardSettingEntity)
     private readonly boardSettingRepository: EntityRepository<BoardSettingEntity>,
     private readonly entityManager: EntityManager,
+    private readonly columnService: ColumnService,
   ) {}
 
   async create(owner_id: number, dto: CreateBoardDTO) {
@@ -44,6 +46,12 @@ export class BoardService {
       }),
       board,
     });
+
+    await Promise.all([
+      this.columnService.create({ board_id: board.id, title: 'Todo' }),
+      this.columnService.create({ board_id: board.id, title: 'Working' }),
+      this.columnService.create({ board_id: board.id, title: 'Done' }),
+    ]);
 
     await this.entityManager.persistAndFlush(settings);
 

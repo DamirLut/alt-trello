@@ -1,9 +1,10 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '#core/auth/auth.guard';
 
 import { CreateColumnDTO } from './dto/create-column.dto';
+import { UpdateColumnDTO } from './dto/update-column.dto';
 import { ColumnEntity } from './entities/column.entity';
 import { ColumnService } from './column.service';
 
@@ -17,5 +18,11 @@ export class ColumnController {
   @ApiResponse({ status: 201, type: ColumnEntity })
   newColumn(@Body() dto: CreateColumnDTO) {
     return this.columnService.create(dto);
+  }
+
+  @Patch()
+  @ApiResponse({ status: 200, type: ColumnEntity })
+  updateColumn(@Body() dto: UpdateColumnDTO) {
+    return this.columnService.update(dto);
   }
 }

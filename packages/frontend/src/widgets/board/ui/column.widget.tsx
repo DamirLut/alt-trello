@@ -1,16 +1,19 @@
-import { type FC, useState } from 'react';
+import { type ChangeEvent, type FC, useRef, useState } from 'react';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { ApiSchema } from 'api';
 import classNames from 'classnames';
+import useOutsideClick from 'hooks/useOutsideClick';
 
 import { IconMoreHorizontal } from 'assets/icons';
 import { boardQueries } from 'entities/board';
 import { Button } from 'ui/button';
 import { Card as UICard } from 'ui/card';
+import { Input } from 'ui/input';
 import { Text } from 'ui/typography';
 
+import { useBoard } from '../board.store';
 import { DragItem } from '../board.widget';
 
 import { Card } from './card.widget';
@@ -25,10 +28,49 @@ interface CardColumnProps {
 }
 
 export const Column: FC<CardColumnProps> = ({ data, cards }) => {
+  const { setColumns, columns, board_id } = useBoard((select) => ({
+    setColumns: select.setColumns,
+    columns: select.columns,
+    board_id: select.board?.id ?? '<empty>',
+  }));
+  const ref = useRef(null);
   const [editableCard, setEditableCard] = useState(false);
   const queryClient = useQueryClient();
   const { mutateAsync: createCard } = useMutation(boardQueries.createCard());
+  const { mutateAsync: createColumn } = useMutation(
+    boardQueries.createColumn(),
+  );
+  const { mutateAsync: updateColumn } = useMutation(
+    boardQueries.updateColumn(),
+  );
   //const { mutateAsync: moveCard } = useMutation(boardQueries.moveCard());
+
+  const [editMode, setEditMode] = useState(data.title === '');
+
+  const saveUpdates = async () => {
+    setEditMode(false);
+    if (data.title === '') {
+      return setColumns(columns.filter((column) => column.id !== -1));
+    }
+    if (data.id === -1) {
+      /// create column
+      await createColumn({ board_id, title: data.title });
+    } else {
+      await updateColumn({ board_id, column_id: data.id, title: data.title });
+    }
+    await queryClient.refetchQueries({ queryKey: ['boards', board_id] });
+  };
+
+  useOutsideClick(ref, saveUpdates);
+
+  const updateColumnTitle = (title: string) => {
+    setColumns(
+      columns.map((column) => {
+        if (column.id !== data.id) return column;
+        return { ...column, title };
+      }),
+    );
+  };
 
   const {
     setNodeRef,
@@ -95,10 +137,26 @@ export const Column: FC<CardColumnProps> = ({ data, cards }) => {
         {...attributes}
         {...listeners}
       >
-        <Text>{data.title}</Text>
-        <Button variant='tertiary'>
-          <IconMoreHorizontal width={24} height={24} />
-        </Button>
+        {editMode ? (
+          <Input
+            getRootRef={ref}
+            value={data.title}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              updateColumnTitle(e.target.value)
+            }
+            onKeyDown={async (e) => {
+              if (e.key !== 'Enter') return;
+              await saveUpdates();
+            }}
+          />
+        ) : (
+          <>
+            <Text onClick={() => setEditMode(true)}>{data.title}</Text>
+            <Button variant='tertiary'>
+              <IconMoreHorizontal width={24} height={24} />
+            </Button>
+          </>
+        )}
       </UICard>
 
       <div className={Style.cards}>

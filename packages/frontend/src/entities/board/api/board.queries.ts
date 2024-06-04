@@ -59,4 +59,24 @@ export const boardQueries = {
         .PATCH('/api/cards/move', { body: dto })
         .then(({ data }) => data as ApiSchema['CardEntity']),
   }),
+  createColumn: (): MutationOptions<
+    ApiSchema['ColumnEntity'],
+    Error,
+    ApiSchema['CreateColumnDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client
+        .POST('/api/columns/new', { body: dto })
+        .then(({ data }) => data as ApiSchema['ColumnEntity']),
+  }),
+  updateColumn: (): MutationOptions<
+    ApiSchema['ColumnEntity'],
+    Error,
+    ApiSchema['UpdateColumnDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client
+        .PATCH('/api/columns', { body: dto })
+        .then(({ data }) => data as ApiSchema['ColumnEntity']),
+  }),
 };
