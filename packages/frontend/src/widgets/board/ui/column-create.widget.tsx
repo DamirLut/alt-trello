@@ -9,15 +9,12 @@ import { useBoard } from '../board.store';
 import Style from './column-create.module.scss';
 
 export const ColumnCreate: FC = () => {
-  const { setColumns, columns } = useBoard((select) => ({
-    setColumns: select.setColumns,
-    columns: select.columns,
-  }));
+  const setColumns = useBoard((select) => select.setColumns);
 
   const onClick = () => {
-    setColumns([
+    setColumns((columns) => [
       ...columns,
-      { id: -1, title: '' } as ApiSchema['ColumnEntity'],
+      { id: '', title: '' } as ApiSchema['ColumnEntity'],
     ]);
   };
 

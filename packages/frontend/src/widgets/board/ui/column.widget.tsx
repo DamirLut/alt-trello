@@ -1,4 +1,4 @@
-import { type ChangeEvent, type FC, useRef, useState } from 'react';
+import { type ChangeEvent, type FC, useMemo, useRef, useState } from 'react';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -25,14 +25,17 @@ import Style from './column.module.scss';
 interface CardColumnProps {
   data: ApiSchema['ColumnEntity'];
   cards: ApiSchema['CardEntity'][];
+  isOverlay?: boolean;
 }
 
-export const Column: FC<CardColumnProps> = ({ data, cards }) => {
-  const { setColumns, columns, board_id } = useBoard((select) => ({
+export const Column: FC<CardColumnProps> = ({ data, cards, isOverlay }) => {
+  const { setColumns, board_id } = useBoard((select) => ({
     setColumns: select.setColumns,
-    columns: select.columns,
     board_id: select.board?.id ?? '<empty>',
   }));
+  const cardsIds = useMemo(() => {
+    return cards.map((card) => card.id);
+  }, [cards]);
   const ref = useRef(null);
   const [editableCard, setEditableCard] = useState(false);
   const queryClient = useQueryClient();
@@ -50,9 +53,11 @@ export const Column: FC<CardColumnProps> = ({ data, cards }) => {
   const saveUpdates = async () => {
     setEditMode(false);
     if (data.title === '') {
-      return setColumns(columns.filter((column) => column.id !== -1));
+      return setColumns((columns) =>
+        columns.filter((column) => column.id !== ''),
+      );
     }
-    if (data.id === -1) {
+    if (data.id === '') {
       /// create column
       await createColumn({ board_id, title: data.title });
     } else {
@@ -64,7 +69,7 @@ export const Column: FC<CardColumnProps> = ({ data, cards }) => {
   useOutsideClick(ref, saveUpdates);
 
   const updateColumnTitle = (title: string) => {
-    setColumns(
+    setColumns((columns) =>
       columns.map((column) => {
         if (column.id !== data.id) return column;
         return { ...column, title };
@@ -104,7 +109,7 @@ export const Column: FC<CardColumnProps> = ({ data, cards }) => {
           cards: [
             ...column.cards,
             {
-              id: (lastCard?.id ?? 0) + 1,
+              id: Date.now().toString(36),
               title: value,
               slug: value,
               position: (lastCard?.position ?? 0) + 1,
@@ -125,13 +130,22 @@ export const Column: FC<CardColumnProps> = ({ data, cards }) => {
     });
   };
 
+  if (transform) Object.assign(transform, { scaleY: 1 });
+
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
   };
 
   return (
-    <section className={Style['card-column']} style={style} ref={setNodeRef}>
+    <section
+      className={classNames(Style['card-column'], {
+        [Style['card-column-overlay']]: isOverlay,
+        [Style['card-column-dragging']]: isDragging,
+      })}
+      style={style}
+      ref={setNodeRef}
+    >
       <UICard
         className={classNames(Style.card, Style['header-card'])}
         {...attributes}
@@ -159,19 +173,19 @@ export const Column: FC<CardColumnProps> = ({ data, cards }) => {
         )}
       </UICard>
 
-      <div className={Style.cards}>
-        <SortableContext items={cards.map((card) => `${data.id}-${card.id}`)}>
+      <ol className={Style.cards}>
+        <SortableContext items={cardsIds}>
           {cards.map((card) => (
             <Card key={card.id} data={card} />
           ))}
         </SortableContext>
-        {!isDragging && (
+        {!isDragging && !isOverlay && (
           <>
             {editableCard && <CardEditableColumn onUnfocused={onNewTask} />}
             <CreateCardColumn onClick={() => setEditableCard(true)} />
           </>
         )}
-      </div>
+      </ol>
     </section>
   );
 };

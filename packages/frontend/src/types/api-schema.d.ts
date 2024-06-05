@@ -78,15 +78,23 @@ export interface components {
       data: components['schemas']['BoardSetting'];
     };
     CardEntity: {
-      id: number;
+      id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
       title: string;
       /** @example awesome-task */
       slug: string;
-      column: number;
+      column: string;
       position: number;
     };
     ColumnEntity: {
-      id: number;
+      id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
       /** @example TODO */
       title: string;
       board: string;
@@ -116,17 +124,17 @@ export interface components {
     UpdateColumnDTO: {
       title: string;
       board_id: string;
-      column_id: number;
+      column_id: string;
     };
     CreateCardDTO: {
       board_id: string;
-      column_id: number;
+      column_id: string;
       title: string;
     };
     MoveCardDTO: {
       board_id: string;
-      target_column: number;
-      card_id: number;
+      target_column: string;
+      card_id: string;
       position: number;
     };
   };

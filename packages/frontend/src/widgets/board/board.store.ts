@@ -4,6 +4,8 @@ import { create } from 'zustand';
 type Task = ApiSchema['CardEntity'];
 type Column = ApiSchema['ColumnEntity'];
 
+type StoreSet<T> = (callback: (value: T) => T) => void;
+
 interface BoardState {
   board: ApiSchema['BoardEntity'] | null;
 
@@ -13,8 +15,8 @@ interface BoardState {
   activeColumn: Column | null;
   activeTask: Task | null;
 
-  setTasks: (tasks: Task[]) => void;
-  setColumns: (columns: Column[]) => void;
+  setTasks: StoreSet<Task[]>;
+  setColumns: StoreSet<Column[]>;
 
   setActiveColumn: (column: Column | null) => void;
   setActiveTask: (column: Task | null) => void;
@@ -26,8 +28,9 @@ export const useBoard = create<BoardState>((set) => ({
   tasks: [],
   activeColumn: null,
   activeTask: null,
-  setTasks: (tasks) => set({ tasks }),
-  setColumns: (columns) => set({ columns }),
+  setTasks: (callback) => set((prev) => ({ tasks: callback(prev.tasks) })),
+  setColumns: (callback) =>
+    set((prev) => ({ columns: callback(prev.columns) })),
   setActiveColumn: (activeColumn) => set({ activeColumn }),
   setActiveTask: (activeTask) => set({ activeTask }),
 }));

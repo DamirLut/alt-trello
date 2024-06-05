@@ -40,13 +40,15 @@ export const Board: FC<BoardProps> = ({ data }) => {
 
   useEffect(() => {
     if (!query.data) return;
+    const tasks = [...query.data];
 
-    board.setTasks([...query.data]);
+    board.setTasks(() => tasks);
   }, [query.data]);
 
   useEffect(() => {
     useBoard.setState({ board: data });
-    board.setColumns([...data.columns]);
+    const columns = [...data.columns];
+    board.setColumns(() => columns);
   }, [data]);
 
   const sensors = useSensors(
@@ -88,14 +90,12 @@ export const Board: FC<BoardProps> = ({ data }) => {
     const isActiveAColumn = active.data.current?.type === DragItem.Column;
     if (!isActiveAColumn) return;
 
-    const activeColumnIndex = board.columns.findIndex(
-      (col) => col.id === activeId,
-    );
-    const overColumnIndex = board.columns.findIndex((col) => col.id === overId);
+    board.setColumns((columns) => {
+      const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
+      const overColumnIndex = columns.findIndex((col) => col.id === overId);
 
-    board.setColumns(
-      arrayMove(board.columns, activeColumnIndex, overColumnIndex),
-    );
+      return arrayMove(columns, activeColumnIndex, overColumnIndex);
+    });
   }
 
   function onDragOver(event: DragOverEvent) {
@@ -114,24 +114,29 @@ export const Board: FC<BoardProps> = ({ data }) => {
 
     // Im dropping a Task over another Task
     if (isActiveATask && isOverATask) {
-      const activeIndex = board.tasks.findIndex((t) => t.id === activeId);
-      const overIndex = board.tasks.findIndex((t) => t.id === overId);
+      board.setTasks((tasks) => {
+        const activeIndex = tasks.findIndex((t) => t.id === activeId);
+        const overIndex = tasks.findIndex((t) => t.id === overId);
 
-      if (board.tasks[activeIndex].column != board.tasks[overIndex].column) {
-        board.tasks[activeIndex].column = board.tasks[overIndex].column;
-        return arrayMove(board.tasks, activeIndex, overIndex - 1);
-      }
+        if (tasks[activeIndex].column != tasks[overIndex].column) {
+          tasks[activeIndex].column = tasks[overIndex].column;
 
-      return arrayMove(board.tasks, activeIndex, overIndex);
+          return arrayMove(tasks, activeIndex, overIndex - 1);
+        }
+
+        return arrayMove(tasks, activeIndex, overIndex);
+      });
     }
 
     const isOverAColumn = over.data.current?.type === DragItem.Column;
 
     // Im dropping a Task over a column
     if (isActiveATask && isOverAColumn) {
-      const activeIndex = board.tasks.findIndex((t) => t.id === activeId);
-      board.tasks[activeIndex].column = overId as number;
-      return arrayMove(board.tasks, activeIndex, activeIndex);
+      board.setTasks((tasks) => {
+        const activeIndex = tasks.findIndex((t) => t.id === activeId);
+        tasks[activeIndex].column = `${overId}`;
+        return arrayMove(tasks, activeIndex, activeIndex);
+      });
     }
   }
 
@@ -159,6 +164,7 @@ export const Board: FC<BoardProps> = ({ data }) => {
         <DragOverlay>
           {board.activeColumn && (
             <Column
+              isOverlay
               data={board.activeColumn}
               cards={board.tasks.filter(
                 (task) => task.column === board.activeColumn!.id,

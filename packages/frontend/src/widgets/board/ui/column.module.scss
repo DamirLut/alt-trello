@@ -2,9 +2,22 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  border-radius: var(--border-radius);
+
+  &-dragging {
+    background: var(--color-overlay);
+    opacity: 0.5;
+    height: fit-content;
+    > * {
+      opacity: 0;
+      height: fit-content !important;
+    }
+  }
 }
 
 .cards {
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;

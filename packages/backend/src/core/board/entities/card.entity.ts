@@ -1,14 +1,27 @@
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
-
-import { BaseEntity } from '#common/entities/base.entity';
 
 import { ColumnEntity } from './column.entity';
 
 type Column = ColumnEntity;
 
 @Entity({ tableName: 'cards' })
-export class CardEntity extends BaseEntity {
+export class CardEntity {
+  @ApiProperty()
+  @PrimaryKey({
+    type: 'uuid',
+    defaultRaw: 'gen_random_uuid()',
+  })
+  id: string;
+
+  @ApiProperty({ type: Date })
+  @Property({ fieldName: 'created_at' })
+  createdAt = new Date();
+
+  @ApiProperty({ type: Date })
+  @Property({ fieldName: 'updated_at', onUpdate: () => new Date() })
+  updatedAt = new Date();
+
   @ApiProperty()
   @Property()
   title: string;
@@ -23,7 +36,7 @@ export class CardEntity extends BaseEntity {
       .replace(/--+/g, '-');
   }
 
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: String })
   @ManyToOne(() => ColumnEntity, { deleteRule: 'cascade' })
   column: Column;
 

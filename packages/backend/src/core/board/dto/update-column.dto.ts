@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class UpdateColumnDTO {
   @ApiProperty()
@@ -13,6 +13,6 @@ export class UpdateColumnDTO {
   board_id: string;
 
   @ApiProperty()
-  @IsNumber()
-  column_id: number;
+  @IsUUID()
+  column_id: string;
 }

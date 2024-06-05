@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsPositive, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class CreateCardDTO {
   @ApiProperty()
@@ -8,9 +8,8 @@ export class CreateCardDTO {
   board_id: string;
 
   @ApiProperty()
-  @IsInt()
-  @IsPositive()
-  column_id: number;
+  @IsUUID()
+  column_id: string;
 
   @ApiProperty()
   @IsString()

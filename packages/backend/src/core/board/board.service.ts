@@ -1,6 +1,6 @@
 import { EntityManager, EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { customAlphabet } from 'nanoid';
 
 import type { CreateBoardDTO } from './dto/create-board.dto';
@@ -66,7 +66,7 @@ export class BoardService {
   }
 
   async findById(id: string) {
-    return this.boardRepository.findOne(
+    const board = await this.boardRepository.findOne(
       {
         id,
       },
@@ -74,5 +74,9 @@ export class BoardService {
         populate: ['settings.data', 'columns'],
       },
     );
+    if (!board) {
+      throw new NotFoundException('Board not found');
+    }
+    return board;
   }
 }
