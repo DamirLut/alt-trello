@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { client } from 'api';
 
-import { useTheme } from 'entities/theme';
+import { Theme, useTheme } from 'entities/theme';
 import { userQueries } from 'entities/user/api';
 import { Avatar } from 'ui/avatar';
 import { Button } from 'ui/button';
@@ -60,7 +60,7 @@ export const AppBar: FC = () => {
                   toggleTheme();
                 }}
               >
-                Оформление: {theme === 'light' ? 'светлая' : 'темная'}
+                Оформление: {theme === Theme.LIGHT ? 'светлая' : 'темная'}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
