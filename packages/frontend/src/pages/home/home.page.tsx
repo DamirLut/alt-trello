@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { boardQueries } from 'entities/board/api/board.queries';
 import { FullPageSpinner } from 'ui/full-page-spinner';
@@ -9,7 +9,8 @@ import { BoardCard, NewBoardCard } from 'widgets/board-card';
 import Style from './home.module.scss';
 
 export const HomePage: FC = () => {
-  const { data: boards, isPending } = useQuery(boardQueries.getList());
+  const client = useQueryClient();
+  const { data: boards, isPending } = useQuery(boardQueries(client).getList());
 
   if (isPending) {
     return <FullPageSpinner />;

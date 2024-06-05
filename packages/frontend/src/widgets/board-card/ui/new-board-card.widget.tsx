@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { createForm } from 'react-any-shape-form';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getRootVariables } from 'lib/dom';
 import { pickRandom } from 'lib/utils';
 
@@ -29,7 +29,8 @@ const gradients = getRootVariables()
 const CAN_CHOOSE_COLOR = false;
 
 export const NewBoardCard: FC = () => {
-  const { mutateAsync } = useMutation(boardQueries.newBoard());
+  const client = useQueryClient();
+  const { mutateAsync } = useMutation(boardQueries(client).newBoard());
   const navigate = useNavigate();
 
   const onFinish = async (state: FormState) => {

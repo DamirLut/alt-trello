@@ -16,11 +16,22 @@ const throwOnError: Middleware = {
   },
 };
 
+const apiToken: Middleware = {
+  onRequest(req) {
+    /// for dev only
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) return;
+    req.headers.set('Authorization', 'Bearer ' + accessToken);
+    return req;
+  },
+};
+
 export const client = createClient<ApiPaths>({
   baseUrl: API_URL,
 });
 
 client.use(throwOnError);
+client.use(apiToken);
 
 export const queryClient = new QueryClient({
   defaultOptions: {

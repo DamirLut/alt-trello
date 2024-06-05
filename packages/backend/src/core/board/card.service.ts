@@ -1,6 +1,12 @@
-import { EntityManager, EntityRepository } from '@mikro-orm/core';
+import {
+  type EntityDTO,
+  EntityManager,
+  EntityRepository,
+} from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
+
+import { arrayMove } from '#root/lib/utils/array';
 
 import type { CreateCardDTO } from './dto/create-card.dto';
 import type { MoveCardDTO } from './dto/move-card.dto';
@@ -73,6 +79,7 @@ export class CardService {
       throw new NotFoundException('Column not found');
     }
 
+    let cards = column.cards.toArray();
     const card = await this.cardRepository.findOne({ id: dto.card_id });
 
     if (!card) {
@@ -81,21 +88,19 @@ export class CardService {
 
     card.column = column;
 
-    const temp = column.cards.map((card) => card.id);
+    const cardIndex = cards.findIndex((card) => card.id === dto.card_id);
 
-    console.log(temp.indexOf(dto.card_id), dto.position);
+    if (cardIndex !== -1) {
+      cards = arrayMove(cards, cardIndex, dto.position);
+    } else {
+      cards.splice(dto.position, 0, card as unknown as EntityDTO<CardEntity>);
+    }
 
-    console.log(temp);
-
-    temp.splice(temp.indexOf(dto.card_id), 1);
-    temp.splice(dto.position, 0, dto.card_id);
-
-    console.log(temp);
-
-    temp.forEach((cardId, position) => {
-      const card = column.cards.find((c) => c.id === cardId)!;
-      card.position = position;
-      this.entityManager.persist(card);
+    cards.forEach((card, position) => {
+      const c = column.cards.find((c) => c.id === card.id);
+      if (!c) return;
+      c.position = position;
+      this.entityManager.persist(c);
     });
 
     await this.entityManager.persistAndFlush(card);

@@ -12,7 +12,7 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import { arrayMove, SortableContext } from '@dnd-kit/sortable';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { ApiSchema } from 'api';
 
 import { boardQueries } from 'entities/board';
@@ -36,7 +36,14 @@ export const enum DragItem {
 
 export const Board: FC<BoardProps> = ({ data }) => {
   const board = useBoard();
-  const query = useQuery(boardQueries.getCards(data.id));
+  const client = useQueryClient();
+  const query = useQuery(boardQueries(client).getCards(data.id));
+  const { mutateAsync: moveColumn } = useMutation(
+    boardQueries(client).moveColumn(),
+  );
+  const { mutateAsync: moveCard } = useMutation(
+    boardQueries(client).moveCard(),
+  );
 
   useEffect(() => {
     if (!query.data) return;
@@ -80,19 +87,41 @@ export const Board: FC<BoardProps> = ({ data }) => {
     board.setActiveTask(null);
 
     const { active, over } = event;
+
     if (!over) return;
 
     const activeId = active.id;
     const overId = over.id;
 
-    if (activeId === overId) return;
+    if (active.data.current?.type === DragItem.Card) {
+      const { data: card, sortable } = active.data.current;
+      const newPosition = sortable.index;
+      const target_column = card.column;
 
-    const isActiveAColumn = active.data.current?.type === DragItem.Column;
-    if (!isActiveAColumn) return;
+      moveCard({
+        board_id: data.id,
+        target_column,
+        card_id: card.id,
+        position: newPosition,
+      }).catch(console.error);
+    }
+
+    if (activeId === overId) return;
+    if (active.data.current?.type !== DragItem.Column) return;
 
     board.setColumns((columns) => {
       const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
       const overColumnIndex = columns.findIndex((col) => col.id === overId);
+
+      moveColumn({
+        board_id: data.id,
+        column: `${activeId}`,
+        position: overColumnIndex,
+      })
+        .then(() => {
+          console.log('moved from', activeColumnIndex, 'to', overColumnIndex);
+        })
+        .catch(console.error);
 
       return arrayMove(columns, activeColumnIndex, overColumnIndex);
     });

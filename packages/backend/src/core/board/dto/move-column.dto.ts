@@ -1,17 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsNotEmpty, IsString, IsUUID, Min } from 'class-validator';
 
-export class MoveCardDTO {
+export class MoveColumnDTO {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
   board_id: string;
+
   @ApiProperty()
   @IsUUID()
-  target_column: string;
-  @ApiProperty()
-  @IsUUID()
-  card_id: string;
+  column: string;
 
   @ApiProperty()
   @IsInt()

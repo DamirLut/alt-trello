@@ -4,6 +4,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '#core/auth/auth.guard';
 
 import { CreateColumnDTO } from './dto/create-column.dto';
+import { MoveColumnDTO } from './dto/move-column.dto';
 import { UpdateColumnDTO } from './dto/update-column.dto';
 import { ColumnEntity } from './entities/column.entity';
 import { ColumnService } from './column.service';
@@ -24,5 +25,11 @@ export class ColumnController {
   @ApiResponse({ status: 200, type: ColumnEntity })
   updateColumn(@Body() dto: UpdateColumnDTO) {
     return this.columnService.update(dto);
+  }
+
+  @Post('/move')
+  @ApiResponse({ status: 200, type: ColumnEntity })
+  moveColumn(@Body() dto: MoveColumnDTO) {
+    return this.columnService.move(dto);
   }
 }

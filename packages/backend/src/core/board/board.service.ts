@@ -1,6 +1,7 @@
 import { EntityManager, EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { customAlphabet } from 'nanoid';
 
 import type { CreateBoardDTO } from './dto/create-board.dto';
@@ -26,6 +27,7 @@ export class BoardService {
     private readonly boardSettingRepository: EntityRepository<BoardSettingEntity>,
     private readonly entityManager: EntityManager,
     private readonly columnService: ColumnService,
+    public readonly eventEmitter: EventEmitter2,
   ) {}
 
   async create(owner_id: number, dto: CreateBoardDTO) {
@@ -47,11 +49,15 @@ export class BoardService {
       board,
     });
 
-    await Promise.all([
-      this.columnService.create({ board_id: board.id, title: 'Todo' }),
-      this.columnService.create({ board_id: board.id, title: 'Working' }),
-      this.columnService.create({ board_id: board.id, title: 'Done' }),
-    ]);
+    await this.columnService.create({
+      board_id: board.id,
+      title: 'Нужно сделать',
+    });
+    await this.columnService.create({
+      board_id: board.id,
+      title: 'В процессе',
+    });
+    await this.columnService.create({ board_id: board.id, title: 'Готово' });
 
     await this.entityManager.persistAndFlush(settings);
 
@@ -72,6 +78,7 @@ export class BoardService {
       },
       {
         populate: ['settings.data', 'columns'],
+        populateOrderBy: { columns: { position: 1 } },
       },
     );
     if (!board) {

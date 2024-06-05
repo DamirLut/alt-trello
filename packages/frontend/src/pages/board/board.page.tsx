@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { boardQueries } from 'entities/board';
 import { FullPageSpinner } from 'ui/full-page-spinner';
@@ -14,9 +14,10 @@ import Style from './board.module.scss';
 export const BoardPage: FC = () => {
   const params = useParams<{ id: string; slug: string }>();
   const navigate = useNavigate();
+  const client = useQueryClient();
 
   const { data: board, isPending } = useQuery({
-    ...boardQueries.getById(params.id),
+    ...boardQueries(client).getById(params.id),
     refetchOnWindowFocus: true,
     retry: false,
     throwOnError(error) {

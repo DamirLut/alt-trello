@@ -1,7 +1,11 @@
-import { type MutationOptions, queryOptions } from '@tanstack/react-query';
+import {
+  type MutationOptions,
+  QueryClient,
+  queryOptions,
+} from '@tanstack/react-query';
 import { type ApiSchema, client } from 'api';
 
-export const boardQueries = {
+export const boardQueries = (queryClient: QueryClient) => ({
   getList: () =>
     queryOptions({
       queryKey: ['boards', 'list'],
@@ -58,6 +62,9 @@ export const boardQueries = {
       client
         .PATCH('/api/cards/move', { body: dto })
         .then(({ data }) => data as ApiSchema['CardEntity']),
+    async onSuccess() {
+      await queryClient.invalidateQueries({ queryKey: ['boards'] });
+    },
   }),
   createColumn: (): MutationOptions<
     ApiSchema['ColumnEntity'],
@@ -79,4 +86,17 @@ export const boardQueries = {
         .PATCH('/api/columns', { body: dto })
         .then(({ data }) => data as ApiSchema['ColumnEntity']),
   }),
-};
+  moveColumn: (): MutationOptions<
+    ApiSchema['ColumnEntity'],
+    Error,
+    ApiSchema['MoveColumnDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client
+        .POST('/api/columns/move', { body: dto })
+        .then(({ data }) => data as ApiSchema['ColumnEntity']),
+    async onSuccess(data) {
+      await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
+    },
+  }),
+});

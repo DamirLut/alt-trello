@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { PassportModule } from '@nestjs/passport';
 
 import { AppConfigModule } from '#common/app-config/app-config.module';
@@ -13,6 +14,7 @@ import { UtilsModule } from '#core/utils/utils.module';
     AppConfigModule,
     DatabaseModule,
     PassportModule,
+    EventEmitterModule.forRoot(),
     AuthModule,
     UserModule,
     UtilsModule,

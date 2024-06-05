@@ -2,7 +2,10 @@ import { EntityManager, EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { arrayMove } from '#root/lib/utils/array';
+
 import type { CreateColumnDTO } from './dto/create-column.dto';
+import type { MoveColumnDTO } from './dto/move-column.dto';
 import type { UpdateColumnDTO } from './dto/update-column.dto';
 import { ColumnEntity } from './entities/column.entity';
 
@@ -23,6 +26,7 @@ export class ColumnService {
       position: count,
       createdAt: new Date(),
       updatedAt: new Date(),
+      cards: [],
     });
 
     await this.entityManager.persistAndFlush(column);
@@ -45,5 +49,34 @@ export class ColumnService {
     await this.entityManager.persistAndFlush(column);
 
     return column;
+  }
+
+  async move(dto: MoveColumnDTO) {
+    const columns = await this.columnRepository.find(
+      {
+        board: dto.board_id,
+      },
+      {
+        orderBy: { position: 1 },
+      },
+    );
+
+    if (!columns) {
+      throw new NotFoundException('column not found');
+    }
+
+    const columnIndex = columns.findIndex((column) => column.id === dto.column);
+
+    arrayMove(columns, columnIndex, dto.position).forEach(
+      (column, position) => {
+        column.position = position;
+
+        this.entityManager.persist(column);
+      },
+    );
+
+    await this.entityManager.flush();
+
+    return columns.find((column) => column.id === dto.column);
   }
 }

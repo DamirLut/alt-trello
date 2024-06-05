@@ -34,6 +34,9 @@ export interface paths {
   '/api/columns': {
     patch: operations['ColumnController_updateColumn'];
   };
+  '/api/columns/move': {
+    post: operations['ColumnController_moveColumn'];
+  };
   '/api/cards/new': {
     post: operations['CardController_create'];
   };
@@ -125,6 +128,11 @@ export interface components {
       title: string;
       board_id: string;
       column_id: string;
+    };
+    MoveColumnDTO: {
+      board_id: string;
+      column: string;
+      position: number;
     };
     CreateCardDTO: {
       board_id: string;
@@ -244,6 +252,20 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': components['schemas']['UpdateColumnDTO'];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['ColumnEntity'];
+        };
+      };
+    };
+  };
+  ColumnController_moveColumn: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MoveColumnDTO'];
       };
     };
     responses: {

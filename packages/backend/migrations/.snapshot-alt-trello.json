@@ -240,12 +240,13 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
           "nullable": false,
-          "mappedType": "integer"
+          "default": "gen_random_uuid()",
+          "mappedType": "uuid"
         },
         "created_at": {
           "name": "created_at",
@@ -331,12 +332,13 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
           "nullable": false,
-          "mappedType": "integer"
+          "default": "gen_random_uuid()",
+          "mappedType": "uuid"
         },
         "created_at": {
           "name": "created_at",
@@ -369,12 +371,12 @@
         },
         "column_id": {
           "name": "column_id",
-          "type": "int",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "integer"
+          "mappedType": "uuid"
         },
         "position": {
           "name": "position",

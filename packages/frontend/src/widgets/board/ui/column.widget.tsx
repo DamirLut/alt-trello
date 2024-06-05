@@ -29,6 +29,7 @@ interface CardColumnProps {
 }
 
 export const Column: FC<CardColumnProps> = ({ data, cards, isOverlay }) => {
+  const client = useQueryClient();
   const { setColumns, board_id } = useBoard((select) => ({
     setColumns: select.setColumns,
     board_id: select.board?.id ?? '<empty>',
@@ -39,14 +40,15 @@ export const Column: FC<CardColumnProps> = ({ data, cards, isOverlay }) => {
   const ref = useRef(null);
   const [editableCard, setEditableCard] = useState(false);
   const queryClient = useQueryClient();
-  const { mutateAsync: createCard } = useMutation(boardQueries.createCard());
+  const { mutateAsync: createCard } = useMutation(
+    boardQueries(client).createCard(),
+  );
   const { mutateAsync: createColumn } = useMutation(
-    boardQueries.createColumn(),
+    boardQueries(client).createColumn(),
   );
   const { mutateAsync: updateColumn } = useMutation(
-    boardQueries.updateColumn(),
+    boardQueries(client).updateColumn(),
   );
-  //const { mutateAsync: moveCard } = useMutation(boardQueries.moveCard());
 
   const [editMode, setEditMode] = useState(data.title === '');
 
