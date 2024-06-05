@@ -1,8 +1,10 @@
-import type { FC } from 'react';
+import { type FC, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 import { IconApp, IconGoogle, IconVK } from 'assets/icons';
 import { authQueries } from 'entities/auth/api';
+import { userQueries } from 'entities/user';
 import { Button } from 'ui/button';
 import { Card } from 'ui/card';
 import { Separator } from 'ui/separator';
@@ -38,6 +40,14 @@ const MethodsButtons = {
 
 export const AuthPage: FC = () => {
   const { data: methods } = useQuery(authQueries.getOAuthMethods());
+  const userQuery = useQuery(userQueries.getSelf());
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userQuery.data) {
+      navigate('/');
+    }
+  }, [userQuery.error]);
 
   return (
     <main className={Style.page}>

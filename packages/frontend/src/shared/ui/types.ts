@@ -10,7 +10,10 @@ export enum Colors {
   Red = 'red',
 }
 
-export type ColorsVariant = `${Colors}`;
+export type ColorsVariant =
+  | `${Colors}`
+  | `${Colors}-lighten`
+  | `${Colors}-darken`;
 
 export type Themes = 'light' | 'dark';
 

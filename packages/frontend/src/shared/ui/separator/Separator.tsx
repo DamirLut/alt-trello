@@ -5,6 +5,7 @@ import Style from './separator.module.scss';
 
 export interface SeparatorProps {
   vertical?: boolean;
+  color?: string;
 }
 
 export const Separator: FC<SeparatorProps> = (props) => {
@@ -14,6 +15,7 @@ export const Separator: FC<SeparatorProps> = (props) => {
         [Style.separator_vertical]: props.vertical,
         [Style.separator_horizontal]: !props.vertical,
       })}
+      style={{ color: props.color }}
     />
   );
 };

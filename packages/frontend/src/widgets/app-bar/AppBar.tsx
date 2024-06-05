@@ -3,9 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { client } from 'api';
 
+import { useTheme } from 'entities/theme';
 import { userQueries } from 'entities/user/api';
 import { Avatar } from 'ui/avatar';
 import { Button } from 'ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from 'ui/dropdown-menu';
 import { Separator } from 'ui/separator';
 import { Text } from 'ui/typography';
 
@@ -14,15 +22,19 @@ import Style from './app-bar.module.scss';
 export const AppBar: FC = () => {
   const navigate = useNavigate();
   const { data: user } = useQuery(userQueries.getSelf());
+  const { theme, toggleTheme } = useTheme();
 
   const onClickLogout = () =>
-    client.POST('/api/auth/logout', {}).then(() => window.location.reload());
+    client.POST('/api/auth/logout', {}).then(() => {
+      window.location.reload();
+      localStorage.removeItem('access_token');
+    });
 
   return (
     <header className={Style['app-bar']}>
       <nav>
         <Text Component={'a'} href='/' className={Style.logo}>
-          Alt Trello
+          АльТрелло
         </Text>
         <Separator vertical />
       </nav>
@@ -32,7 +44,26 @@ export const AppBar: FC = () => {
             login
           </Button>
         ) : (
-          <Avatar src={user.avatar} size={40} onClick={onClickLogout} />
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar src={user.avatar} size={40} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Аккаунт</DropdownMenuLabel>
+              <DropdownMenuItem variant='red' onClick={onClickLogout}>
+                Выйти
+              </DropdownMenuItem>
+              <Separator color='rgba(0,0,0,.1)' />
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleTheme();
+                }}
+              >
+                Оформление: {theme === 'light' ? 'светлая' : 'темная'}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
       </nav>
     </header>
