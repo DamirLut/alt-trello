@@ -8,8 +8,14 @@ import useOutsideClick from 'hooks/useOutsideClick';
 
 import { IconMoreHorizontal } from 'assets/icons';
 import { boardQueries } from 'entities/board';
-import { Button } from 'ui/button';
 import { Card as UICard } from 'ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from 'ui/dropdown-menu';
 import { Input } from 'ui/input';
 import { Text } from 'ui/typography';
 
@@ -48,6 +54,10 @@ export const Column: FC<CardColumnProps> = ({ data, cards, isOverlay }) => {
   );
   const { mutateAsync: updateColumn } = useMutation(
     boardQueries(client).updateColumn(),
+  );
+
+  const { mutate: deleteColumn } = useMutation(
+    boardQueries(client).deleteColumn(),
   );
 
   const [editMode, setEditMode] = useState(data.title === '');
@@ -168,9 +178,26 @@ export const Column: FC<CardColumnProps> = ({ data, cards, isOverlay }) => {
         ) : (
           <>
             <Text onClick={() => setEditMode(true)}>{data.title}</Text>
-            <Button variant='tertiary'>
-              <IconMoreHorizontal width={24} height={24} />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <IconMoreHorizontal
+                  color='var(--color-text)'
+                  width={24}
+                  height={24}
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Действия</DropdownMenuLabel>
+                <DropdownMenuItem
+                  variant='red'
+                  onClick={() =>
+                    deleteColumn({ board_id: data.board, column_id: data.id })
+                  }
+                >
+                  Удалить
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </>
         )}
       </UICard>

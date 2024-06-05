@@ -6,15 +6,14 @@ import {
   type PropsWithChildren,
 } from 'react';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
-
-export const DropdownMenu = DropdownMenuPrimitive.Root;
-export const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
-
 import classNames from 'classnames';
 
 import type { ColorsVariant } from 'ui/types';
 
 import Style from './dropdown-menu.module.scss';
+
+export const DropdownMenu = DropdownMenuPrimitive.Root;
+export const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
 
 export const DropdownMenuContent = forwardRef<
   HTMLDivElement,

@@ -99,4 +99,17 @@ export const boardQueries = (queryClient: QueryClient) => ({
       await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
     },
   }),
+  deleteColumn: (): MutationOptions<
+    ApiSchema['ColumnEntity'],
+    Error,
+    ApiSchema['DeleteColumnDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client
+        .DELETE('/api/columns', { body: dto })
+        .then(({ data }) => data as ApiSchema['ColumnEntity']),
+    async onSuccess(data) {
+      await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
+    },
+  }),
 });

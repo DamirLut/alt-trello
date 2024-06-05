@@ -32,6 +32,7 @@ export interface paths {
     post: operations['ColumnController_newColumn'];
   };
   '/api/columns': {
+    delete: operations['ColumnController_deleteColumn'];
     patch: operations['ColumnController_updateColumn'];
   };
   '/api/columns/move': {
@@ -133,6 +134,10 @@ export interface components {
       board_id: string;
       column: string;
       position: number;
+    };
+    DeleteColumnDTO: {
+      board_id: string;
+      column_id: string;
     };
     CreateCardDTO: {
       board_id: string;
@@ -242,6 +247,20 @@ export interface operations {
     };
     responses: {
       201: {
+        content: {
+          'application/json': components['schemas']['ColumnEntity'];
+        };
+      };
+    };
+  };
+  ColumnController_deleteColumn: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['DeleteColumnDTO'];
+      };
+    };
+    responses: {
+      200: {
         content: {
           'application/json': components['schemas']['ColumnEntity'];
         };

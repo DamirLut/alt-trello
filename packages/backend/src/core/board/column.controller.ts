@@ -1,9 +1,17 @@
-import { Body, Controller, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '#core/auth/auth.guard';
 
 import { CreateColumnDTO } from './dto/create-column.dto';
+import { DeleteColumnDTO } from './dto/delete-column.dto';
 import { MoveColumnDTO } from './dto/move-column.dto';
 import { UpdateColumnDTO } from './dto/update-column.dto';
 import { ColumnEntity } from './entities/column.entity';
@@ -31,5 +39,11 @@ export class ColumnController {
   @ApiResponse({ status: 200, type: ColumnEntity })
   moveColumn(@Body() dto: MoveColumnDTO) {
     return this.columnService.move(dto);
+  }
+
+  @Delete()
+  @ApiResponse({ status: 200, type: ColumnEntity })
+  deleteColumn(@Body() dto: DeleteColumnDTO) {
+    return this.columnService.deleteColumn(dto);
   }
 }

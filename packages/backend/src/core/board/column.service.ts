@@ -5,6 +5,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { arrayMove } from '#root/lib/utils/array';
 
 import type { CreateColumnDTO } from './dto/create-column.dto';
+import type { DeleteColumnDTO } from './dto/delete-column.dto';
 import type { MoveColumnDTO } from './dto/move-column.dto';
 import type { UpdateColumnDTO } from './dto/update-column.dto';
 import { ColumnEntity } from './entities/column.entity';
@@ -78,5 +79,20 @@ export class ColumnService {
     await this.entityManager.flush();
 
     return columns.find((column) => column.id === dto.column);
+  }
+
+  async deleteColumn(dto: DeleteColumnDTO) {
+    const column = await this.columnRepository.findOne({
+      board: dto.board_id,
+      id: dto.column_id,
+    });
+
+    if (!column) {
+      throw new NotFoundException('Column not found');
+    }
+
+    await this.entityManager.removeAndFlush(column);
+
+    return column;
   }
 }
