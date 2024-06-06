@@ -1,5 +1,9 @@
 @import '@ui/utils.scss';
 
+.reset {
+  all: reset;
+}
+
 .card {
   padding: 10px;
   cursor: pointer;

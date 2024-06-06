@@ -1,18 +1,24 @@
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 
+import type { EditorJSData } from '../dto/update-content-card.dto';
+
+import { BoardEntity } from './board.entity';
 import { ColumnEntity } from './column.entity';
 
 type Column = ColumnEntity;
+type Board = BoardEntity;
 
 @Entity({ tableName: 'cards' })
 export class CardEntity {
-  @ApiProperty()
   @PrimaryKey({
-    type: 'uuid',
-    defaultRaw: 'gen_random_uuid()',
+    hidden: true,
   })
-  id: string;
+  id: number;
+
+  @ApiProperty()
+  @Property()
+  card_id: number;
 
   @ApiProperty({ type: Date })
   @Property({ fieldName: 'created_at' })
@@ -40,7 +46,15 @@ export class CardEntity {
   @ManyToOne(() => ColumnEntity, { deleteRule: 'cascade' })
   column: Column;
 
+  @ApiProperty({ type: String })
+  @ManyToOne(() => BoardEntity, { deleteRule: 'cascade' })
+  board: Board;
+
   @ApiProperty()
   @Property()
   position: number;
+
+  @ApiProperty()
+  @Property({ type: 'json' })
+  content: EditorJSData;
 }

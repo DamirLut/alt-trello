@@ -144,8 +144,8 @@ export const Board: FC<BoardProps> = ({ data }) => {
     // Im dropping a Task over another Task
     if (isActiveATask && isOverATask) {
       board.setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId);
-        const overIndex = tasks.findIndex((t) => t.id === overId);
+        const activeIndex = tasks.findIndex((t) => t.card_id === activeId);
+        const overIndex = tasks.findIndex((t) => t.card_id === overId);
 
         if (tasks[activeIndex].column != tasks[overIndex].column) {
           tasks[activeIndex].column = tasks[overIndex].column;
@@ -162,7 +162,7 @@ export const Board: FC<BoardProps> = ({ data }) => {
     // Im dropping a Task over a column
     if (isActiveATask && isOverAColumn) {
       board.setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId);
+        const activeIndex = tasks.findIndex((t) => t.card_id === activeId);
         tasks[activeIndex].column = `${overId}`;
         return arrayMove(tasks, activeIndex, activeIndex);
       });

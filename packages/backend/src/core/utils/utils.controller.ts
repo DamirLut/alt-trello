@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 
 import { AuthMethodsDTO } from './dto/utils.dto';
@@ -12,5 +12,10 @@ export class UtilsController {
   @ApiResponse({ status: 200, type: AuthMethodsDTO })
   getOAuthList() {
     return this.utilsService.getOAuthList();
+  }
+
+  @Get('/fetchUrl')
+  fetchUrl(@Query('url') url: string) {
+    return this.utilsService.fetchUrl(url);
   }
 }

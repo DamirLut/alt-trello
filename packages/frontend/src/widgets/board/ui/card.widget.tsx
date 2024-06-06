@@ -1,4 +1,5 @@
 import { type FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { ApiSchema } from 'api';
@@ -17,6 +18,7 @@ interface CardColumnProps {
 
 export const Card: FC<CardColumnProps> = ({ data }) => {
   const [isMouseOver, setMouseIsOver] = useState(false);
+  const navigate = useNavigate();
 
   const {
     setNodeRef,
@@ -27,7 +29,7 @@ export const Card: FC<CardColumnProps> = ({ data }) => {
     isDragging,
     isOver,
   } = useSortable({
-    id: data.id,
+    id: data.card_id,
     data: { type: DragItem.Card, data },
   });
 
@@ -62,6 +64,9 @@ export const Card: FC<CardColumnProps> = ({ data }) => {
       onMouseLeave={() => {
         setMouseIsOver(false);
       }}
+      onClick={() =>
+        navigate(`./${data.card_id}-${data.slug}`, { relative: 'path' })
+      }
     >
       <pre>
         <Text>{data.title}</Text>

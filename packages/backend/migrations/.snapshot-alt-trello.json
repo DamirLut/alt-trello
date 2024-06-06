@@ -332,13 +332,21 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "card_id": {
+          "name": "card_id",
+          "type": "int",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "gen_random_uuid()",
-          "mappedType": "uuid"
+          "mappedType": "integer"
         },
         "created_at": {
           "name": "created_at",
@@ -378,6 +386,15 @@
           "nullable": false,
           "mappedType": "uuid"
         },
+        "board_id": {
+          "name": "board_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "position": {
           "name": "position",
           "type": "int",
@@ -386,6 +403,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "content": {
+          "name": "content",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
         }
       },
       "name": "cards",
@@ -414,6 +440,19 @@
             "id"
           ],
           "referencedTableName": "public.columns",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "cards_board_id_foreign": {
+          "constraintName": "cards_board_id_foreign",
+          "columnNames": [
+            "board_id"
+          ],
+          "localTableName": "public.cards",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.boards",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }

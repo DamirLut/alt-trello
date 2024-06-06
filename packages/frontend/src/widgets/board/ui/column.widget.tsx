@@ -41,7 +41,7 @@ export const Column: FC<CardColumnProps> = ({ data, cards, isOverlay }) => {
     board_id: select.board?.id ?? '<empty>',
   }));
   const cardsIds = useMemo(() => {
-    return cards.map((card) => card.id);
+    return cards.map((card) => card.card_id);
   }, [cards]);
   const ref = useRef(null);
   const [editableCard, setEditableCard] = useState(false);
@@ -205,7 +205,7 @@ export const Column: FC<CardColumnProps> = ({ data, cards, isOverlay }) => {
       <ol className={Style.cards}>
         <SortableContext items={cardsIds}>
           {cards.map((card) => (
-            <Card key={card.id} data={card} />
+            <Card key={card.card_id} data={card} />
           ))}
         </SortableContext>
         {!isDragging && !isOverlay && (

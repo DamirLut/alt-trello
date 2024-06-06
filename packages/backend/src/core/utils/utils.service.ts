@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import urlMetadata from 'url-metadata';
 
 import { AuthProviders, type EnvironmentVariables } from '#config/env.config';
 
@@ -30,5 +31,21 @@ export class UtilsService {
     const items = methods.map((method) => oauthMethods[method]?.(this.config));
 
     return { items };
+  }
+
+  async fetchUrl(url: string) {
+    const metadata = await urlMetadata(url);
+
+    return {
+      success: 1,
+      link: metadata.url,
+      meta: {
+        title: metadata.title,
+        description: metadata.description,
+        image: {
+          url: metadata['og:image'],
+        },
+      },
+    };
   }
 }

@@ -19,6 +19,9 @@ export interface paths {
   '/api/utils': {
     get: operations['UtilsController_getOAuthList'];
   };
+  '/api/utils/fetchUrl': {
+    get: operations['UtilsController_fetchUrl'];
+  };
   '/api/boards/new': {
     post: operations['BoardController_createBoard'];
   };
@@ -41,8 +44,12 @@ export interface paths {
   '/api/cards/new': {
     post: operations['CardController_create'];
   };
-  '/api/cards': {
+  '/api/cards/list': {
     get: operations['CardController_getCards'];
+  };
+  '/api/cards': {
+    get: operations['CardController_getCard'];
+    put: operations['CardController_setContent'];
   };
   '/api/cards/move': {
     patch: operations['CardController_moveCard'];
@@ -81,8 +88,9 @@ export interface components {
     BoardSettingEntity: {
       data: components['schemas']['BoardSetting'];
     };
+    Function: Record<string, never>;
     CardEntity: {
-      id: string;
+      card_id: number;
       /** Format: date-time */
       createdAt: string;
       /** Format: date-time */
@@ -91,7 +99,9 @@ export interface components {
       /** @example awesome-task */
       slug: string;
       column: string;
+      board: string;
       position: number;
+      content: components['schemas']['Function'];
     };
     ColumnEntity: {
       id: string;
@@ -147,8 +157,18 @@ export interface components {
     MoveCardDTO: {
       board_id: string;
       target_column: string;
-      card_id: string;
+      card_id: number;
       position: number;
+    };
+    EditorJSData: {
+      version: string;
+      time: number;
+      blocks: string[];
+    };
+    UpdateContentCardDTO: {
+      board_id: string;
+      card_id: number;
+      content: components['schemas']['EditorJSData'];
     };
   };
   responses: never;
@@ -199,6 +219,18 @@ export interface operations {
         content: {
           'application/json': components['schemas']['AuthMethodsDTO'];
         };
+      };
+    };
+  };
+  UtilsController_fetchUrl: {
+    parameters: {
+      query: {
+        url: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
       };
     };
   };
@@ -319,6 +351,35 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['CardEntity'][];
+        };
+      };
+    };
+  };
+  CardController_getCard: {
+    parameters: {
+      query: {
+        board_id: string;
+        card_id: number;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['CardEntity'];
+        };
+      };
+    };
+  };
+  CardController_setContent: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateContentCardDTO'];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['CardEntity'];
         };
       };
     };

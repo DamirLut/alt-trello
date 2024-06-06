@@ -37,8 +37,19 @@ export const boardQueries = (queryClient: QueryClient) => ({
       enabled: !!board_id,
       queryFn: ({ signal }) =>
         client
-          .GET('/api/cards', {
+          .GET('/api/cards/list', {
             params: { query: { board_id: board_id! } },
+            signal,
+          })
+          .then(({ data }) => data),
+    }),
+  getCard: (card_id: number, board_id: string) =>
+    queryOptions({
+      queryKey: ['boards', board_id, 'cards', card_id],
+      queryFn: ({ signal }) =>
+        client
+          .GET('/api/cards', {
+            params: { query: { board_id, card_id } },
             signal,
           })
           .then(({ data }) => data),
@@ -108,6 +119,19 @@ export const boardQueries = (queryClient: QueryClient) => ({
       client
         .DELETE('/api/columns', { body: dto })
         .then(({ data }) => data as ApiSchema['ColumnEntity']),
+    async onSuccess(data) {
+      await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
+    },
+  }),
+  setCardContent: (): MutationOptions<
+    ApiSchema['CardEntity'],
+    Error,
+    ApiSchema['UpdateContentCardDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client
+        .PUT('/api/cards', { body: dto })
+        .then(({ data }) => data as ApiSchema['CardEntity']),
     async onSuccess(data) {
       await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
     },

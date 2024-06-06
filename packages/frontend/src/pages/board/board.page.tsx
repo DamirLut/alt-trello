@@ -1,6 +1,7 @@
 import type { FC } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useTitle } from 'hooks/useTitle';
 
 import { boardQueries } from 'entities/board';
 import { FullPageSpinner } from 'ui/full-page-spinner';
@@ -30,6 +31,8 @@ export const BoardPage: FC = () => {
     },
   });
 
+  useTitle(board?.title);
+
   if (isPending) {
     return <FullPageSpinner />;
   }
@@ -38,6 +41,7 @@ export const BoardPage: FC = () => {
     <div className={Style.page}>
       <Title>{board?.title ?? params.slug}</Title>
       {board && <Board data={board} />}
+      <Outlet />
     </div>
   );
 };

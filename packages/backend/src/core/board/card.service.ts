@@ -1,15 +1,16 @@
-import {
-  type EntityDTO,
-  EntityManager,
-  EntityRepository,
-} from '@mikro-orm/core';
+import { type EntityDTO, EntityRepository, sql } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityManager } from '@mikro-orm/postgresql';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { arrayMove } from '#root/lib/utils/array';
 
 import type { CreateCardDTO } from './dto/create-card.dto';
 import type { MoveCardDTO } from './dto/move-card.dto';
+import {
+  EditorJSData,
+  type UpdateContentCardDTO,
+} from './dto/update-content-card.dto';
 import { CardEntity } from './entities/card.entity';
 import { ColumnEntity } from './entities/column.entity';
 
@@ -36,13 +37,24 @@ export class CardService {
       throw new NotFoundException('Column not found');
     }
 
+    const [maxCardId] = await this.entityManager
+      .createQueryBuilder(ColumnEntity, 'column')
+      .select(['id', sql`MAX(cards.card_id) + 1 as id`])
+      .where({ board: dto.board_id })
+      .join('cards', 'cards', { column: dto.column_id })
+      .groupBy('column.id')
+      .execute<{ id: number }[]>();
+
     const card = this.cardRepository.create({
       column: dto.column_id,
       createdAt: new Date(),
       updatedAt: new Date(),
       slug: '',
-      title: dto.title,
+      title: dto.title.trim(),
       position: column.cards.length,
+      card_id: maxCardId?.id ?? 1,
+      board: dto.board_id,
+      content: new EditorJSData(),
     });
 
     await this.entityManager.persistAndFlush(card);
@@ -59,6 +71,7 @@ export class CardService {
       },
       {
         orderBy: { position: 1 },
+        exclude: ['content'],
       },
     );
   }
@@ -80,7 +93,10 @@ export class CardService {
     }
 
     let cards = column.cards.toArray();
-    const card = await this.cardRepository.findOne({ id: dto.card_id });
+    const card = await this.cardRepository.findOne({
+      card_id: dto.card_id,
+      board: dto.board_id,
+    });
 
     if (!card) {
       throw new NotFoundException('Card not found');
@@ -88,7 +104,7 @@ export class CardService {
 
     card.column = column;
 
-    const cardIndex = cards.findIndex((card) => card.id === dto.card_id);
+    const cardIndex = cards.findIndex((card) => card.card_id === dto.card_id);
 
     if (cardIndex !== -1) {
       cards = arrayMove(cards, cardIndex, dto.position);
@@ -97,11 +113,37 @@ export class CardService {
     }
 
     cards.forEach((card, position) => {
-      const c = column.cards.find((c) => c.id === card.id);
+      const c = column.cards.find((c) => c.card_id === card.id);
       if (!c) return;
       c.position = position;
       this.entityManager.persist(c);
     });
+
+    await this.entityManager.persistAndFlush(card);
+
+    return card;
+  }
+
+  async getCard(card_id: number, board_id: string) {
+    const card = await this.cardRepository.findOne({
+      card_id,
+      board: board_id,
+    });
+    if (!card) {
+      throw new NotFoundException('Card not found');
+    }
+    return card;
+  }
+
+  async setContent(dto: UpdateContentCardDTO) {
+    const card = await this.cardRepository.findOne({
+      card_id: dto.card_id,
+      board: dto.board_id,
+    });
+    if (!card) {
+      throw new NotFoundException('Card not found');
+    }
+    card.content = dto.content;
 
     await this.entityManager.persistAndFlush(card);
 

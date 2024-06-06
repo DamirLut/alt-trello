@@ -8,6 +8,7 @@ import { AuthGuard } from 'widgets/auth/ui/auth.guard';
 const HomePage = Loadable(lazy(() => import('pages/home')));
 const AuthPage = Loadable(lazy(() => import('pages/auth')));
 const BoardPage = Loadable(lazy(() => import('pages/board')));
+const TaskPage = Loadable(lazy(() => import('pages/fulltask')));
 
 const UIKitPage = Loadable(lazy(() => import('pages/ui-kit-preview')));
 
@@ -26,6 +27,12 @@ export const Router: FC = () => {
             {
               path: '/b/:id/:slug',
               element: <BoardPage />,
+              children: [
+                {
+                  path: ':task',
+                  element: <TaskPage />,
+                },
+              ],
             },
           ],
         },
