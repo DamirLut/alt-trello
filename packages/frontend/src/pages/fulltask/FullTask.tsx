@@ -26,8 +26,11 @@ export const FullTask: FC = () => {
   return (
     <Dialog defaultOpen onOpenChange={onClose}>
       <DialogContent className={Style.page}>
-        <Title>{data?.title}</Title>
-        {data && <Editor data={data} />}
+        <article>
+          <Title>{data?.title}</Title>
+          {data && <Editor data={data} />}
+        </article>
+        <section>bruh</section>
       </DialogContent>
     </Dialog>
   );

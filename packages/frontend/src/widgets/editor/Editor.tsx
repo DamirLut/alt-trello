@@ -30,6 +30,7 @@ export const Editor: FC<EditorProps> = ({ data }) => {
       holder: 'editor',
       tools,
       i18n,
+
       data: data.content as never,
       onReady() {
         ref.current = editor;

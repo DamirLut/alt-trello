@@ -23,6 +23,8 @@ services:
       - "5000"
     networks:
       - app_network
+    volumes:
+      - $PWD/uploads:/app/uploads
   database:
     image: postgres:16-alpine
     container_name: "${COMPOSE_PROJECT_NAME}_database"

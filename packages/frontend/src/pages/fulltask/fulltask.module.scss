@@ -6,4 +6,14 @@
   min-height: 85vh;
   height: -webkit-fill-available;
   overflow: auto;
+
+  display: flex;
+
+  article {
+    width: 100%;
+  }
+
+  section {
+    flex: 30%;
+  }
 }
