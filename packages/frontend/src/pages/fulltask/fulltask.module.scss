@@ -1,3 +1,5 @@
+@import '@ui/utils';
+
 .page {
   width: 100%;
   height: 100%;
@@ -33,5 +35,5 @@
 }
 
 .description {
-  color: rgba(0, 0, 0, 0.5);
+  color: opacity(var(--color-text), 50%);
 }
