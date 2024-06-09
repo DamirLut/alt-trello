@@ -136,4 +136,17 @@ export const boardQueries = (queryClient: QueryClient) => ({
       await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
     },
   }),
+  updateCardTitle: (): MutationOptions<
+    ApiSchema['CardEntity'],
+    Error,
+    ApiSchema['UpdateCardDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client
+        .PATCH('/api/cards', { body: dto })
+        .then(({ data }) => data as ApiSchema['CardEntity']),
+    async onSuccess(data) {
+      await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
+    },
+  }),
 });

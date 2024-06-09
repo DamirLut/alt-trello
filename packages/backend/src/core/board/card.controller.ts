@@ -14,6 +14,7 @@ import { JwtAuthGuard } from '#core/auth/auth.guard';
 
 import { CreateCardDTO } from './dto/create-card.dto';
 import { MoveCardDTO } from './dto/move-card.dto';
+import { UpdateCardDTO } from './dto/update-card-title.dto';
 import { UpdateContentCardDTO } from './dto/update-content-card.dto';
 import { CardEntity } from './entities/card.entity';
 import { CardService } from './card.service';
@@ -61,5 +62,11 @@ export class CardController {
   @ApiResponse({ status: 200, type: CardEntity })
   setContent(@Body() dto: UpdateContentCardDTO) {
     return this.cardService.setContent(dto);
+  }
+
+  @Patch()
+  @ApiResponse({ status: 200, type: CardEntity })
+  setTitle(@Body() dto: UpdateCardDTO) {
+    return this.cardService.updateTitle(dto);
   }
 }

@@ -22,6 +22,12 @@ export interface paths {
   '/api/utils/fetchUrl': {
     get: operations['UtilsController_fetchUrl'];
   };
+  '/api/utils/uploadImage': {
+    post: operations['UtilsController_uploadImage'];
+  };
+  '/api/utils/uploadFile': {
+    post: operations['UtilsController_uploadFile'];
+  };
   '/api/boards/new': {
     post: operations['BoardController_createBoard'];
   };
@@ -50,6 +56,7 @@ export interface paths {
   '/api/cards': {
     get: operations['CardController_getCard'];
     put: operations['CardController_setContent'];
+    patch: operations['CardController_setTitle'];
   };
   '/api/cards/move': {
     patch: operations['CardController_moveCard'];
@@ -170,6 +177,11 @@ export interface components {
       card_id: number;
       content: components['schemas']['EditorJSData'];
     };
+    UpdateCardDTO: {
+      board_id: string;
+      card_id: number;
+      title: string;
+    };
   };
   responses: never;
   parameters: never;
@@ -230,6 +242,20 @@ export interface operations {
     };
     responses: {
       200: {
+        content: never;
+      };
+    };
+  };
+  UtilsController_uploadImage: {
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  UtilsController_uploadFile: {
+    responses: {
+      201: {
         content: never;
       };
     };
@@ -374,6 +400,20 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': components['schemas']['UpdateContentCardDTO'];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['CardEntity'];
+        };
+      };
+    };
+  };
+  CardController_setTitle: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateCardDTO'];
       };
     };
     responses: {

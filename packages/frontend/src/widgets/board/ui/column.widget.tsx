@@ -1,10 +1,9 @@
-import { type ChangeEvent, type FC, useMemo, useRef, useState } from 'react';
+import { type FC, useMemo, useState } from 'react';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { ApiSchema } from 'api';
 import classNames from 'classnames';
-import useOutsideClick from 'hooks/useOutsideClick';
 
 import { IconMoreHorizontal } from 'assets/icons';
 import { boardQueries } from 'entities/board';
@@ -16,8 +15,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from 'ui/dropdown-menu';
-import { Input } from 'ui/input';
-import { Text } from 'ui/typography';
+import { EditableTitle } from 'widgets/editable-title';
 
 import { useBoard } from '../board.store';
 import { DragItem } from '../board.widget';
@@ -43,7 +41,7 @@ export const Column: FC<CardColumnProps> = ({ data, cards, isOverlay }) => {
   const cardsIds = useMemo(() => {
     return cards.map((card) => card.card_id);
   }, [cards]);
-  const ref = useRef(null);
+
   const [editableCard, setEditableCard] = useState(false);
   const queryClient = useQueryClient();
   const { mutateAsync: createCard } = useMutation(
@@ -60,33 +58,29 @@ export const Column: FC<CardColumnProps> = ({ data, cards, isOverlay }) => {
     boardQueries(client).deleteColumn(),
   );
 
-  const [editMode, setEditMode] = useState(data.title === '');
+  const saveUpdates = async (title: string) => {
+    title = title.trim();
+    if (title === data.title) return;
 
-  const saveUpdates = async () => {
-    setEditMode(false);
-    if (data.title === '') {
+    if (title === '') {
       return setColumns((columns) =>
         columns.filter((column) => column.id !== ''),
       );
     }
-    if (data.id === '') {
-      /// create column
-      await createColumn({ board_id, title: data.title });
-    } else {
-      await updateColumn({ board_id, column_id: data.id, title: data.title });
-    }
-    await queryClient.refetchQueries({ queryKey: ['boards', board_id] });
-  };
 
-  useOutsideClick(ref, saveUpdates);
-
-  const updateColumnTitle = (title: string) => {
     setColumns((columns) =>
       columns.map((column) => {
         if (column.id !== data.id) return column;
         return { ...column, title };
       }),
     );
+
+    if (data.id === '') {
+      await createColumn({ board_id, title });
+    } else {
+      await updateColumn({ board_id, column_id: data.id, title });
+    }
+    await queryClient.refetchQueries({ queryKey: ['boards', board_id] });
   };
 
   const {
@@ -108,6 +102,7 @@ export const Column: FC<CardColumnProps> = ({ data, cards, isOverlay }) => {
 
   const onNewTask = async (value: string) => {
     setEditableCard(false);
+    value = value.trim();
     if (!value) return;
 
     queryClient.setQueryData(queryKey, (old: ApiSchema['ColumnEntity'][]) =>
@@ -163,43 +158,27 @@ export const Column: FC<CardColumnProps> = ({ data, cards, isOverlay }) => {
         {...attributes}
         {...listeners}
       >
-        {editMode ? (
-          <Input
-            getRootRef={ref}
-            value={data.title}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              updateColumnTitle(e.target.value)
-            }
-            onKeyDown={async (e) => {
-              if (e.key !== 'Enter') return;
-              await saveUpdates();
-            }}
-          />
-        ) : (
-          <>
-            <Text onClick={() => setEditMode(true)}>{data.title}</Text>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <IconMoreHorizontal
-                  color='var(--color-text)'
-                  width={24}
-                  height={24}
-                />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>Действия</DropdownMenuLabel>
-                <DropdownMenuItem
-                  variant='red'
-                  onClick={() =>
-                    deleteColumn({ board_id: data.board, column_id: data.id })
-                  }
-                >
-                  Удалить
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </>
-        )}
+        <EditableTitle value={data.title} onChange={saveUpdates} />
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <IconMoreHorizontal
+              color='var(--color-text)'
+              width={24}
+              height={24}
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Действия</DropdownMenuLabel>
+            <DropdownMenuItem
+              variant='red'
+              onClick={() =>
+                deleteColumn({ board_id: data.board, column_id: data.id })
+              }
+            >
+              Удалить
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </UICard>
 
       <ol className={Style.cards}>

@@ -5,11 +5,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { arrayMove } from '#root/lib/utils/array';
 
-import type { CreateCardDTO } from './dto/create-card.dto';
-import type { MoveCardDTO } from './dto/move-card.dto';
+import { CreateCardDTO } from './dto/create-card.dto';
+import { MoveCardDTO } from './dto/move-card.dto';
+import { UpdateCardDTO } from './dto/update-card-title.dto';
 import {
   EditorJSData,
-  type UpdateContentCardDTO,
+  UpdateContentCardDTO,
 } from './dto/update-content-card.dto';
 import { CardEntity } from './entities/card.entity';
 import { ColumnEntity } from './entities/column.entity';
@@ -144,6 +145,20 @@ export class CardService {
       throw new NotFoundException('Card not found');
     }
     card.content = dto.content;
+
+    await this.entityManager.persistAndFlush(card);
+
+    return card;
+  }
+  async updateTitle(dto: UpdateCardDTO) {
+    const card = await this.cardRepository.findOne({
+      card_id: dto.card_id,
+      board: dto.board_id,
+    });
+    if (!card) {
+      throw new NotFoundException('Card not found');
+    }
+    card.title = dto.title;
 
     await this.entityManager.persistAndFlush(card);
 

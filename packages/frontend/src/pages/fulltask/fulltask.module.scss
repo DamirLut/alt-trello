@@ -14,6 +14,24 @@
   }
 
   section {
-    flex: 30%;
+    flex: 40%;
   }
+}
+
+.title {
+  &:is(input) {
+    background: transparent;
+    font-family: var(--font-family);
+    font-weight: bold;
+    font-size: 1.5em;
+    padding: 0;
+  }
+  &:is(h1) {
+    margin: 0;
+  }
+  margin-bottom: 1rem !important;
+}
+
+.description {
+  color: rgba(0, 0, 0, 0.5);
 }
