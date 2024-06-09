@@ -35,7 +35,7 @@ export const FullTask: FC = () => {
       <DialogContent className={Style.page}>
         <article>
           <EditableTitle
-            value={data?.title || ''}
+            value={data?.title ?? ''}
             onChange={onTitleChange}
             as={Title}
             className={Style.title}
