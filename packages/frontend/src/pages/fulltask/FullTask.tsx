@@ -4,7 +4,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTitle } from 'hooks/useTitle';
 
 import { boardQueries } from 'entities/board';
+import { Button } from 'ui/button';
 import { Dialog, DialogContent } from 'ui/dialog';
+import { Separator } from 'ui/separator';
 import { Text, Title } from 'ui/typography';
 import { EditableTitle } from 'widgets/editable-title';
 import { Editor } from 'widgets/editor';
@@ -43,7 +45,14 @@ export const FullTask: FC = () => {
           <Text className={Style.description}>Описание</Text>
           {data && <Editor data={data} />}
         </article>
-        <section>bruh</section>
+        <section>
+          <Text className={Style.description}>Действия</Text>
+          <Button variant='outline'>Участники</Button>
+          <Button variant='outline'>Переместить</Button>
+          <Button variant='outline'>Удалить</Button>
+          <Separator />
+          <Text className={Style.description}>Комментарии</Text>
+        </section>
       </DialogContent>
     </Dialog>
   );

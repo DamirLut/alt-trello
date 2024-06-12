@@ -7,16 +7,21 @@
   max-height: unset;
   min-height: 85vh;
   height: -webkit-fill-available;
-  overflow: auto;
 
   display: flex;
 
   article {
     width: 100%;
+    overflow: auto;
+    padding: 5px;
   }
 
   section {
     flex: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
   }
 }
 

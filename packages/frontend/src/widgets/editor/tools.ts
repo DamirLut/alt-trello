@@ -22,7 +22,7 @@ export const tools = {
     class: LinkTool,
     inlineToolbar: true,
     config: {
-      endpoint: '/api/utils/fetchUrl', // Your backend endpoint for url data fetching,
+      endpoint: '/api/utils/fetchUrl',
     },
   },
   toggle: {

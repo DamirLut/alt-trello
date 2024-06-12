@@ -45,7 +45,6 @@ export const Editor: FC<EditorProps> = ({ data }) => {
           card_id: taskId,
           content: content as never,
         });
-        console.log('content updated');
       },
     });
 

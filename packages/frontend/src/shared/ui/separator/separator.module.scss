@@ -1,8 +1,11 @@
+@import '@ui/utils';
+
 .separator {
   all: unset;
   display: inline-block;
   --separator-width: 2px;
   border-radius: 20px;
+  color: opacity(var(--color-text), 10%);
 
   &_vertical {
     border-left: var(--separator-width) solid currentColor;

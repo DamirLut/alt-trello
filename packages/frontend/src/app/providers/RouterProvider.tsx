@@ -10,8 +10,6 @@ const AuthPage = Loadable(lazy(() => import('pages/auth')));
 const BoardPage = Loadable(lazy(() => import('pages/board')));
 const TaskPage = Loadable(lazy(() => import('pages/fulltask')));
 
-const UIKitPage = Loadable(lazy(() => import('pages/ui-kit-preview')));
-
 export const Router: FC = () => {
   return useRoutes([
     {
@@ -41,10 +39,6 @@ export const Router: FC = () => {
     {
       element: <AuthPage />,
       path: '/auth',
-    },
-    {
-      element: <UIKitPage />,
-      path: '/ui-kit',
     },
   ]);
 };
