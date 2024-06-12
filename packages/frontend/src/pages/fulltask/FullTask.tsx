@@ -14,6 +14,7 @@ import { EditableTitle } from 'widgets/editable-title';
 import { Editor } from 'widgets/editor';
 
 import { DeleteAction } from './actions/delete-card.action';
+import { MoveColumnAction } from './actions/move-column.action';
 
 import Style from './fulltask.module.scss';
 
@@ -52,7 +53,11 @@ export const FullTask: FC = () => {
         <section>
           <Text className={Style.description}>Действия</Text>
           <Button variant='outline'>Участники</Button>
-          <Button variant='outline'>Переместить</Button>
+          <MoveColumnAction
+            board_id={board_id!}
+            card_id={taskId}
+            current_column={data?.column}
+          />
           <DeleteAction board_id={board_id!} card_id={taskId} />
           <Separator />
           <Text className={Style.description}>Комментарии</Text>

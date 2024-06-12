@@ -20,15 +20,22 @@
   font-family: var(--font-family);
   transition: 250ms ease-in-out;
 
-  &:active {
+  cursor: pointer;
+
+  &:active:not(:disabled) {
     transform: scale(0.95);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: auto;
   }
 
   &_primary {
     background: var(--color, var(--color-black));
     color: var(--color-white);
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: color-mix(
         in srgb,
         var(--color, var(--color-black)),
@@ -39,7 +46,7 @@
 
   &_tertiary {
     color: var(--color-text);
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: var(--color-white-darken);
 
       @include dark-theme {
@@ -50,7 +57,7 @@
 
   &_link {
     color: var(--color-blue-lighten);
-    &:hover {
+    &:hover:not(:disabled) {
       text-decoration: underline;
     }
   }
@@ -59,7 +66,7 @@
     color: var(--color-text);
     border: 1px solid var(--color-gray);
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: var(--color-white-darken);
 
       @include dark-theme {

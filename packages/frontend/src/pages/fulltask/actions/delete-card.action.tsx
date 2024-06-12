@@ -29,9 +29,11 @@ export const DeleteAction: FC<DeleteActionProps> = (props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant='outline' onClick={() => setOpen(true)}>
-          Удалить
-        </Button>
+        <div className={Style.trigger}>
+          <Button variant='outline' onClick={() => setOpen(true)}>
+            Удалить
+          </Button>
+        </div>
       </DialogTrigger>
       <DialogContent>
         <div className={Style.alert}>

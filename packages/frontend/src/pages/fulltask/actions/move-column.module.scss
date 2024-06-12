@@ -1,0 +1,13 @@
+.trigger > button {
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  > button {
+    min-height: 30px;
+  }
+}

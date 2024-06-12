@@ -17,8 +17,11 @@
     justify-content: end;
     gap: 10px;
     > button {
-      min-height: unset;
-      height: 32px;
+      min-height: 32px;
     }
   }
+}
+
+.trigger > button {
+  width: 100%;
 }
