@@ -23,5 +23,6 @@ import { ColumnService } from './column.service';
   ],
   controllers: [BoardController, ColumnController, CardController],
   providers: [BoardService, ColumnService, CardService],
+  exports: [BoardService, ColumnService, CardService],
 })
 export class BoardModule {}

@@ -1,0 +1,30 @@
+@import '@ui/utils';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.actions {
+  display: flex;
+  justify-content: end;
+  > button {
+    min-height: unset;
+    height: 28px;
+  }
+}
+
+.comment {
+  display: flex;
+  gap: 10px;
+
+  > textarea {
+    resize: vertical;
+    max-height: 180px;
+  }
+
+  .avatar-wrapper {
+    margin-top: 5px;
+  }
+}

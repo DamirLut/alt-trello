@@ -56,10 +56,15 @@ export interface paths {
   '/api/cards': {
     get: operations['CardController_getCard'];
     put: operations['CardController_setContent'];
+    delete: operations['CardController_deleteCard'];
     patch: operations['CardController_setTitle'];
   };
   '/api/cards/move': {
     patch: operations['CardController_moveCard'];
+  };
+  '/api/comments': {
+    get: operations['CommentController_getCards'];
+    post: operations['CommentController_createCard'];
   };
 }
 
@@ -181,6 +186,18 @@ export interface components {
       board_id: string;
       card_id: number;
       title: string;
+    };
+    CreateCommentDTO: {
+      board_id: string;
+      card_id: number;
+      comment: string;
+    };
+    CommentEntity: {
+      id: number;
+      createdAt: string;
+      updatedAt: string;
+      author: components['schemas']['UserEntity'];
+      comment: string;
     };
   };
   responses: never;
@@ -410,6 +427,21 @@ export interface operations {
       };
     };
   };
+  CardController_deleteCard: {
+    parameters: {
+      query: {
+        board_id: string;
+        card_id: number;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['CardEntity'];
+        };
+      };
+    };
+  };
   CardController_setTitle: {
     requestBody: {
       content: {
@@ -434,6 +466,35 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['CardEntity'];
+        };
+      };
+    };
+  };
+  CommentController_getCards: {
+    parameters: {
+      query: {
+        board_id: string;
+        card_id: number;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['CommentEntity'][];
+        };
+      };
+    };
+  };
+  CommentController_createCard: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateCommentDTO'];
+      };
+    };
+    responses: {
+      201: {
+        content: {
+          'application/json': components['schemas']['CommentEntity'];
         };
       };
     };

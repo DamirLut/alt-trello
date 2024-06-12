@@ -149,4 +149,17 @@ export const boardQueries = (queryClient: QueryClient) => ({
       await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
     },
   }),
+  deleteCard: (): MutationOptions<
+    ApiSchema['CardEntity'],
+    Error,
+    [number, string]
+  > => ({
+    mutationFn: ([card_id, board_id]) =>
+      client
+        .DELETE('/api/cards', { params: { query: { card_id, board_id } } })
+        .then(({ data }) => data as ApiSchema['CardEntity']),
+    async onSuccess(data) {
+      await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
+    },
+  }),
 });

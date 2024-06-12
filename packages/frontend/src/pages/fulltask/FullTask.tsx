@@ -8,8 +8,12 @@ import { Button } from 'ui/button';
 import { Dialog, DialogContent } from 'ui/dialog';
 import { Separator } from 'ui/separator';
 import { Text, Title } from 'ui/typography';
+import { CommentList } from 'widgets/comment-list/CommentList';
+import { CommentWriteBox } from 'widgets/comment-writebox';
 import { EditableTitle } from 'widgets/editable-title';
 import { Editor } from 'widgets/editor';
+
+import { DeleteAction } from './actions/delete-card.action';
 
 import Style from './fulltask.module.scss';
 
@@ -49,9 +53,11 @@ export const FullTask: FC = () => {
           <Text className={Style.description}>Действия</Text>
           <Button variant='outline'>Участники</Button>
           <Button variant='outline'>Переместить</Button>
-          <Button variant='outline'>Удалить</Button>
+          <DeleteAction board_id={board_id!} card_id={taskId} />
           <Separator />
           <Text className={Style.description}>Комментарии</Text>
+          <CommentWriteBox board_id={board_id!} card_id={taskId} />
+          <CommentList board_id={board_id!} card_id={taskId} />
         </section>
       </DialogContent>
     </Dialog>

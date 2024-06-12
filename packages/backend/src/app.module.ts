@@ -8,6 +8,7 @@ import { DatabaseModule } from '#common/database.module';
 import { UPLOAD_PATH } from '#config/constant';
 import { AuthModule } from '#core/auth/auth.module';
 import { BoardModule } from '#core/board/board.module';
+import { CommentModule } from '#core/comment/comment.module';
 import { UserModule } from '#core/users/user.module';
 import { UtilsModule } from '#core/utils/utils.module';
 
@@ -25,6 +26,7 @@ import { UtilsModule } from '#core/utils/utils.module';
     UserModule,
     UtilsModule,
     BoardModule,
+    CommentModule,
   ],
 })
 export class AppModule {}

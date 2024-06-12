@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Patch,
   Post,
@@ -50,6 +51,18 @@ export class CardController {
     @Query('card_id') card_id: number,
   ) {
     return this.cardService.getCard(card_id, board_id);
+  }
+
+  @Delete()
+  @ApiResponse({
+    status: 200,
+    type: CardEntity,
+  })
+  deleteCard(
+    @Query('board_id') board_id: string,
+    @Query('card_id') card_id: number,
+  ) {
+    return this.cardService.deleteCard(card_id, board_id);
   }
 
   @Patch('/move')

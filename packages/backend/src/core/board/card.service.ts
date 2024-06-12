@@ -136,6 +136,21 @@ export class CardService {
     return card;
   }
 
+  async deleteCard(card_id: number, board_id: string) {
+    const card = await this.cardRepository.findOne({
+      card_id,
+      board: board_id,
+    });
+    if (!card) {
+      throw new NotFoundException('Card not found');
+    }
+    console.log('DELETE!');
+
+    await this.entityManager.removeAndFlush(card);
+
+    return card;
+  }
+
   async setContent(dto: UpdateContentCardDTO) {
     const card = await this.cardRepository.findOne({
       card_id: dto.card_id,
