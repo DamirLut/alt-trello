@@ -101,7 +101,7 @@ export const Board: FC<BoardProps> = ({ data }) => {
       moveCard({
         board_id: data.id,
         target_column,
-        card_id: card.id,
+        card_id: card.card_id,
         position: newPosition,
       }).catch(console.error);
     }
