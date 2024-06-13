@@ -5,14 +5,12 @@ import {
   OneToMany,
   PrimaryKey,
   Property,
+  type Rel,
 } from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { BoardEntity } from './board.entity';
 import { CardEntity } from './card.entity';
-
-type Board = BoardEntity;
-type Card = CardEntity;
 
 @Entity({ tableName: 'columns' })
 export class ColumnEntity {
@@ -37,7 +35,7 @@ export class ColumnEntity {
 
   @ApiProperty({ type: String })
   @ManyToOne(() => BoardEntity, { deleteRule: 'cascade' })
-  board: Board;
+  board: Rel<BoardEntity>;
 
   @ApiProperty()
   @Property()
@@ -45,5 +43,5 @@ export class ColumnEntity {
 
   @ApiProperty({ type: [CardEntity] })
   @OneToMany(() => CardEntity, (e) => e.column)
-  cards = new Collection<Card>(this);
+  cards = new Collection<Rel<CardEntity>>(this);
 }

@@ -84,11 +84,7 @@ export const Card: FC<CardColumnProps> = ({ data }) => {
         </pre>
         <div className={Style.footer}>
           <div className={Style.users}>
-            <UserStack
-              avatars={[
-                { url: 'https://github.com/damirlut.png', title: 'DamirLut' },
-              ]}
-            />
+            <UserStack avatars={[]} />
           </div>
           {data.comments > 0 && (
             <Text>

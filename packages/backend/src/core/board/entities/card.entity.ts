@@ -1,13 +1,16 @@
-import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import {
+  Entity,
+  ManyToOne,
+  PrimaryKey,
+  Property,
+  type Rel,
+} from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 
 import type { EditorJSData } from '../dto/update-content-card.dto';
 
 import { BoardEntity } from './board.entity';
 import { ColumnEntity } from './column.entity';
-
-type Column = ColumnEntity;
-type Board = BoardEntity;
 
 @Entity({ tableName: 'cards' })
 export class CardEntity {
@@ -44,11 +47,11 @@ export class CardEntity {
 
   @ApiProperty({ type: String })
   @ManyToOne(() => ColumnEntity, { deleteRule: 'cascade' })
-  column: Column;
+  column: Rel<ColumnEntity>;
 
   @ApiProperty({ type: String })
   @ManyToOne(() => BoardEntity, { deleteRule: 'cascade' })
-  board: Board;
+  board: Rel<BoardEntity>;
 
   @ApiProperty()
   @Property()

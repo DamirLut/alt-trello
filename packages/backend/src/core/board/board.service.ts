@@ -7,6 +7,10 @@ import { customAlphabet } from 'nanoid';
 import type { CreateBoardDTO } from './dto/create-board.dto';
 import { BoardEntity } from './entities/board.entity';
 import {
+  BoardMemberEntity,
+  BoardPermission,
+} from './entities/board-member.entity';
+import {
   BoardSetting,
   BoardSettingEntity,
   BoardThemeSetting,
@@ -25,6 +29,8 @@ export class BoardService {
     private readonly boardRepository: EntityRepository<BoardEntity>,
     @InjectRepository(BoardSettingEntity)
     private readonly boardSettingRepository: EntityRepository<BoardSettingEntity>,
+    @InjectRepository(BoardMemberEntity)
+    private readonly memberRepository: EntityRepository<BoardMemberEntity>,
     private readonly entityManager: EntityManager,
     private readonly columnService: ColumnService,
     public readonly eventEmitter: EventEmitter2,
@@ -40,6 +46,17 @@ export class BoardService {
       slug: '',
     });
 
+    const member = this.memberRepository.create({
+      board,
+      user: owner_id,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      permission: [BoardPermission.Owner],
+    });
+
+    board.members.add(member);
+
+    this.entityManager.persist(member);
     await this.entityManager.persistAndFlush(board);
 
     const settings = this.boardSettingRepository.create({
@@ -77,7 +94,7 @@ export class BoardService {
         id,
       },
       {
-        populate: ['settings.data', 'columns'],
+        populate: ['settings.data', 'columns', 'members.user'],
         populateOrderBy: { columns: { position: 1 } },
       },
     );

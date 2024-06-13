@@ -7,17 +7,15 @@ import {
   OneToOne,
   PrimaryKey,
   Property,
+  type Rel,
 } from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { UserEntity } from '#core/users/entities/user.entity';
 
+import { BoardMemberEntity } from './board-member.entity';
 import { BoardSettingEntity } from './board-setting.entity';
 import { ColumnEntity } from './column.entity';
-
-type Column = ColumnEntity;
-
-type BoardSetting = BoardSettingEntity;
 
 @Entity({ tableName: 'boards' })
 export class BoardEntity {
@@ -39,7 +37,7 @@ export class BoardEntity {
 
   @ApiProperty({ type: Number, example: 1 })
   @ManyToOne(() => UserEntity)
-  owner: UserEntity;
+  owner: Rel<UserEntity>;
 
   @ApiProperty({ type: 'string', example: 'my-board' })
   @Property({ persist: false })
@@ -57,9 +55,13 @@ export class BoardEntity {
     owner: true,
     strategy: LoadStrategy.SELECT_IN,
   })
-  settings?: BoardSetting;
+  settings?: Rel<BoardSettingEntity>;
 
   @ApiProperty({ type: () => [ColumnEntity] })
   @OneToMany(() => ColumnEntity, (e) => e.board)
-  columns = new Collection<Column>(this);
+  columns = new Collection<Rel<ColumnEntity>>(this);
+
+  @ApiProperty({ type: () => [BoardMemberEntity] })
+  @OneToMany(() => BoardMemberEntity, (e) => e.board)
+  members = new Collection<Rel<BoardMemberEntity>>(this);
 }

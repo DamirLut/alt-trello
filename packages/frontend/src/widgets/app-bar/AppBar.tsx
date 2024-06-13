@@ -50,6 +50,7 @@ export const AppBar: FC = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>Аккаунт</DropdownMenuLabel>
+              <DropdownMenuItem>Профиль</DropdownMenuItem>
               <DropdownMenuItem variant='red' onClick={onClickLogout}>
                 Выйти
               </DropdownMenuItem>

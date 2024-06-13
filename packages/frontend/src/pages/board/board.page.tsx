@@ -7,8 +7,11 @@ import { boardQueries } from 'entities/board';
 import { FullPageSpinner } from 'ui/full-page-spinner';
 import { Title } from 'ui/typography';
 import { Board } from 'widgets/board';
+import { UserStack } from 'widgets/user-stack';
 
 import { ApiError } from '../../types/api';
+
+import { BoardMenuAction } from './actions/board-menu.action';
 
 import Style from './board.module.scss';
 
@@ -39,8 +42,20 @@ export const BoardPage: FC = () => {
 
   return (
     <div className={Style.page}>
-      <Title>{board?.title ?? params.slug}</Title>
-      {board && <Board data={board} />}
+      <div className={Style.head}>
+        <Title>{board?.title ?? params.slug}</Title>
+        <UserStack
+          size={48}
+          avatars={
+            board?.members?.map((member) => ({
+              url: member.user.avatar,
+              title: member.user.username,
+            })) ?? []
+          }
+        />
+        <BoardMenuAction />
+      </div>
+      <div className={Style.board}>{board && <Board data={board} />}</div>
       <Outlet />
     </div>
   );

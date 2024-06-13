@@ -17,6 +17,7 @@ export const commentQueries = (queryClient: QueryClient) => ({
         .then(({ data }) => data as ApiSchema['CommentEntity']),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['comments'] });
+      await queryClient.invalidateQueries({ queryKey: ['boards'] });
     },
   }),
   getComments: (card_id: number, board_id: string) =>

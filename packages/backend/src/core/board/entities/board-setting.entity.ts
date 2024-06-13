@@ -1,9 +1,13 @@
-import { Entity, OneToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import {
+  Entity,
+  OneToOne,
+  PrimaryKey,
+  Property,
+  type Rel,
+} from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { BoardEntity } from './board.entity';
-
-type Board = BoardEntity;
 
 @Entity({ tableName: 'board-settings' })
 export class BoardSettingEntity {
@@ -19,7 +23,7 @@ export class BoardSettingEntity {
     deleteRule: 'cascade',
     hidden: true,
   })
-  board: Board;
+  board: Rel<BoardEntity>;
 
   @ApiProperty()
   @Property({ type: 'json' })

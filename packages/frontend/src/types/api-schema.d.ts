@@ -133,6 +133,11 @@ export interface components {
       position: number;
       cards: components['schemas']['CardEntity'][];
     };
+    BoardMemberEntity: {
+      id: number;
+      user: components['schemas']['UserEntity'];
+      permission: 'owner'[];
+    };
     BoardEntity: {
       /** @example fxrJQl4u */
       id: string;
@@ -148,6 +153,7 @@ export interface components {
       slug: string;
       settings: components['schemas']['BoardSettingEntity'];
       columns: components['schemas']['ColumnEntity'][];
+      members: components['schemas']['BoardMemberEntity'][];
     };
     CreateColumnDTO: {
       board_id: string;
