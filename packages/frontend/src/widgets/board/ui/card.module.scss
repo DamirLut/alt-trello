@@ -10,6 +10,21 @@
   user-select: none;
   position: relative;
 
+  &:has(.cover) {
+    padding: 0;
+    pre {
+      padding: 10px;
+    }
+  }
+
+  .cover {
+    border-radius: var(--border-radius);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    object-fit: cover;
+    width: 100%;
+  }
+
   pre {
     margin: 0;
     word-break: break-word;

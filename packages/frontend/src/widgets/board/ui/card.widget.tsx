@@ -68,6 +68,14 @@ export const Card: FC<CardColumnProps> = ({ data }) => {
         navigate(`./${data.card_id}-${data.slug}`, { relative: 'path' })
       }
     >
+      {data.cover && (
+        <img
+          className={Style.cover}
+          src={data.cover}
+          alt={data.title}
+          height='200'
+        />
+      )}
       <pre>
         <Text>{data.title}</Text>
       </pre>

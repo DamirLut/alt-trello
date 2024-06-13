@@ -17,6 +17,7 @@ import { CreateCardDTO } from './dto/create-card.dto';
 import { MoveCardDTO } from './dto/move-card.dto';
 import { UpdateCardDTO } from './dto/update-card-title.dto';
 import { UpdateContentCardDTO } from './dto/update-content-card.dto';
+import { UpdateCoverCardDTO } from './dto/update-cover-card.dto';
 import { CardEntity } from './entities/card.entity';
 import { CardService } from './card.service';
 
@@ -75,6 +76,12 @@ export class CardController {
   @ApiResponse({ status: 200, type: CardEntity })
   setContent(@Body() dto: UpdateContentCardDTO) {
     return this.cardService.setContent(dto);
+  }
+
+  @Put('/cover')
+  @ApiResponse({ status: 200, type: CardEntity })
+  setCover(@Body() dto: UpdateCoverCardDTO) {
+    return this.cardService.setCover(dto);
   }
 
   @Patch()

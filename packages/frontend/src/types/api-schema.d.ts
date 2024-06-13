@@ -62,6 +62,9 @@ export interface paths {
   '/api/cards/move': {
     patch: operations['CardController_moveCard'];
   };
+  '/api/cards/cover': {
+    put: operations['CardController_setCover'];
+  };
   '/api/comments': {
     get: operations['CommentController_getCards'];
     post: operations['CommentController_createCard'];
@@ -114,6 +117,7 @@ export interface components {
       board: string;
       position: number;
       content: components['schemas']['Function'];
+      cover: string | null;
     };
     ColumnEntity: {
       id: string;
@@ -181,6 +185,11 @@ export interface components {
       board_id: string;
       card_id: number;
       content: components['schemas']['EditorJSData'];
+    };
+    UpdateCoverCardDTO: {
+      board_id: string;
+      card_id: number;
+      cover_url: string;
     };
     UpdateCardDTO: {
       board_id: string;
@@ -460,6 +469,20 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': components['schemas']['MoveCardDTO'];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['CardEntity'];
+        };
+      };
+    };
+  };
+  CardController_setCover: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateCoverCardDTO'];
       };
     };
     responses: {

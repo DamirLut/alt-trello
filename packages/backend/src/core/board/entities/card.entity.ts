@@ -57,4 +57,8 @@ export class CardEntity {
   @ApiProperty()
   @Property({ type: 'json' })
   content: EditorJSData;
+
+  @ApiProperty({ type: String, nullable: true })
+  @Property({ nullable: true })
+  cover: string | null;
 }

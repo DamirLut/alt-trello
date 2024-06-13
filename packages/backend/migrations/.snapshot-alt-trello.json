@@ -412,6 +412,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "json"
+        },
+        "cover": {
+          "name": "cover",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
         }
       },
       "name": "cards",

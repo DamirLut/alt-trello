@@ -12,6 +12,7 @@ import {
   EditorJSData,
   UpdateContentCardDTO,
 } from './dto/update-content-card.dto';
+import { UpdateCoverCardDTO } from './dto/update-cover-card.dto';
 import { CardEntity } from './entities/card.entity';
 import { ColumnEntity } from './entities/column.entity';
 
@@ -165,6 +166,22 @@ export class CardService {
 
     return card;
   }
+
+  async setCover(dto: UpdateCoverCardDTO) {
+    const card = await this.cardRepository.findOne({
+      card_id: dto.card_id,
+      board: dto.board_id,
+    });
+    if (!card) {
+      throw new NotFoundException('Card not found');
+    }
+    card.cover = dto.cover_url;
+
+    await this.entityManager.persistAndFlush(card);
+
+    return card;
+  }
+
   async updateTitle(dto: UpdateCardDTO) {
     const card = await this.cardRepository.findOne({
       card_id: dto.card_id,
