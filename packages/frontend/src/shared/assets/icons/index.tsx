@@ -6,3 +6,5 @@ export { default as IconPlusSquare } from './plus-square.svg?react';
 export { default as IconPlus } from './plus.svg?react';
 export { default as IconMoreHorizontal } from './more-horizontal.svg?react';
 export { default as IconMoreVertical } from './more-vertical.svg?react';
+export { default as IconAttach } from './attach.svg?react';
+export { default as IconMessage } from './message.svg?react';

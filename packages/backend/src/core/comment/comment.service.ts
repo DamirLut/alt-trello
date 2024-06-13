@@ -33,6 +33,9 @@ export class CommentService {
       card: card.id,
     });
 
+    card.comments++;
+
+    this.entityManager.persist(card);
     await this.entityManager.persistAndFlush(comment);
 
     /// remove populated card from response

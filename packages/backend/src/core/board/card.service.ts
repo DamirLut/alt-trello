@@ -57,6 +57,8 @@ export class CardService {
       card_id: maxCardId?.id ?? 1,
       board: dto.board_id,
       content: new EditorJSData(),
+      files: 0,
+      comments: 0,
     });
 
     await this.entityManager.persistAndFlush(card);
@@ -73,7 +75,6 @@ export class CardService {
       },
       {
         orderBy: { position: 1 },
-        exclude: ['content'],
       },
     );
   }

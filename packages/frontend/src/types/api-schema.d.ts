@@ -118,6 +118,8 @@ export interface components {
       position: number;
       content: components['schemas']['Function'];
       cover: string | null;
+      files: number;
+      comments: number;
     };
     ColumnEntity: {
       id: string;

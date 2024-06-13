@@ -61,4 +61,21 @@ export class CardEntity {
   @ApiProperty({ type: String, nullable: true })
   @Property({ nullable: true })
   cover: string | null;
+
+  @ApiProperty({ type: Number })
+  @Property({ persist: false })
+  get files() {
+    const types = ['attaches', 'image'];
+    if (!this.content) return 0;
+    return this.content.blocks?.reduce((acc, value) => {
+      if ('type' in value && typeof value.type === 'string') {
+        return acc + +types.includes(value.type);
+      }
+      return acc;
+    }, 0);
+  }
+
+  @ApiProperty({ type: Number })
+  @Property({ default: 0 })
+  comments: number;
 }

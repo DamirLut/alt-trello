@@ -5,8 +5,10 @@ import { CSS } from '@dnd-kit/utilities';
 import type { ApiSchema } from 'api';
 import classNames from 'classnames';
 
+import { IconAttach, IconMessage } from 'assets/icons';
 import { Card as UICard } from 'ui/card';
 import { Text } from 'ui/typography';
+import { UserStack } from 'widgets/user-stack';
 
 import { DragItem } from '../board.widget';
 
@@ -76,9 +78,32 @@ export const Card: FC<CardColumnProps> = ({ data }) => {
           height='200'
         />
       )}
-      <pre>
-        <Text>{data.title}</Text>
-      </pre>
+      <div className={Style.content}>
+        <pre>
+          <Text>{data.title}</Text>
+        </pre>
+        <div className={Style.footer}>
+          <div className={Style.users}>
+            <UserStack
+              avatars={[
+                { url: 'https://github.com/damirlut.png', title: 'DamirLut' },
+              ]}
+            />
+          </div>
+          {data.comments > 0 && (
+            <Text>
+              {data.comments}
+              <IconMessage />
+            </Text>
+          )}
+          {data.files > 0 && (
+            <Text>
+              {data.files}
+              <IconAttach />
+            </Text>
+          )}
+        </div>
+      </div>
     </UICard>
   );
 };

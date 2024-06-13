@@ -5,16 +5,12 @@
 }
 
 .card {
-  padding: 10px;
   cursor: pointer;
   user-select: none;
   position: relative;
 
-  &:has(.cover) {
-    padding: 0;
-    pre {
-      padding: 10px;
-    }
+  .content {
+    padding: 10px;
   }
 
   .cover {
@@ -23,6 +19,23 @@
     border-bottom-right-radius: 0;
     object-fit: cover;
     width: 100%;
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    > span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      opacity: 0.5;
+    }
+
+    .users {
+      flex: 1;
+    }
   }
 
   pre {
