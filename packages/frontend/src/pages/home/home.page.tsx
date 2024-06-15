@@ -19,7 +19,7 @@ export const HomePage: FC = () => {
   const favorites =
     groups
       ?.find((group) => group.title === 'Избранные')
-      ?.boards.map((board) => board.id) || [];
+      ?.boards.map((board) => board.id) ?? [];
 
   return (
     <div className={Style.page}>
