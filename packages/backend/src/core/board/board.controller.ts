@@ -7,6 +7,7 @@ import type { JwtPayload } from '#core/auth/auth.type';
 
 import { CreateBoardDTO } from './dto/create-board.dto';
 import { BoardEntity } from './entities/board.entity';
+import { UserGroupEntity } from './entities/user-group.entity';
 import { BoardService } from './board.service';
 
 @Controller('boards')
@@ -22,7 +23,10 @@ export class BoardController {
   }
 
   @Get('/list')
-  @ApiResponse({ status: 200, type: [BoardEntity] })
+  @ApiResponse({
+    status: 200,
+    type: [UserGroupEntity],
+  })
   getUserList(@JwtUser() user: JwtPayload) {
     return this.boardService.getUserBoards(user.id);
   }
@@ -31,5 +35,11 @@ export class BoardController {
   @ApiResponse({ status: 200, type: BoardEntity })
   getBoardById(@JwtUser() _user: JwtPayload, @Query('id') id: string) {
     return this.boardService.findById(id);
+  }
+
+  @Post('/favorite')
+  @ApiResponse({ status: 200, type: UserGroupEntity })
+  toggleFavorite(@JwtUser() user: JwtPayload, @Query('id') id: string) {
+    return this.boardService.toggleFavorite(user.id, id);
   }
 }

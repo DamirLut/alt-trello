@@ -41,7 +41,7 @@ export class ColumnEntity {
   @Property()
   position: number;
 
-  @ApiProperty({ type: [CardEntity] })
+  @ApiProperty({ type: () => [CardEntity] })
   @OneToMany(() => CardEntity, (e) => e.column)
   cards = new Collection<Rel<CardEntity>>(this);
 }

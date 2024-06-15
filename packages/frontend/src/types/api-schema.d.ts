@@ -37,6 +37,9 @@ export interface paths {
   '/api/boards': {
     get: operations['BoardController_getBoardById'];
   };
+  '/api/boards/favorite': {
+    post: operations['BoardController_toggleFavorite'];
+  };
   '/api/columns/new': {
     post: operations['ColumnController_newColumn'];
   };
@@ -154,6 +157,12 @@ export interface components {
       settings: components['schemas']['BoardSettingEntity'];
       columns: components['schemas']['ColumnEntity'][];
       members: components['schemas']['BoardMemberEntity'][];
+    };
+    UserGroupEntity: {
+      title: string;
+      user: components['schemas']['UserEntity'];
+      boards: components['schemas']['BoardEntity'][];
+      system: boolean | null;
     };
     CreateColumnDTO: {
       board_id: string;
@@ -312,7 +321,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          'application/json': components['schemas']['BoardEntity'][];
+          'application/json': components['schemas']['UserGroupEntity'][];
         };
       };
     };
@@ -327,6 +336,20 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['BoardEntity'];
+        };
+      };
+    };
+  };
+  BoardController_toggleFavorite: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['UserGroupEntity'];
         };
       };
     };

@@ -22,6 +22,19 @@ export const boardQueries = (queryClient: QueryClient) => ({
         .POST('/api/boards/new', { body: dto })
         .then(({ data }) => data as ApiSchema['BoardEntity']),
   }),
+  toggleFavorite: (): MutationOptions<
+    ApiSchema['UserGroupEntity'],
+    Error,
+    string
+  > => ({
+    mutationFn: (id) =>
+      client
+        .POST('/api/boards/favorite', { params: { query: { id } } })
+        .then(({ data }) => data as ApiSchema['UserGroupEntity']),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['boards', 'list'] });
+    },
+  }),
   getById: (id?: string) =>
     queryOptions({
       queryKey: ['boards', id],

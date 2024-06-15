@@ -34,3 +34,9 @@
     min-height: 128px;
   }
 }
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

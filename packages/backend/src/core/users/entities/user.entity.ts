@@ -9,6 +9,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { BaseEntity } from '#common/entities/base.entity';
 import { BoardMemberEntity } from '#core/board/entities/board-member.entity';
+import { UserGroupEntity } from '#core/board/entities/user-group.entity';
 
 @Entity({ tableName: 'users' })
 export class UserEntity extends BaseEntity {
@@ -26,4 +27,7 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => BoardMemberEntity, (e) => e.user)
   boards = new Collection<Rel<BoardMemberEntity>>(this);
+
+  @OneToMany(() => UserGroupEntity, (e) => e.user)
+  groups = new Collection<Rel<UserGroupEntity>>(this);
 }

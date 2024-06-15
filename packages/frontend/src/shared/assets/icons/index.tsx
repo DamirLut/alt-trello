@@ -8,3 +8,5 @@ export { default as IconMoreHorizontal } from './more-horizontal.svg?react';
 export { default as IconMoreVertical } from './more-vertical.svg?react';
 export { default as IconAttach } from './attach.svg?react';
 export { default as IconMessage } from './message.svg?react';
+export { default as IconStar } from './star.svg?react';
+export { default as IconStarOutline } from './star-outline.svg?react';

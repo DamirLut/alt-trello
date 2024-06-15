@@ -31,7 +31,7 @@ export class BoardMemberEntity {
   })
   updatedAt = new Date();
 
-  @ManyToOne(() => BoardEntity, { hidden: true })
+  @ManyToOne(() => BoardEntity)
   board: Rel<BoardEntity>;
 
   @ApiProperty({ type: () => UserEntity })

@@ -7,6 +7,7 @@ import { BoardSettingEntity } from './entities/board-setting.entity';
 import { CardEntity } from './entities/card.entity';
 import { CardMemberEntity } from './entities/card-members.entity';
 import { ColumnEntity } from './entities/column.entity';
+import { UserGroupEntity } from './entities/user-group.entity';
 import { BoardController } from './board.controller';
 import { BoardService } from './board.service';
 import { CardController } from './card.controller';
@@ -23,6 +24,7 @@ import { ColumnService } from './column.service';
       ColumnEntity,
       CardEntity,
       CardMemberEntity,
+      UserGroupEntity,
     ]),
   ],
   controllers: [BoardController, ColumnController, CardController],
