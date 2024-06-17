@@ -78,6 +78,9 @@ export interface paths {
   '/api/cards/cover': {
     put: operations['CardController_setCover'];
   };
+  '/api/cards/members': {
+    post: operations['CardController_setMember'];
+  };
   '/api/comments': {
     get: operations['CommentController_getCards'];
     post: operations['CommentController_createCard'];
@@ -119,6 +122,10 @@ export interface components {
       data: components['schemas']['BoardSetting'];
     };
     Function: Record<string, never>;
+    CardMemberEntity: {
+      id: number;
+      user: components['schemas']['UserEntity'];
+    };
     CardEntity: {
       card_id: number;
       /** Format: date-time */
@@ -135,6 +142,7 @@ export interface components {
       cover: string | null;
       files: number;
       comments: number;
+      members: components['schemas']['CardMemberEntity'][];
     };
     ColumnEntity: {
       id: string;
@@ -234,6 +242,11 @@ export interface components {
       board_id: string;
       card_id: number;
       title: string;
+    };
+    SetCardMemberDTO: {
+      board_id: string;
+      user_id: number;
+      card_id: number;
     };
     CreateCommentDTO: {
       board_id: string;
@@ -598,6 +611,20 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['CardEntity'];
+        };
+      };
+    };
+  };
+  CardController_setMember: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SetCardMemberDTO'];
+      };
+    };
+    responses: {
+      201: {
+        content: {
+          'application/json': components['schemas']['CardMemberEntity'];
         };
       };
     };

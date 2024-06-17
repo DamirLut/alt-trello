@@ -4,7 +4,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTitle } from 'hooks/useTitle';
 
 import { boardQueries } from 'entities/board';
-import { Button } from 'ui/button';
 import { Dialog, DialogContent } from 'ui/dialog';
 import { Separator } from 'ui/separator';
 import { Text, Title } from 'ui/typography';
@@ -15,6 +14,7 @@ import { Editor } from 'widgets/editor';
 
 import { DeleteAction } from './actions/delete-card.action';
 import { MoveColumnAction } from './actions/move-column.action';
+import { SelectMemberAction } from './actions/select-member.action';
 
 import Style from './fulltask.module.scss';
 
@@ -52,7 +52,7 @@ export const FullTask: FC = () => {
         </article>
         <section>
           <Text className={Style.description}>Действия</Text>
-          <Button variant='outline'>Участники</Button>
+          <SelectMemberAction board_id={board_id!} card_id={taskId} />
           <MoveColumnAction
             board_id={board_id!}
             card_id={taskId}

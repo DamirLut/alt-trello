@@ -85,7 +85,9 @@ export const Card: FC<CardColumnProps> = ({ data }) => {
         </pre>
         <div className={Style.footer}>
           <div className={Style.users}>
-            <UserStack avatars={[]} />
+            <UserStack
+              avatars={data.members.map((member) => member.user.avatar)}
+            />
           </div>
           {data.comments > 0 && (
             <Text>

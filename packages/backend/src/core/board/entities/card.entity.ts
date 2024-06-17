@@ -1,6 +1,8 @@
 import {
+  Collection,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryKey,
   Property,
   type Rel,
@@ -10,6 +12,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import type { EditorJSData } from '../dto/update-content-card.dto';
 
 import { BoardEntity } from './board.entity';
+import { CardMemberEntity } from './card-member.entity';
 import { ColumnEntity } from './column.entity';
 
 @Entity({ tableName: 'cards' })
@@ -81,4 +84,8 @@ export class CardEntity {
   @ApiProperty({ type: Number })
   @Property({ default: 0 })
   comments: number;
+
+  @ApiProperty({ type: () => [CardMemberEntity] })
+  @OneToMany(() => CardMemberEntity, (e) => e.card, { orphanRemoval: true })
+  members = new Collection<Rel<CardMemberEntity>>(this);
 }

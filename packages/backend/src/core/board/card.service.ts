@@ -7,6 +7,7 @@ import { arrayMove } from '#root/lib/utils/array';
 
 import { CreateCardDTO } from './dto/create-card.dto';
 import { MoveCardDTO } from './dto/move-card.dto';
+import type { SetCardMemberDTO } from './dto/set-card-member.dto';
 import { UpdateCardDTO } from './dto/update-card-title.dto';
 import {
   EditorJSData,
@@ -14,6 +15,7 @@ import {
 } from './dto/update-content-card.dto';
 import { UpdateCoverCardDTO } from './dto/update-cover-card.dto';
 import { CardEntity } from './entities/card.entity';
+import { CardMemberEntity } from './entities/card-member.entity';
 import { ColumnEntity } from './entities/column.entity';
 
 @Injectable()
@@ -23,6 +25,8 @@ export class CardService {
     private readonly cardRepository: EntityRepository<CardEntity>,
     @InjectRepository(ColumnEntity)
     private readonly columnRepository: EntityRepository<ColumnEntity>,
+    @InjectRepository(CardMemberEntity)
+    private readonly memberRepository: EntityRepository<CardMemberEntity>,
     private readonly entityManager: EntityManager,
   ) {}
 
@@ -74,6 +78,7 @@ export class CardService {
         },
       },
       {
+        populate: ['members', 'members.user'],
         orderBy: { position: 1 },
       },
     );
@@ -128,10 +133,13 @@ export class CardService {
   }
 
   async getCard(card_id: number, board_id: string) {
-    const card = await this.cardRepository.findOne({
-      card_id,
-      board: board_id,
-    });
+    const card = await this.cardRepository.findOne(
+      {
+        card_id,
+        board: board_id,
+      },
+      { populate: ['members', 'members.user'] },
+    );
     if (!card) {
       throw new NotFoundException('Card not found');
     }
@@ -146,7 +154,6 @@ export class CardService {
     if (!card) {
       throw new NotFoundException('Card not found');
     }
-    console.log('DELETE!');
 
     await this.entityManager.removeAndFlush(card);
 
@@ -196,5 +203,35 @@ export class CardService {
     await this.entityManager.persistAndFlush(card);
 
     return card;
+  }
+
+  async setMember(dto: SetCardMemberDTO) {
+    const card = await this.cardRepository.findOne(
+      {
+        card_id: dto.card_id,
+        board: dto.board_id,
+      },
+      { populate: ['members', 'members.user'] },
+    );
+    if (!card) {
+      throw new NotFoundException('Card not found');
+    }
+
+    let member = card.members.find((member) => member.user.id === dto.user_id);
+
+    if (member) {
+      card.members.remove(member);
+    } else {
+      member = this.memberRepository.create({
+        card,
+        user: dto.user_id,
+        createdAt: new Date(),
+      });
+      card.members.add(member);
+    }
+    this.entityManager.persist(card);
+    await this.entityManager.persistAndFlush(member);
+
+    return member;
   }
 }

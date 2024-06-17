@@ -1,0 +1,24 @@
+.trigger > button {
+  width: 100%;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  > button {
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+
+    > div {
+      display: flex;
+      align-items: center;
+    }
+
+    > span {
+      font-size: 14px;
+      margin-right: auto;
+    }
+  }
+}

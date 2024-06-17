@@ -11,3 +11,4 @@ export { default as IconMessage } from './message.svg?react';
 export { default as IconStar } from './star.svg?react';
 export { default as IconStarOutline } from './star-outline.svg?react';
 export { default as IconUserPlus } from './user-plus.svg?react';
+export { default as IconCheck } from './check.svg?react';

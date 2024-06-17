@@ -3,4 +3,10 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+
+  &:not(:only-child) {
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
 }

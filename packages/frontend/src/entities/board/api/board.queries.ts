@@ -18,9 +18,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     ApiSchema['CreateBoardDTO']
   > => ({
     mutationFn: (dto) =>
-      client
-        .POST('/api/boards/new', { body: dto })
-        .then(({ data }) => data as ApiSchema['BoardEntity']),
+      client.POST('/api/boards/new', { body: dto }).then(({ data }) => data!),
   }),
   toggleFavorite: (): MutationOptions<
     ApiSchema['UserGroupEntity'],
@@ -30,7 +28,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     mutationFn: (id) =>
       client
         .POST('/api/boards/favorite', { params: { query: { id } } })
-        .then(({ data }) => data as ApiSchema['UserGroupEntity']),
+        .then(({ data }) => data!),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['boards', 'list'] });
     },
@@ -73,9 +71,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     ApiSchema['CreateCardDTO']
   > => ({
     mutationFn: (dto) =>
-      client
-        .POST('/api/cards/new', { body: dto })
-        .then(({ data }) => data as ApiSchema['CardEntity']),
+      client.POST('/api/cards/new', { body: dto }).then(({ data }) => data!),
   }),
   moveCard: (): MutationOptions<
     ApiSchema['CardEntity'],
@@ -83,9 +79,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     ApiSchema['MoveCardDTO']
   > => ({
     mutationFn: (dto) =>
-      client
-        .PATCH('/api/cards/move', { body: dto })
-        .then(({ data }) => data as ApiSchema['CardEntity']),
+      client.PATCH('/api/cards/move', { body: dto }).then(({ data }) => data!),
     async onSuccess() {
       await queryClient.invalidateQueries({ queryKey: ['boards'] });
     },
@@ -96,9 +90,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     ApiSchema['CreateColumnDTO']
   > => ({
     mutationFn: (dto) =>
-      client
-        .POST('/api/columns/new', { body: dto })
-        .then(({ data }) => data as ApiSchema['ColumnEntity']),
+      client.POST('/api/columns/new', { body: dto }).then(({ data }) => data!),
   }),
   updateColumn: (): MutationOptions<
     ApiSchema['ColumnEntity'],
@@ -106,9 +98,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     ApiSchema['UpdateColumnDTO']
   > => ({
     mutationFn: (dto) =>
-      client
-        .PATCH('/api/columns', { body: dto })
-        .then(({ data }) => data as ApiSchema['ColumnEntity']),
+      client.PATCH('/api/columns', { body: dto }).then(({ data }) => data!),
   }),
   moveColumn: (): MutationOptions<
     ApiSchema['ColumnEntity'],
@@ -116,9 +106,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     ApiSchema['MoveColumnDTO']
   > => ({
     mutationFn: (dto) =>
-      client
-        .POST('/api/columns/move', { body: dto })
-        .then(({ data }) => data as ApiSchema['ColumnEntity']),
+      client.POST('/api/columns/move', { body: dto }).then(({ data }) => data!),
     async onSuccess(data) {
       await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
     },
@@ -129,9 +117,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     ApiSchema['DeleteColumnDTO']
   > => ({
     mutationFn: (dto) =>
-      client
-        .DELETE('/api/columns', { body: dto })
-        .then(({ data }) => data as ApiSchema['ColumnEntity']),
+      client.DELETE('/api/columns', { body: dto }).then(({ data }) => data!),
     async onSuccess(data) {
       await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
     },
@@ -142,9 +128,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     ApiSchema['UpdateContentCardDTO']
   > => ({
     mutationFn: (dto) =>
-      client
-        .PUT('/api/cards', { body: dto })
-        .then(({ data }) => data as ApiSchema['CardEntity']),
+      client.PUT('/api/cards', { body: dto }).then(({ data }) => data!),
     async onSuccess(data) {
       await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
     },
@@ -155,9 +139,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     ApiSchema['UpdateCoverCardDTO']
   > => ({
     mutationFn: (dto) =>
-      client
-        .PUT('/api/cards/cover', { body: dto })
-        .then(({ data }) => data as ApiSchema['CardEntity']),
+      client.PUT('/api/cards/cover', { body: dto }).then(({ data }) => data!),
     async onSuccess(data) {
       await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
     },
@@ -168,9 +150,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     ApiSchema['UpdateCardDTO']
   > => ({
     mutationFn: (dto) =>
-      client
-        .PATCH('/api/cards', { body: dto })
-        .then(({ data }) => data as ApiSchema['CardEntity']),
+      client.PATCH('/api/cards', { body: dto }).then(({ data }) => data!),
     async onSuccess(data) {
       await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
     },
@@ -183,7 +163,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     mutationFn: ([card_id, board_id]) =>
       client
         .DELETE('/api/cards', { params: { query: { card_id, board_id } } })
-        .then(({ data }) => data as ApiSchema['CardEntity']),
+        .then(({ data }) => data!),
     async onSuccess(data) {
       await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
     },
@@ -196,7 +176,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     mutationFn: (id) =>
       client
         .DELETE('/api/boards', { params: { query: { id } } })
-        .then(({ data }) => data as ApiSchema['BoardEntity']),
+        .then(({ data }) => data!),
     async onSuccess() {
       await queryClient.invalidateQueries({ queryKey: ['boards', 'list'] });
     },
@@ -209,7 +189,7 @@ export const boardQueries = (queryClient: QueryClient) => ({
     mutationFn: (dto) =>
       client
         .POST('/api/boards/invite', { body: dto })
-        .then(({ data }) => data as ApiSchema['BoardMemberEntity']),
+        .then(({ data }) => data!),
     async onSuccess() {
       await queryClient.invalidateQueries({ queryKey: ['boards'] });
     },
@@ -222,7 +202,20 @@ export const boardQueries = (queryClient: QueryClient) => ({
     mutationFn: (dto) =>
       client
         .POST('/api/boards/exclude', { body: dto })
-        .then(({ data }) => data as ApiSchema['BoardMemberEntity']),
+        .then(({ data }) => data!),
+    async onSuccess() {
+      await queryClient.invalidateQueries({ queryKey: ['boards'] });
+    },
+  }),
+  setCardMember: (): MutationOptions<
+    ApiSchema['CardMemberEntity'],
+    Error,
+    ApiSchema['SetCardMemberDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client
+        .POST('/api/cards/members', { body: dto })
+        .then(({ data }) => data!),
     async onSuccess() {
       await queryClient.invalidateQueries({ queryKey: ['boards'] });
     },

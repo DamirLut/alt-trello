@@ -8,6 +8,7 @@
 }
 
 .PopoverContent {
+  z-index: 2;
   --outline-color: var(--color-overlay);
   border-radius: var(--border-radius);
   padding: 12px;

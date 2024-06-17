@@ -5,7 +5,7 @@ import { BoardEntity } from './entities/board.entity';
 import { BoardMemberEntity } from './entities/board-member.entity';
 import { BoardSettingEntity } from './entities/board-setting.entity';
 import { CardEntity } from './entities/card.entity';
-import { CardMemberEntity } from './entities/card-members.entity';
+import { CardMemberEntity } from './entities/card-member.entity';
 import { ColumnEntity } from './entities/column.entity';
 import { UserGroupEntity } from './entities/user-group.entity';
 import { BoardController } from './board.controller';
