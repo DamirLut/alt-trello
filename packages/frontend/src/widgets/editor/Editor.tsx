@@ -12,7 +12,7 @@ import { boardQueries } from 'entities/board';
 
 import { i18n, tools } from './tools';
 
-import './editor.module.scss';
+import './editor.scss';
 
 interface EditorProps {
   data: ApiSchema['CardEntity'];
