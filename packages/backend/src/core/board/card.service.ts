@@ -7,6 +7,7 @@ import { arrayMove } from '#root/lib/utils/array';
 
 import { CreateCardDTO } from './dto/create-card.dto';
 import { MoveCardDTO } from './dto/move-card.dto';
+import type { SetCardLabelDTO } from './dto/set-card-label.dto';
 import type { SetCardMemberDTO } from './dto/set-card-member.dto';
 import { UpdateCardDTO } from './dto/update-card-title.dto';
 import {
@@ -63,6 +64,7 @@ export class CardService {
       content: new EditorJSData(),
       files: 0,
       comments: 0,
+      labels: new Set(),
     });
 
     await this.entityManager.persistAndFlush(card);
@@ -233,5 +235,25 @@ export class CardService {
     await this.entityManager.persistAndFlush(member);
 
     return member;
+  }
+
+  async setLabel(dto: SetCardLabelDTO) {
+    const card = await this.cardRepository.findOne({
+      card_id: dto.card_id,
+      board: dto.board_id,
+    });
+    if (!card) {
+      throw new NotFoundException('Card not found');
+    }
+
+    if (card.labels.has(dto.label_id)) {
+      card.labels.delete(dto.label_id);
+    } else {
+      card.labels.add(dto.label_id);
+    }
+
+    await this.entityManager.persistAndFlush(card);
+
+    return card;
   }
 }

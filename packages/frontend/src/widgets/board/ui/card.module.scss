@@ -60,3 +60,14 @@
 .mouse-over {
   border: opacity(var(--color-text), 50%) 1px solid;
 }
+
+.labels {
+  display: flex;
+  gap: 5px;
+}
+
+.label {
+  min-width: 36px;
+  height: 12px;
+  border-radius: var(--border-radius);
+}

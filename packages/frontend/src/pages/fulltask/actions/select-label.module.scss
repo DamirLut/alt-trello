@@ -1,0 +1,41 @@
+.trigger > button {
+  width: 100%;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  > button {
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    width: 200px;
+
+    > span {
+      font-size: 14px;
+      margin-right: auto;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  > svg {
+    cursor: pointer;
+  }
+}
+
+.title {
+  width: 200px;
+  height: 20px;
+  color: var(--color-white);
+  text-align: left;
+
+  &:is(input) {
+    background: transparent;
+  }
+}

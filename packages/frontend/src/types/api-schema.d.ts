@@ -50,6 +50,9 @@ export interface paths {
   '/api/boards/exclude': {
     post: operations['BoardController_excludeMember'];
   };
+  '/api/boards/settings/label': {
+    patch: operations['BoardController_updateLabel'];
+  };
   '/api/columns/new': {
     post: operations['ColumnController_newColumn'];
   };
@@ -80,6 +83,9 @@ export interface paths {
   };
   '/api/cards/members': {
     post: operations['CardController_setMember'];
+  };
+  '/api/cards/label': {
+    post: operations['CardController_setLabel'];
   };
   '/api/comments': {
     get: operations['CommentController_getCards'];
@@ -115,8 +121,14 @@ export interface components {
     BoardThemeSetting: {
       color: string;
     };
+    BoardLabelSetting: {
+      label: string;
+      color: string;
+      id: number;
+    };
     BoardSetting: {
       theme: components['schemas']['BoardThemeSetting'];
+      labels: components['schemas']['BoardLabelSetting'][];
     };
     BoardSettingEntity: {
       data: components['schemas']['BoardSetting'];
@@ -143,6 +155,7 @@ export interface components {
       files: number;
       comments: number;
       members: components['schemas']['CardMemberEntity'][];
+      labels: number[];
     };
     ColumnEntity: {
       id: string;
@@ -193,6 +206,11 @@ export interface components {
     ExcludeMemberDTO: {
       board_id: string;
       user_id: number;
+    };
+    UpdateLabelDTO: {
+      board_id: string;
+      label_id: number;
+      label: string;
     };
     CreateColumnDTO: {
       board_id: string;
@@ -246,6 +264,11 @@ export interface components {
     SetCardMemberDTO: {
       board_id: string;
       user_id: number;
+      card_id: number;
+    };
+    SetCardLabelDTO: {
+      board_id: string;
+      label_id: number;
       card_id: number;
     };
     CreateCommentDTO: {
@@ -445,6 +468,20 @@ export interface operations {
       };
     };
   };
+  BoardController_updateLabel: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateLabelDTO'];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['BoardEntity'];
+        };
+      };
+    };
+  };
   ColumnController_newColumn: {
     requestBody: {
       content: {
@@ -625,6 +662,20 @@ export interface operations {
       201: {
         content: {
           'application/json': components['schemas']['CardMemberEntity'];
+        };
+      };
+    };
+  };
+  CardController_setLabel: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SetCardLabelDTO'];
+      };
+    };
+    responses: {
+      201: {
+        content: {
+          'application/json': components['schemas']['CardEntity'];
         };
       };
     };

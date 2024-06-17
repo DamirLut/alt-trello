@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { client } from 'api';
 
@@ -34,9 +34,9 @@ export const AppBar: FC = () => {
   return (
     <header className={Style['app-bar']}>
       <nav>
-        <Text Component={'a'} href='/' className={Style.logo}>
-          АльТрелло
-        </Text>
+        <Link to='/'>
+          <Text className={Style.logo}>АльТрелло</Text>
+        </Link>
         <Separator vertical />
       </nav>
       <nav>

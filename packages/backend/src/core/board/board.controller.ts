@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -16,6 +17,7 @@ import type { JwtPayload } from '#core/auth/auth.type';
 import { CreateBoardDTO } from './dto/create-board.dto';
 import { ExcludeMemberDTO } from './dto/exclude-member.dto';
 import { InviteMemberDTO } from './dto/invite-member.dto';
+import { UpdateLabelDTO } from './dto/update-label.dto';
 import { BoardEntity } from './entities/board.entity';
 import { BoardMemberEntity } from './entities/board-member.entity';
 import { UserGroupEntity } from './entities/user-group.entity';
@@ -64,6 +66,12 @@ export class BoardController {
   @ApiResponse({ status: 200, type: BoardMemberEntity })
   excludeMember(@Body() dto: ExcludeMemberDTO) {
     return this.boardService.excludeMember(dto);
+  }
+
+  @Patch('/settings/label')
+  @ApiResponse({ status: 200, type: BoardEntity })
+  updateLabel(@Body() dto: UpdateLabelDTO) {
+    return this.boardService.updateLabel(dto);
   }
 
   @Delete()

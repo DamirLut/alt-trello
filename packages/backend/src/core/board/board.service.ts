@@ -14,12 +14,14 @@ import { arrayMove } from '#root/lib/utils/array';
 import type { CreateBoardDTO } from './dto/create-board.dto';
 import type { ExcludeMemberDTO } from './dto/exclude-member.dto';
 import type { InviteMemberDTO } from './dto/invite-member.dto';
+import type { UpdateLabelDTO } from './dto/update-label.dto';
 import { BoardEntity } from './entities/board.entity';
 import {
   BoardMemberEntity,
   BoardPermission,
 } from './entities/board-member.entity';
 import {
+  BoardLabelSetting,
   BoardSetting,
   BoardSettingEntity,
   BoardThemeSetting,
@@ -76,6 +78,15 @@ export class BoardService {
     const settings = this.boardSettingRepository.create({
       data: new BoardSetting({
         theme: new BoardThemeSetting({ color: dto.color }),
+        labels: [
+          '#0b6e99',
+          '#0f7b6c',
+          '#d9730d',
+          '#b3297b',
+          '#ddaa03',
+          '#6940a5',
+          '#e14747',
+        ].map((color, id) => new BoardLabelSetting({ color, id: id + 1 })),
       }),
       board,
     });
@@ -275,5 +286,30 @@ export class BoardService {
     await this.entityManager.removeAndFlush(member);
 
     return member;
+  }
+
+  async updateLabel(dto: UpdateLabelDTO) {
+    const board = await this.boardRepository.findOne(
+      { id: dto.board_id },
+      { populate: ['settings'] },
+    );
+
+    if (!board) {
+      throw new NotFoundException('Board not found');
+    }
+
+    const label = board.settings?.data.labels.find(
+      (label) => label.id === dto.label_id,
+    );
+
+    if (!label) {
+      throw new NotFoundException('Label not found');
+    }
+
+    label.label = dto.label;
+
+    await this.entityManager.persistAndFlush(board);
+
+    return board;
   }
 }

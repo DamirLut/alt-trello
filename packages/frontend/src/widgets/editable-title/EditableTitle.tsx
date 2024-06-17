@@ -9,11 +9,15 @@ interface EditableTitleProps {
   value: string;
   as?: FC;
   className?: string;
+  readonly?: boolean;
 }
 
 export const EditableTitle: FC<EditableTitleProps> = (props) => {
   const [value, setValue] = useState(props.value);
-  const [isEdit, setIsEdit] = useState(props.value === '');
+  const [isEdit, setIsEdit] = useState(() => {
+    if (props.readonly) return false;
+    return props.value === '';
+  });
   const ref = useRef(null);
 
   useEffect(() => {
@@ -23,6 +27,9 @@ export const EditableTitle: FC<EditableTitleProps> = (props) => {
   const handleUpdate = () => {
     setIsEdit(false);
     props.onChange?.(value);
+    if (!value) {
+      setValue(props.value);
+    }
   };
 
   useOutsideClick(ref, handleUpdate);
@@ -46,8 +53,13 @@ export const EditableTitle: FC<EditableTitleProps> = (props) => {
 
   const Component = props?.as ?? Text;
 
+  const onClick = () => {
+    if (props.readonly) return;
+    setIsEdit(true);
+  };
+
   return (
-    <Component onClick={() => setIsEdit(true)} className={props.className}>
+    <Component onClick={onClick} className={props.className}>
       {value}
     </Component>
   );

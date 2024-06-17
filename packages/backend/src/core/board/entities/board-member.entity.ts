@@ -34,7 +34,7 @@ export class BoardMemberEntity {
   })
   updatedAt = new Date();
 
-  @ManyToOne(() => BoardEntity)
+  @ManyToOne(() => BoardEntity, { deleteRule: 'cascade' })
   board: Rel<BoardEntity>;
 
   @ApiProperty({ type: () => UserEntity })

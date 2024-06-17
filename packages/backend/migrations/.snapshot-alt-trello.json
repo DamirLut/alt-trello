@@ -451,6 +451,16 @@
           "nullable": false,
           "default": "0",
           "mappedType": "integer"
+        },
+        "labels": {
+          "name": "labels",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'[]'",
+          "mappedType": "json"
         }
       },
       "name": "cards",
@@ -769,6 +779,7 @@
             "id"
           ],
           "referencedTableName": "public.boards",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "board-members_user_id_foreign": {

@@ -34,6 +34,9 @@ export class BoardSetting {
   @ApiProperty({ type: () => BoardThemeSetting })
   theme: BoardThemeSetting;
 
+  @ApiProperty({ type: () => [BoardLabelSetting] })
+  labels: BoardLabelSetting[] = [];
+
   constructor(props: Partial<BoardSetting>) {
     Object.assign(this, props);
   }
@@ -44,6 +47,19 @@ export class BoardThemeSetting {
   color: string;
 
   constructor(props: Partial<BoardThemeSetting>) {
+    Object.assign(this, props);
+  }
+}
+
+export class BoardLabelSetting {
+  @ApiProperty({ type: String })
+  label = '';
+  @ApiProperty({ type: String })
+  color = '';
+  @ApiProperty({ type: Number })
+  id: number;
+
+  constructor(props: Partial<BoardLabelSetting>) {
     Object.assign(this, props);
   }
 }

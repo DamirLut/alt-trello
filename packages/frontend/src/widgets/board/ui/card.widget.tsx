@@ -2,6 +2,7 @@ import { type FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useQueryClient } from '@tanstack/react-query';
 import type { ApiSchema } from 'api';
 import classNames from 'classnames';
 
@@ -21,6 +22,12 @@ interface CardColumnProps {
 export const Card: FC<CardColumnProps> = ({ data }) => {
   const [isMouseOver, setMouseIsOver] = useState(false);
   const navigate = useNavigate();
+  const client = useQueryClient();
+
+  const board = client.getQueryData<ApiSchema['BoardEntity']>([
+    'boards',
+    data.board,
+  ]);
 
   const {
     setNodeRef,
@@ -49,6 +56,11 @@ export const Card: FC<CardColumnProps> = ({ data }) => {
       />
     );
   }
+
+  const labels =
+    (data?.labels
+      .map((id) => board?.settings.data.labels.find((label) => label.id === id))
+      .filter((label) => !!label) as ApiSchema['BoardLabelSetting'][]) ?? [];
 
   return (
     <UICard
@@ -80,6 +92,16 @@ export const Card: FC<CardColumnProps> = ({ data }) => {
         />
       )}
       <div className={Style.content}>
+        <div className={Style.labels}>
+          {labels.map((label) => (
+            <div
+              key={label.id}
+              className={Style.label}
+              title={label.label}
+              style={{ backgroundColor: label.color }}
+            />
+          ))}
+        </div>
         <pre>
           <Text>{data.title}</Text>
         </pre>

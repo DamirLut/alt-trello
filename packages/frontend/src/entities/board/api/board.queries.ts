@@ -220,4 +220,28 @@ export const boardQueries = (queryClient: QueryClient) => ({
       await queryClient.invalidateQueries({ queryKey: ['boards'] });
     },
   }),
+  setCardLabel: (): MutationOptions<
+    ApiSchema['CardEntity'],
+    Error,
+    ApiSchema['SetCardLabelDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client.POST('/api/cards/label', { body: dto }).then(({ data }) => data!),
+    async onSuccess() {
+      await queryClient.invalidateQueries({ queryKey: ['boards'] });
+    },
+  }),
+  updateLabel: (): MutationOptions<
+    ApiSchema['BoardEntity'],
+    Error,
+    ApiSchema['UpdateLabelDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client
+        .PATCH('/api/boards/settings/label', { body: dto })
+        .then(({ data }) => data!),
+    async onSuccess() {
+      await queryClient.invalidateQueries({ queryKey: ['boards'] });
+    },
+  }),
 });

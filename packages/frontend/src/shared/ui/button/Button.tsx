@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { CSSProperties, FC } from 'react';
 import classNames from 'classnames';
 
 import { RootComponent, type RootComponentProps } from 'ui/root-component';
@@ -18,11 +18,17 @@ export const Button: FC<ButtonProps> = ({
   color,
   ...props
 }) => {
+  const btnStyle = { '--color': `var(--color-${color})` } as CSSProperties;
+
+  if (style) {
+    Object.assign(btnStyle, style);
+  }
+
   return (
     <RootComponent
       Component={Component}
       baseClassName={classNames(Style.button, Style[`button_${variant}`])}
-      style={Object.assign(style ?? {}, { '--color': `var(--color-${color})` })}
+      style={btnStyle}
       {...props}
     />
   );

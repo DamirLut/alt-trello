@@ -9,6 +9,8 @@ import {
 } from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 
+import { SetType } from '#common/mikro-orm/set-type';
+
 import type { EditorJSData } from '../dto/update-content-card.dto';
 
 import { BoardEntity } from './board.entity';
@@ -88,4 +90,8 @@ export class CardEntity {
   @ApiProperty({ type: () => [CardMemberEntity] })
   @OneToMany(() => CardMemberEntity, (e) => e.card, { orphanRemoval: true })
   members = new Collection<Rel<CardMemberEntity>>(this);
+
+  @ApiProperty({ type: [Number] })
+  @Property({ type: SetType<number>, default: '[]' })
+  labels: Set<number>;
 }
