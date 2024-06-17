@@ -10,6 +10,7 @@ const AuthPage = Loadable(lazy(() => import('pages/auth')));
 const BoardPage = Loadable(lazy(() => import('pages/board')));
 const TaskPage = Loadable(lazy(() => import('pages/fulltask')));
 const ShareBoardPage = Loadable(lazy(() => import('pages/share-board')));
+const ProfilePage = Loadable(lazy(() => import('pages/profile')));
 
 export const Router: FC = () => {
   return useRoutes([
@@ -22,6 +23,10 @@ export const Router: FC = () => {
             {
               path: '/',
               element: <HomePage />,
+            },
+            {
+              path: '/profile',
+              element: <ProfilePage />,
             },
             {
               path: '/b/:id/:slug',

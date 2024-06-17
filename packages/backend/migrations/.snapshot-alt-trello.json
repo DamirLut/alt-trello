@@ -901,6 +901,7 @@
             "id"
           ],
           "referencedTableName": "public.users",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       },

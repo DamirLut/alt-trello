@@ -15,6 +15,10 @@ export class AuthEntity extends BaseEntity {
   @Property()
   email: string;
 
-  @OneToOne(() => UserEntity, { owner: true })
+  @OneToOne(() => UserEntity, {
+    owner: true,
+    orphanRemoval: true,
+    deleteRule: 'cascade',
+  })
   user: UserEntity;
 }

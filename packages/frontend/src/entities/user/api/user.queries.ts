@@ -1,5 +1,9 @@
-import { QueryClient, queryOptions } from '@tanstack/react-query';
-import { client } from 'api';
+import {
+  type MutationOptions,
+  QueryClient,
+  queryOptions,
+} from '@tanstack/react-query';
+import { type ApiSchema, client } from 'api';
 
 import { ApiError } from '../../../types/api';
 
@@ -18,6 +22,17 @@ export const userQueries = (queryClient: QueryClient) => ({
         return true;
       },
     }),
+  updateProfile: (): MutationOptions<
+    ApiSchema['UserEntity'],
+    Error,
+    ApiSchema['UpdateProfileDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client.PATCH('/api/user', { body: dto }).then(({ data }) => data!),
+    async onSuccess() {
+      await queryClient.invalidateQueries({ queryKey: ['user'] });
+    },
+  }),
   searchUser: (username: string) =>
     queryOptions({
       queryKey: ['user', 'search', username],
@@ -30,4 +45,10 @@ export const userQueries = (queryClient: QueryClient) => ({
           .then(({ data }) => data),
       enabled: !!username,
     }),
+  deleteProfile: (): MutationOptions<ApiSchema['UserEntity'], Error, void> => ({
+    mutationFn: () => client.DELETE('/api/user', {}).then(({ data }) => data!),
+    async onSuccess() {
+      await queryClient.invalidateQueries({ queryKey: ['user'] });
+    },
+  }),
 });

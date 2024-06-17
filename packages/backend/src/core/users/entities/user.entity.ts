@@ -29,9 +29,9 @@ export class UserEntity extends BaseEntity {
   @Property({ default: '' })
   email: string;
 
-  @OneToMany(() => BoardMemberEntity, (e) => e.user)
+  @OneToMany(() => BoardMemberEntity, (e) => e.user, { orphanRemoval: true })
   boards = new Collection<Rel<BoardMemberEntity>>(this);
 
-  @OneToMany(() => UserGroupEntity, (e) => e.user)
+  @OneToMany(() => UserGroupEntity, (e) => e.user, { orphanRemoval: true })
   groups = new Collection<Rel<UserGroupEntity>>(this);
 }

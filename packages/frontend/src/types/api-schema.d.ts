@@ -15,6 +15,8 @@ export interface paths {
   };
   '/api/user': {
     get: operations['UserController_getSelf'];
+    delete: operations['UserController_deleteProfile'];
+    patch: operations['UserController_updateProfile'];
   };
   '/api/user/search': {
     get: operations['UserController_searchUser'];
@@ -103,6 +105,10 @@ export interface components {
       lastActiveAt: string;
       username: string;
       avatar: string;
+      email: string;
+    };
+    UpdateProfileDTO: {
+      username: string;
       email: string;
     };
     AuthMethodDTO: {
@@ -318,6 +324,29 @@ export interface operations {
     };
   };
   UserController_getSelf: {
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['UserEntity'];
+        };
+      };
+    };
+  };
+  UserController_deleteProfile: {
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['UserEntity'];
+        };
+      };
+    };
+  };
+  UserController_updateProfile: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateProfileDTO'];
+      };
+    };
     responses: {
       200: {
         content: {
