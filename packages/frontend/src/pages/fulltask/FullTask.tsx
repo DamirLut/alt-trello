@@ -66,7 +66,7 @@ export const FullTask: FC = () => {
               <Text className={Style.description}>Участники</Text>
               <UserStack
                 avatars={
-                  data?.members.map((member) => member.user.avatar) || []
+                  data?.members.map((member) => member.user.avatar) ?? []
                 }
               />
             </div>
