@@ -26,7 +26,9 @@ export const FullTask: FC = () => {
   const taskId = Number(task?.split('-')[0]);
   const navigate = useNavigate();
   const client = useQueryClient();
-  const { data } = useQuery(boardQueries(client).getCard(taskId, board_id!));
+  const { data, isPending } = useQuery(
+    boardQueries(client).getCard(taskId, board_id!),
+  );
   const { mutateAsync } = useMutation(boardQueries(client).updateCardTitle());
 
   const board = client.getQueryData<ApiSchema['BoardEntity']>([
@@ -60,30 +62,35 @@ export const FullTask: FC = () => {
             onChange={onTitleChange}
             as={Title}
             className={Style.title}
+            readonly={isPending}
           />
           <div className={Style.attributes}>
-            <div>
-              <Text className={Style.description}>Участники</Text>
-              <UserStack
-                avatars={
-                  data?.members.map((member) => member.user.avatar) ?? []
-                }
-              />
-            </div>
-            <div>
-              <Text className={Style.description}>Метки</Text>
-              <div className={Style.labels}>
-                {labels.map((label) => (
-                  <div
-                    key={label.id}
-                    className={Style.label}
-                    style={{ backgroundColor: label.color }}
-                  >
-                    {label?.label}
-                  </div>
-                ))}
+            {data && data.members.length > 0 && (
+              <div>
+                <Text className={Style.description}>Участники</Text>
+                <UserStack
+                  avatars={
+                    data?.members.map((member) => member.user.avatar) ?? []
+                  }
+                />
               </div>
-            </div>
+            )}
+            {data && data.labels.length > 0 && (
+              <div>
+                <Text className={Style.description}>Метки</Text>
+                <div className={Style.labels}>
+                  {labels.map((label) => (
+                    <div
+                      key={label.id}
+                      className={Style.label}
+                      style={{ backgroundColor: label.color }}
+                    >
+                      {label?.label}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           <Text className={Style.description}>Описание</Text>
           {data && <Editor data={data} />}

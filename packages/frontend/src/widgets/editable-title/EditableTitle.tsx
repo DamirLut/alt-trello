@@ -14,10 +14,9 @@ interface EditableTitleProps {
 
 export const EditableTitle: FC<EditableTitleProps> = (props) => {
   const [value, setValue] = useState(props.value);
-  const [isEdit, setIsEdit] = useState(() => {
-    if (props.readonly) return false;
-    return props.value === '';
-  });
+  const [isEdit, setIsEdit] = useState(
+    props.readonly ? false : props.value === '',
+  );
   const ref = useRef(null);
 
   useEffect(() => {
