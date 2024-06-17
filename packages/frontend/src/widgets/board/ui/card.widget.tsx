@@ -66,9 +66,10 @@ export const Card: FC<CardColumnProps> = ({ data }) => {
       onMouseLeave={() => {
         setMouseIsOver(false);
       }}
-      onClick={() =>
-        navigate(`./${data.card_id}-${data.slug}`, { relative: 'path' })
-      }
+      onClick={() => {
+        navigate(`./${data.card_id}-${data.slug}`, { relative: 'path' });
+        console.log('click', data.card_id);
+      }}
     >
       {data.cover && (
         <img

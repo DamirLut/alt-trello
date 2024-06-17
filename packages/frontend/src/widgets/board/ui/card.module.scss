@@ -14,10 +14,9 @@
   }
 
   .cover {
-    border-radius: var(--border-radius);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    border-radius: 16px;
     object-fit: cover;
+    padding: 5px;
     width: 100%;
   }
 

@@ -11,4 +11,9 @@ export class CreateBoardDTO {
   @IsOptional()
   @ApiProperty()
   color: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  description: string;
 }

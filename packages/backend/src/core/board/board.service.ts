@@ -57,6 +57,7 @@ export class BoardService {
       createdAt: new Date(),
       updatedAt: new Date(),
       slug: '',
+      description: dto.description ?? '',
     });
 
     const member = this.memberRepository.create({
@@ -117,10 +118,19 @@ export class BoardService {
     );
 
     members.forEach((member) => {
-      groups.push({
-        title: 'Доски ' + member.board.owner.username,
-        boards: [member.board],
-      } as unknown as (typeof groups)[0]);
+      const title = 'Доски пользователя: ' + member.board.owner.username;
+      const group = groups.find((group) => group.title === title);
+      if (group) {
+        ///@ts-expect-error boards is array?
+        group.boards.push(
+          member.board as unknown as (typeof groups)[0]['boards'][0],
+        );
+      } else {
+        groups.push({
+          title,
+          boards: [member.board],
+        } as unknown as (typeof groups)[0]);
+      }
     });
 
     const owners = await this.boardRepository.find(

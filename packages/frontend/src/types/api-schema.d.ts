@@ -107,6 +107,7 @@ export interface components {
     CreateBoardDTO: {
       title: string;
       color: string;
+      description: string;
     };
     BoardThemeSetting: {
       color: string;
@@ -161,6 +162,7 @@ export interface components {
       updatedAt: string;
       /** @example My Board */
       title: string;
+      description: string;
       /** @example 1 */
       owner: number;
       /** @example my-board */

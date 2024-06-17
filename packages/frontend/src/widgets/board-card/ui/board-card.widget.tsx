@@ -6,7 +6,7 @@ import type { ApiSchema } from 'api';
 import { IconStar, IconStarOutline } from 'assets/icons';
 import { boardQueries } from 'entities/board';
 import { Card } from 'ui/card';
-import { Heading } from 'ui/typography';
+import { Heading, Text } from 'ui/typography';
 import { UserStack } from 'widgets/user-stack';
 
 import Style from './board-card.module.scss';
@@ -48,6 +48,7 @@ export const BoardCard: FC<BoardCardProps> = ({ board, isFavorite }) => {
             />
           )}
         </div>
+        <Text className={Style.description}>{board.description}</Text>
         <div className={Style.footer}>
           <UserStack
             avatars={board.members.map((member) => member.user.avatar)}

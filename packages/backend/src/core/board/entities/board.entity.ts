@@ -35,6 +35,10 @@ export class BoardEntity {
   @Property()
   title: string;
 
+  @ApiProperty()
+  @Property({ default: '' })
+  description: string;
+
   @ApiProperty({ type: Number, example: 1 })
   @ManyToOne(() => UserEntity)
   owner: Rel<UserEntity>;
