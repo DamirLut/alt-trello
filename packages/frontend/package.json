@@ -35,6 +35,7 @@
     "@radix-ui/react-select": "^2.0.0",
     "@tanstack/react-query": "^5.45.0",
     "classnames": "^2.5.1",
+    "editorjs-drag-drop": "^1.1.14",
     "editorjs-toggle-block": "^0.3.16",
     "editorjs-undo": "^2.0.28",
     "openapi-fetch": "^0.9.7",

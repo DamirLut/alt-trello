@@ -4,6 +4,8 @@ import EditorJS from '@editorjs/editorjs';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { ApiSchema } from 'api';
 ///@ts-expect-error no @types
+import DragDrop from 'editorjs-drag-drop';
+///@ts-expect-error no @types
 import Undo from 'editorjs-undo';
 
 import { boardQueries } from 'entities/board';
@@ -54,6 +56,7 @@ export const Editor: FC<EditorProps> = ({ data }) => {
         ref.current = editor;
         const undo = new Undo({ editor });
         undo.initialize(data.content as never);
+        new DragDrop(editor);
 
         ///@ts-expect-error hard bind function
         editor.configuration.tools.image.config.actions[0].action =
