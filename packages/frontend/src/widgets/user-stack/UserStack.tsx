@@ -1,25 +1,45 @@
-import type { FC } from 'react';
+import type { CSSProperties, FC } from 'react';
 
+import { IconUserPlus } from 'assets/icons';
 import { Avatar } from 'ui/avatar';
 
 import Style from './user-stack.module.scss';
 
-interface UserStackProps {
-  avatars: (string | { url: string; title: string })[];
-  size?: number;
+interface AvatarProps {
+  url: string;
+  title: string;
+  indicator?: never;
 }
 
-export const UserStack: FC<UserStackProps> = ({ avatars, size }) => {
-  const normalized = avatars.map((avatar) => {
-    if (typeof avatar === 'object') {
-      return avatar;
-    }
+interface UserStackProps {
+  avatars: (string | AvatarProps)[];
+  size?: number;
+  style?: CSSProperties;
+  addButton?: boolean;
+  maxAvatars?: number;
+  onClick?: (item: string | AvatarProps | null) => void;
+}
 
-    return {
-      url: avatar,
-      title: '',
-    };
-  });
+export const UserStack: FC<UserStackProps> = ({
+  avatars,
+  size = 24,
+  style,
+  addButton,
+  maxAvatars,
+  onClick,
+}) => {
+  const normalized = avatars
+    .map((avatar) => {
+      if (typeof avatar === 'object') {
+        return avatar;
+      }
+
+      return {
+        url: avatar,
+        title: '',
+      };
+    })
+    .slice(0, maxAvatars);
 
   return (
     <div className={Style.stack}>
@@ -28,9 +48,20 @@ export const UserStack: FC<UserStackProps> = ({ avatars, size }) => {
           key={avatar.url}
           src={avatar.url}
           title={avatar.title}
-          size={size ?? 24}
+          size={size}
+          style={style}
+          onClick={() => onClick?.(avatar)}
         />
       ))}
+      {addButton && (
+        <div
+          className={Style.add}
+          style={Object.assign({ width: `${size}px` }, style)}
+          onClick={() => onClick?.(null)}
+        >
+          <IconUserPlus />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { type FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { IconApp, IconGoogle, IconVK } from 'assets/icons';
 import { authQueries } from 'entities/auth/api';
@@ -40,7 +40,8 @@ const MethodsButtons = {
 
 export const AuthPage: FC = () => {
   const { data: methods } = useQuery(authQueries.getOAuthMethods());
-  const userQuery = useQuery(userQueries.getSelf());
+  const client = useQueryClient();
+  const userQuery = useQuery(userQueries(client).getSelf());
   const navigate = useNavigate();
 
   useEffect(() => {

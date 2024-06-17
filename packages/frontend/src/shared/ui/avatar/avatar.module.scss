@@ -1,4 +1,9 @@
 .avatar {
   border-radius: 9999px;
   user-select: none;
+  position: relative;
+
+  > img {
+    border-radius: inherit;
+  }
 }

@@ -11,6 +11,7 @@
 
 .DropdownMenuContent,
 .DropdownMenuSubContent {
+  z-index: 999;
   min-width: 220px;
   background-color: var(--color-overlay);
   border-radius: 6px;

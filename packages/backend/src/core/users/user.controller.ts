@@ -1,4 +1,10 @@
-import { Controller, Get, NotFoundException, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { JwtUser } from '#core/auth/auth.decorator';
@@ -24,5 +30,11 @@ export class UserController {
     }
 
     return user;
+  }
+
+  @Get('/search')
+  @ApiResponse({ status: 200, type: [UserEntity] })
+  searchUser(@Query('username') username: string) {
+    return this.userService.searchByUsername(username);
   }
 }

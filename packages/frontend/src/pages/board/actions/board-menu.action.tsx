@@ -1,15 +1,19 @@
 import type { FC } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { Button } from 'ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from 'ui/dropdown-menu';
 
+import { DeleteAction } from './delete-board.action';
+
 export const BoardMenuAction: FC = () => {
+  const { id } = useParams<{ id: string }>();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -19,7 +23,7 @@ export const BoardMenuAction: FC = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Доска</DropdownMenuLabel>
-        <DropdownMenuItem variant='red'>Удалить</DropdownMenuItem>
+        <DeleteAction board_id={id ?? ''} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

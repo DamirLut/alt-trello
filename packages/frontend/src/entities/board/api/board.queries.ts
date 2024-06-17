@@ -188,4 +188,43 @@ export const boardQueries = (queryClient: QueryClient) => ({
       await queryClient.invalidateQueries({ queryKey: ['boards', data.board] });
     },
   }),
+  deleteBoard: (): MutationOptions<
+    ApiSchema['BoardEntity'],
+    Error,
+    string
+  > => ({
+    mutationFn: (id) =>
+      client
+        .DELETE('/api/boards', { params: { query: { id } } })
+        .then(({ data }) => data as ApiSchema['BoardEntity']),
+    async onSuccess() {
+      await queryClient.invalidateQueries({ queryKey: ['boards', 'list'] });
+    },
+  }),
+  inviteMember: (): MutationOptions<
+    ApiSchema['BoardMemberEntity'],
+    Error,
+    ApiSchema['InviteMemberDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client
+        .POST('/api/boards/invite', { body: dto })
+        .then(({ data }) => data as ApiSchema['BoardMemberEntity']),
+    async onSuccess() {
+      await queryClient.invalidateQueries({ queryKey: ['boards'] });
+    },
+  }),
+  excludeMember: (): MutationOptions<
+    ApiSchema['BoardMemberEntity'],
+    Error,
+    ApiSchema['ExcludeMemberDTO']
+  > => ({
+    mutationFn: (dto) =>
+      client
+        .POST('/api/boards/exclude', { body: dto })
+        .then(({ data }) => data as ApiSchema['BoardMemberEntity']),
+    async onSuccess() {
+      await queryClient.invalidateQueries({ queryKey: ['boards'] });
+    },
+  }),
 });

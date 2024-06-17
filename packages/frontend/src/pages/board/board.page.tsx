@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { CSSProperties, FC } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTitle } from 'hooks/useTitle';
@@ -41,17 +41,35 @@ export const BoardPage: FC = () => {
   }
 
   return (
-    <div className={Style.page}>
+    <div
+      className={Style.page}
+      style={
+        {
+          '--background': `var(--gradient-${board?.settings?.data?.theme?.color})`,
+        } as CSSProperties
+      }
+    >
       <div className={Style.head}>
         <Title>{board?.title ?? params.slug}</Title>
         <UserStack
           size={48}
+          style={
+            {
+              '--border-width': '4px',
+              '--color-overlay': 'var(--color-background)',
+            } as CSSProperties
+          }
           avatars={
             board?.members?.map((member) => ({
               url: member.user.avatar,
               title: member.user.username,
             })) ?? []
           }
+          addButton
+          onClick={(item) => {
+            if (item !== null) return;
+            navigate('./share');
+          }}
         />
         <BoardMenuAction />
       </div>

@@ -25,6 +25,10 @@ export class UserEntity extends BaseEntity {
   @Property()
   avatar: string;
 
+  @ApiProperty()
+  @Property({ default: '' })
+  email: string;
+
   @OneToMany(() => BoardMemberEntity, (e) => e.user)
   boards = new Collection<Rel<BoardMemberEntity>>(this);
 

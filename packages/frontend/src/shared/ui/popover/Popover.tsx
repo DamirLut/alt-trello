@@ -9,7 +9,8 @@ export const PopoverTrigger = PopoverPrimitive.Trigger;
 
 export const PopoverContent = forwardRef<
   HTMLDivElement,
-  PropsWithChildren<{ className?: string }>
+  PropsWithChildren<{ className?: string }> &
+    PopoverPrimitive.PopoverContentProps
 >(({ children, className, ...props }, forwardedRef) => (
   <PopoverPrimitive.Portal>
     <PopoverPrimitive.Content

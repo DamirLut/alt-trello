@@ -7,12 +7,16 @@ import {
 } from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 
+import { SetType } from '#common/mikro-orm/set-type';
 import { UserEntity } from '#core/users/entities/user.entity';
 
 import { BoardEntity } from './board.entity';
 
 export enum BoardPermission {
   Owner = 'owner',
+  Member = 'member',
+  Commenter = 'commenter',
+  Reader = 'reader',
 }
 
 @Entity({ tableName: 'board-members' })
@@ -21,13 +25,12 @@ export class BoardMemberEntity {
   @PrimaryKey({ hidden: true })
   id: number;
 
-  @Property({ fieldName: 'created_at', hidden: true })
+  @Property({ fieldName: 'created_at' })
   createdAt = new Date();
 
   @Property({
     fieldName: 'updated_at',
     onUpdate: () => new Date(),
-    hidden: true,
   })
   updatedAt = new Date();
 
@@ -42,8 +45,8 @@ export class BoardMemberEntity {
 
   @ApiProperty({ enum: BoardPermission, type: [BoardPermission] })
   @Property({
-    type: 'jsonb',
+    type: SetType,
     default: '[]',
   })
-  permission: BoardPermission[];
+  permission = new Set<BoardPermission>();
 }

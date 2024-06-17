@@ -32,6 +32,8 @@
     z-index: 1;
     width: 362px;
     min-height: 128px;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -39,4 +41,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
 }

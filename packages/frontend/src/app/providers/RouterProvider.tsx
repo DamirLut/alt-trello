@@ -9,6 +9,7 @@ const HomePage = Loadable(lazy(() => import('pages/home')));
 const AuthPage = Loadable(lazy(() => import('pages/auth')));
 const BoardPage = Loadable(lazy(() => import('pages/board')));
 const TaskPage = Loadable(lazy(() => import('pages/fulltask')));
+const ShareBoardPage = Loadable(lazy(() => import('pages/share-board')));
 
 export const Router: FC = () => {
   return useRoutes([
@@ -29,6 +30,10 @@ export const Router: FC = () => {
                 {
                   path: ':task',
                   element: <TaskPage />,
+                },
+                {
+                  path: 'share',
+                  element: <ShareBoardPage />,
                 },
               ],
             },

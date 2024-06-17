@@ -7,17 +7,25 @@ import Style from './avatar.module.scss';
 export interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   src: string | undefined;
   size?: number | string;
+  indicator?: 'online' | 'offline';
 }
 
-export const Avatar: FC<AvatarProps> = ({ src, size = 72, ...props }) => {
+export const Avatar: FC<AvatarProps> = ({
+  src,
+  size = 72,
+  indicator,
+  ...props
+}) => {
   return (
-    <img
-      className={Style.avatar}
-      src={src ?? FALLBACK_AVATAR}
-      width={size}
-      height={size}
-      draggable={false}
-      {...props}
-    />
+    <div className={Style.avatar}>
+      <img
+        src={src ?? FALLBACK_AVATAR}
+        width={size}
+        height={size}
+        draggable={false}
+        {...props}
+      />
+      {indicator && <div className={Style[`indicator-${indicator}`]} />}
+    </div>
   );
 };

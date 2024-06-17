@@ -16,6 +16,9 @@ export interface paths {
   '/api/user': {
     get: operations['UserController_getSelf'];
   };
+  '/api/user/search': {
+    get: operations['UserController_searchUser'];
+  };
   '/api/utils': {
     get: operations['UtilsController_getOAuthList'];
   };
@@ -36,9 +39,16 @@ export interface paths {
   };
   '/api/boards': {
     get: operations['BoardController_getBoardById'];
+    delete: operations['BoardController_deleteBoard'];
   };
   '/api/boards/favorite': {
     post: operations['BoardController_toggleFavorite'];
+  };
+  '/api/boards/invite': {
+    post: operations['BoardController_inviteMember'];
+  };
+  '/api/boards/exclude': {
+    post: operations['BoardController_excludeMember'];
   };
   '/api/columns/new': {
     post: operations['ColumnController_newColumn'];
@@ -84,6 +94,7 @@ export interface components {
       lastActiveAt: string;
       username: string;
       avatar: string;
+      email: string;
     };
     AuthMethodDTO: {
       /** @enum {string} */
@@ -139,7 +150,7 @@ export interface components {
     BoardMemberEntity: {
       id: number;
       user: components['schemas']['UserEntity'];
-      permission: 'owner'[];
+      permission: ('owner' | 'member' | 'commenter' | 'reader')[];
     };
     BoardEntity: {
       /** @example fxrJQl4u */
@@ -163,6 +174,15 @@ export interface components {
       user: components['schemas']['UserEntity'];
       boards: components['schemas']['BoardEntity'][];
       system: boolean | null;
+    };
+    InviteMemberDTO: {
+      board_id: string;
+      user_id: number;
+      permission: string;
+    };
+    ExcludeMemberDTO: {
+      board_id: string;
+      user_id: number;
     };
     CreateColumnDTO: {
       board_id: string;
@@ -268,6 +288,20 @@ export interface operations {
       };
     };
   };
+  UserController_searchUser: {
+    parameters: {
+      query: {
+        username: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['UserEntity'][];
+        };
+      };
+    };
+  };
   UtilsController_getOAuthList: {
     responses: {
       200: {
@@ -340,6 +374,20 @@ export interface operations {
       };
     };
   };
+  BoardController_deleteBoard: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['BoardEntity'];
+        };
+      };
+    };
+  };
   BoardController_toggleFavorite: {
     parameters: {
       query: {
@@ -350,6 +398,34 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['UserGroupEntity'];
+        };
+      };
+    };
+  };
+  BoardController_inviteMember: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['InviteMemberDTO'];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['BoardMemberEntity'];
+        };
+      };
+    };
+  };
+  BoardController_excludeMember: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ExcludeMemberDTO'];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          'application/json': components['schemas']['BoardMemberEntity'];
         };
       };
     };

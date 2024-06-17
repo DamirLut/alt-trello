@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { client } from 'api';
 
 import { Theme, useTheme } from 'entities/theme';
@@ -21,7 +21,8 @@ import Style from './app-bar.module.scss';
 
 export const AppBar: FC = () => {
   const navigate = useNavigate();
-  const { data: user } = useQuery(userQueries.getSelf());
+  const queryClient = useQueryClient();
+  const { data: user } = useQuery(userQueries(queryClient).getSelf());
   const { theme, toggleTheme } = useTheme();
 
   const onClickLogout = () =>

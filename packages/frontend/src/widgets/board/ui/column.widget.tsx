@@ -60,13 +60,13 @@ export const Column: FC<CardColumnProps> = ({ data, cards, isOverlay }) => {
 
   const saveUpdates = async (title: string) => {
     title = title.trim();
-    if (title === data.title) return;
 
     if (title === '') {
       return setColumns((columns) =>
         columns.filter((column) => column.id !== ''),
       );
     }
+    if (title === data.title) return;
 
     setColumns((columns) =>
       columns.map((column) => {

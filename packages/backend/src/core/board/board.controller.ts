@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { JwtUser } from '#core/auth/auth.decorator';
@@ -6,7 +14,10 @@ import { JwtAuthGuard } from '#core/auth/auth.guard';
 import type { JwtPayload } from '#core/auth/auth.type';
 
 import { CreateBoardDTO } from './dto/create-board.dto';
+import { ExcludeMemberDTO } from './dto/exclude-member.dto';
+import { InviteMemberDTO } from './dto/invite-member.dto';
 import { BoardEntity } from './entities/board.entity';
+import { BoardMemberEntity } from './entities/board-member.entity';
 import { UserGroupEntity } from './entities/user-group.entity';
 import { BoardService } from './board.service';
 
@@ -41,5 +52,23 @@ export class BoardController {
   @ApiResponse({ status: 200, type: UserGroupEntity })
   toggleFavorite(@JwtUser() user: JwtPayload, @Query('id') id: string) {
     return this.boardService.toggleFavorite(user.id, id);
+  }
+
+  @Post('/invite')
+  @ApiResponse({ status: 200, type: BoardMemberEntity })
+  inviteMember(@Body() dto: InviteMemberDTO) {
+    return this.boardService.inviteMember(dto);
+  }
+
+  @Post('/exclude')
+  @ApiResponse({ status: 200, type: BoardMemberEntity })
+  excludeMember(@Body() dto: ExcludeMemberDTO) {
+    return this.boardService.excludeMember(dto);
+  }
+
+  @Delete()
+  @ApiResponse({ status: 200, type: BoardEntity })
+  deleteBoard(@JwtUser() user: JwtPayload, @Query('id') id: string) {
+    return this.boardService.deleteBoard(user.id, id);
   }
 }

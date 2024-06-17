@@ -25,7 +25,7 @@ export const HomePage: FC = () => {
     <div className={Style.page}>
       {groups?.map((group) => {
         const { title, system, boards } = group;
-        if (boards.length === 0) return null;
+        if (boards.length === 0 && !system) return null;
 
         return (
           <Fragment key={title}>

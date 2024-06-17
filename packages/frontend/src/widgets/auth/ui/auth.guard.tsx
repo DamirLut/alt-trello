@@ -1,11 +1,12 @@
 import { type FC, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { userQueries } from 'entities/user';
 
 export const AuthGuard: FC = () => {
-  const { isError, isFetched } = useQuery(userQueries.getSelf());
+  const client = useQueryClient();
+  const { isError, isFetched } = useQuery(userQueries(client).getSelf());
   const navigate = useNavigate();
 
   useEffect(() => {

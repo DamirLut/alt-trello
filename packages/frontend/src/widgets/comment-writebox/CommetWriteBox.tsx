@@ -16,7 +16,7 @@ interface CommentWriteBoxProps {
 
 export const CommentWriteBox: FC<CommentWriteBoxProps> = (props) => {
   const client = useQueryClient();
-  const { data: user } = useQuery(userQueries.getSelf());
+  const { data: user } = useQuery(userQueries(client).getSelf());
   const { mutateAsync } = useMutation(commentQueries(client).createComment());
   const ref = useRef<HTMLTextAreaElement>(null);
 

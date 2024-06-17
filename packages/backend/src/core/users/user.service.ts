@@ -21,6 +21,7 @@ export class UserService {
       lastActiveAt: new Date(),
       username: profile.username,
       avatar: profile.avatar,
+      email: profile.email,
     });
 
     await this.entityManager.persistAndFlush(user);
@@ -30,5 +31,16 @@ export class UserService {
 
   async findById(id: number) {
     return this.userRepository.findOne({ id });
+  }
+
+  async searchByUsername(username: string) {
+    const like = `%${username}%`;
+
+    return this.userRepository.find(
+      {
+        $or: [{ username: { $ilike: like } }, { email: { $ilike: like } }],
+      },
+      { limit: 10 },
+    );
   }
 }
