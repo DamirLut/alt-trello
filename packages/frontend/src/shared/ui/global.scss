@@ -61,3 +61,23 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-text);
 }
+
+.embed-tool__caption,
+.image-tool__caption {
+  display: none;
+}
+
+#editor {
+  padding: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius);
+}
+
+.image-tool--loading .image-tool__image,
+.cdx-attaches--with-file {
+  background-color: var(--color-background) !important;
+}
+.cdx-attaches__download-button {
+  background-color: var(--color-overlay) !important;
+  color: var(--color-text);
+}
