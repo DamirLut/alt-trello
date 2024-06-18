@@ -676,6 +676,7 @@
             "id"
           ],
           "referencedTableName": "public.cards",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "card-members_user_id_foreign": {
