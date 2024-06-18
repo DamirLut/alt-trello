@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import { createForm } from 'react-any-shape-form';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import classNames from 'classnames';
 import { getRootVariables } from 'lib/dom';
 import { pickRandom } from 'lib/utils';
 
@@ -10,12 +11,15 @@ import { Button } from 'ui/button';
 import { Card } from 'ui/card';
 import { Dialog, DialogContent, DialogTrigger } from 'ui/dialog';
 import { Input } from 'ui/input';
+import { Textarea } from 'ui/textarea';
 import { Text } from 'ui/typography';
 
 import Style from './new-board-card.module.scss';
 
 const Form = createForm({
   title: '',
+  description: '',
+  color: '',
 });
 
 type FormState = Parameters<
@@ -26,15 +30,17 @@ const gradients = getRootVariables()
   .filter((variable) => variable.startsWith('--gradient'))
   .map((variable) => variable.replace('--gradient-', ''));
 
-const CAN_CHOOSE_COLOR = false;
-
 export const NewBoardCard: FC = () => {
   const client = useQueryClient();
   const { mutateAsync } = useMutation(boardQueries(client).newBoard());
   const navigate = useNavigate();
 
   const onFinish = async (state: FormState) => {
-    const board = await mutateAsync({ ...state, color: pickRandom(gradients) });
+    const board = await mutateAsync({
+      title: state.title,
+      color: state.color || pickRandom(gradients),
+      description: state.description,
+    });
     navigate(`/b/${board.id}/${board.slug}`);
   };
 
@@ -63,19 +69,35 @@ export const NewBoardCard: FC = () => {
               />
             )}
           </Form.Item>
-          {CAN_CHOOSE_COLOR && (
-            <div className={Style['choose-colors-wrap']}>
-              <div className={Style['choose-colors']}>
-                {gradients.map((gradient) => (
-                  <Card
-                    key={gradient}
-                    className={Style['color-card']}
-                    style={{ backgroundImage: `var(--gradient-${gradient})` }}
-                  />
-                ))}
+          <Form.Item name='description' label='Описание'>
+            {({ onChange }) => (
+              <Textarea
+                onChange={(e) => onChange((e.target as HTMLInputElement).value)}
+              />
+            )}
+          </Form.Item>
+
+          <Form.Item name='color' label='Фон'>
+            {({ onChange, value }) => (
+              <div className={Style['choose-colors-wrap']}>
+                <div className={Style['choose-colors']}>
+                  {gradients.map((gradient) => (
+                    <Card
+                      key={gradient}
+                      className={classNames(
+                        Style['color-card'],
+                        value === gradient && Style['color-card-selected'],
+                      )}
+                      onClick={() => onChange(gradient)}
+                      style={{
+                        backgroundImage: `var(--gradient-${gradient})`,
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </Form.Item>
 
           <div>
             <Button variant='primary' color='green' type='submit'>
