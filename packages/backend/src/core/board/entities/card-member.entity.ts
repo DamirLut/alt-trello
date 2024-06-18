@@ -20,7 +20,7 @@ export class CardMemberEntity {
   @Property({ fieldName: 'created_at' })
   createdAt = new Date();
 
-  @ManyToOne(() => CardEntity)
+  @ManyToOne(() => CardEntity, { deleteRule: 'cascade' })
   card: Rel<CardEntity>;
 
   @ApiProperty({ type: () => UserEntity })

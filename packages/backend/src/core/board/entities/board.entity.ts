@@ -63,7 +63,7 @@ export class BoardEntity {
   settings?: Rel<BoardSettingEntity>;
 
   @ApiProperty({ type: () => [ColumnEntity] })
-  @OneToMany(() => ColumnEntity, (e) => e.board)
+  @OneToMany(() => ColumnEntity, (e) => e.board, { orphanRemoval: true })
   columns = new Collection<Rel<ColumnEntity>>(this);
 
   @ApiProperty({ type: () => [BoardMemberEntity] })
